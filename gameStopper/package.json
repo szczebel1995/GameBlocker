@@ -1,0 +1,68 @@
+{
+  "name": "my-app",
+  "version": "0.1.1",
+  "author": "Your Name",
+  "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
+  "homepage": ".",
+  "main": "build/electron/main.js",
+  "private": true,
+  "dependencies": {
+    "@types/electron-devtools-installer": "^2.2.0",
+    "@types/jest": "25.2.1",
+    "@types/node": "13.13.0",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.6",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-is-dev": "^1.2.0",
+    "electron-reload": "^1.5.0",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.2",
+    "mobx-state-tree": "^3.16.0",
+    "ps-list": "^7.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "regedit": "^3.0.3",
+    "typescript": "3.8.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:windev": "concurrently \"SET BROWSER=none && npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "eject": "react-scripts eject"
+  },
+  "build": {
+    "extends": null,
+    "files": [
+      "build/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "electron": "^8.2.3",
+    "electron-builder": "^22.5.1",
+    "wait-on": "^4.0.2"
+  }
+}
