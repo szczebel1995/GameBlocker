@@ -6,6 +6,7 @@ import { uniq, compact, zipObject } from "lodash";
 import * as battlenetGames from "./serverMocks/battlenetGames.json";
 import { GameStore } from "./stores/gameStore";
 import { getSnapshot } from "mobx-state-tree";
+import * as regedit from "regedit";
 
 const gamesStore = GamesStore.create({});
 
@@ -122,32 +123,88 @@ const getAllLauncherFolders = async () => {
             ),
           })
         );
-        // const gamesFolder = getPfFolder(launcher.gamesFolder);
-        // return LauncherStore.create({ name: launcher.name, path:  });
-        // console.log(gamesFolder);
       });
     })
   );
   console.log(launchers.map((launcher) => JSON.stringify(launcher)));
 };
 
-getAllLauncherFolders();
-// const blizzardGamesUrls = Promise.all(
-//   battlenetGames.games.map((game) => getPfFolder(`${game.path}/`))
-// ).then((res) => console.log(res));
+const test = async () => {
+  const policies = await new Promise((resolve) => {
+    regedit.list(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
+      (err, res) => resolve(err ? err : res)
+    );
+  });
+  if (!Object.values(policies)[0].keys.includes("explorer")) {
+    console.log("creating");
+    await new Promise((resolve) => {
+      regedit.createKey(
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer",
+        (err) => resolve(console.log(err))
+      );
+    });
+    await new Promise((resolve) => {
+      regedit.list(
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
+        (err, res) => resolve(console.log(err, res))
+      );
+    });
+    await new Promise((resolve) => {
+      regedit.putValue(
+        {
+          "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer": {
+            DisallowRun: {
+              value: 1,
+              type: "REG_DWORD",
+            },
+          },
+        },
+        (err, res) => resolve(err ? err : res)
+      );
+    });
+    await new Promise((resolve) => {
+      regedit.createKey(
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun",
+        (err) => resolve(err)
+      );
+    });
+  }
 
-// glob(
-//   `C://Program Files (x86)/GOG Galaxy/Games/`,
-//   { strict: false },
-//   (err, files) => {
-//     console.log(err ? err : files);
-//   }
-// );
+  const blocks = await new Promise((resolve) => {
+    regedit.list(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
+      (err, res) => resolve(err ? err : res)
+    );
+  });
+  console.log(blocks);
 
-// LAUNCHERS:
-// /Steam/steamapps
-// /Origin Games
-// Ubisoft/Ubisoft Game Launcher/games/
-// GOG Galaxy\Games
-// Epic Games
-// Battle.net installs straight to program files need to hardcode then
+  await new Promise((resolve) => {
+    regedit.putValue(
+      {
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun": {
+          1: {
+            value: "ManifoldGarden.exe",
+            type: "REG_SZ",
+          },
+        },
+      },
+      (err, res) => resolve(err ? err : res)
+    );
+  });
+
+  const blocks2 = await new Promise((resolve) => {
+    regedit.list(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
+      (err, res) => resolve(err ? err : res)
+    );
+  });
+  console.log(blocks2);
+};
+test();
+
+// const blockGameInRegistry = () => {
+
+// }
+
+// getAllLauncherFolders();

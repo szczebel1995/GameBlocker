@@ -49,6 +49,7 @@
     "lodash": "^4.17.15",
     "ls": "^0.2.1",
     "mobx": "^5.15.4",
-    "mobx-state-tree": "^3.16.0"
+    "mobx-state-tree": "^3.16.0",
+    "regedit": "^3.0.3"
   }
 }
