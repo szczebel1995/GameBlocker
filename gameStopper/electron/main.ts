@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, shell } from "electron";
 import * as path from "path";
 import * as isDev from "electron-is-dev";
 import installExtension, {
@@ -15,6 +15,12 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+  });
+
+  win.webContents.on("new-window", function (e, url) {
+    e.preventDefault();
+    console.log("AYYY");
+    shell.openExternal(url);
   });
 
   if (isDev) {
