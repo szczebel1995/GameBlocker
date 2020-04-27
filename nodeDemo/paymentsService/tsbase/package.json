@@ -1,0 +1,53 @@
+{
+  "name": "tsbase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "CI=true jest",
+    "test:prod": "testApi=prod npm run test",
+    "test:dev": "testApi=dev npm run test",
+    "test-watch": "NODE_ENV=dev jest --watch",
+    "test-watch:prod": "testApi=prod npm run test-watch",
+    "test-watch:dev": "testApi=dev npm run test-watch",
+    "watch:serve": "ts-node src/index.ts ",
+    "dev-watch": "NODE_ENV=dev nodemon -e ts -w ./ -x npm run watch:serve",
+    "dev": "NODE_ENV=dev npm run watch:serve",
+    "prod": "NODE_ENV=prod node ./build/index.js",
+    "build": "cd src && tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^10.3.5",
+    "jest": "^23.6.0",
+    "nodemon": "^1.19.1",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/build/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "testRegex": "/tests/.*\\.(ts|tsx|js)$"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "stripe": "^8.47.0"
+  }
+}
