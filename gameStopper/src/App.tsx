@@ -4,14 +4,17 @@ import "./App.css";
 import { processStore } from "./stores/processStore";
 import { loadStripe } from "@stripe/stripe-js";
 import { shell } from "electron";
+import { MainView } from "./views/mainView";
+import "react-toggle/style.css";
 
-const stripePromise = loadStripe("pk_test_xWT4tvG235qCFeW2nTWQVTnQ");
+// const stripePromise = loadStripe("pk_test_xWT4tvG235qCFeW2nTWQVTnQ");
 
 // processStore.afterCreate();
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
+      <MainView />
+      {/* <header className="App-header">
         <a
           target="_blank"
           href={
@@ -20,7 +23,7 @@ const App: React.FC = () => {
         >
           PAY
         </a>
-      </header>
+      </header> */}
     </div>
   );
 };

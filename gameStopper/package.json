@@ -22,7 +22,9 @@
     "ps-list": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
     "react-scripts": "3.4.1",
+    "react-toggle": "^4.1.1",
     "regedit": "^3.0.3",
     "typescript": "3.8.3"
   },
@@ -61,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-toggle": "^4.0.2",
     "concurrently": "^5.1.0",
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
