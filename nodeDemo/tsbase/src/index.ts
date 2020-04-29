@@ -201,10 +201,10 @@ const test = async () => {
   });
   console.log(blocks2);
 };
-test();
+// test();
 
 // const blockGameInRegistry = () => {
 
 // }
 
-// getAllLauncherFolders();
+getAllLauncherFolders();

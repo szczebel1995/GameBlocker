@@ -1,0 +1,136 @@
+{
+  "launchers": [
+    {
+      "name": "Steam",
+      "paths": ["C:/Program Files (x86)/Steam/steam.exe"],
+      "gamesMap": {
+        "Might and Magic Heroes VI": {
+          "name": "Might and Magic Heroes VI",
+          "paths": [
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/berkelium.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Editor.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Game.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/gu.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Might & Magic Heroes VI.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/DirectX/DXSETUP.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/UbisoftGameLauncherInstaller-0255.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/vcredist_x86.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Steamworks Shared/_CommonRedist/DirectX/Jun2010/DXSETUP.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos_Unrestricted.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos.exe"
+          ]
+        },
+        "The Talos Principle": {
+          "name": "The Talos Principle",
+          "paths": [
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/berkelium.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Editor.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Game.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/gu.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Might & Magic Heroes VI.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/DirectX/DXSETUP.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/UbisoftGameLauncherInstaller-0255.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/vcredist_x86.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/Steamworks Shared/_CommonRedist/DirectX/Jun2010/DXSETUP.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos_Unrestricted.exe",
+            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos.exe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Origin",
+      "paths": ["C:/Program Files (x86)/Origin/Origin.exe"],
+      "gamesMap": {
+        "Apex": {
+          "name": "Apex",
+          "paths": [
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/Cleanup.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/customcomponent/EasyAntiCheat/EasyAntiCheat_Setup.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/directx/redist/DXSETUP.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/Touchup.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/vc/vc2010sp1/redist/vcredist_x64.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/vc/vc2012Update4/redist/vcredist_x64.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/vc/vc2015/redist/vc_redist.x64.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/__Installer/vc/vc2015/redist/vc_redist.x86.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/bin/crashmsg.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/EasyAntiCheat_launcher.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/EasyAntiCheat/EasyAntiCheat_Setup.exe",
+            "C:/Program Files (x86)/Origin Games/Apex/r5apex.exe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Uplay",
+      "paths": [
+        "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/Uplay.exe"
+      ],
+      "gamesMap": {
+        "Heroes of Might and Magic 2": {
+          "name": "Heroes of Might and Magic 2",
+          "paths": [
+            "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Heroes of Might and Magic 2/dosbox.exe",
+            "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Heroes of Might and Magic 2/Graphic mode setup.exe",
+            "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Heroes of Might and Magic 2/support/Directx/DXSETUP.exe",
+            "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Heroes of Might and Magic 2/support/gdf/FirewallInstall.exe",
+            "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Heroes of Might and Magic 2/support/VCRedist/vcredist_x86.exe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "GOG",
+      "paths": ["C:/Program Files (x86)/GOG Galaxy/GalaxyClient.exe"],
+      "gamesMap": {
+        "HoMM 3 Complete": {
+          "name": "HoMM 3 Complete",
+          "paths": [
+            "C:/Program Files (x86)/GOG Galaxy/Games/HoMM 3 Complete/h3ccmped.exe",
+            "C:/Program Files (x86)/GOG Galaxy/Games/HoMM 3 Complete/h3maped.exe",
+            "C:/Program Files (x86)/GOG Galaxy/Games/HoMM 3 Complete/Heroes3.exe",
+            "C:/Program Files (x86)/GOG Galaxy/Games/HoMM 3 Complete/unins000.exe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Epic Games",
+      "paths": [
+        "C:/Program Files (x86)/Epic Games/Launcher/Engine/Binaries/Win32/EpicGamesLauncher.exe",
+        "C:/Program Files (x86)/Epic Games/Launcher/Engine/Binaries/Win64/EpicGamesLauncher.exe",
+        "C:/Program Files (x86)/Epic Games/Launcher/Portal/Binaries/Win32/EpicGamesLauncher.exe",
+        "C:/Program Files (x86)/Epic Games/Launcher/Portal/Binaries/Win64/EpicGamesLauncher.exe"
+      ],
+      "gamesMap": {
+        "ManifoldGarden": {
+          "name": "ManifoldGarden",
+          "paths": [
+            "C:/Program Files/Epic Games/ManifoldGarden/ManifoldGarden.exe",
+            "C:/Program Files/Epic Games/ManifoldGarden/UnityCrashHandler64.exe"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Battle.net",
+      "paths": ["C:/Program Files (x86)/Battle.net/Battle.net.exe"],
+      "gamesMap": {
+        "Diablo III": {
+          "name": "Diablo III",
+          "paths": [
+            "C:/Program Files (x86)/Diablo III/Diablo III Launcher.exe",
+            "C:/Program Files (x86)/Heroes of the Storm/Heroes of the Storm.exe"
+          ]
+        },
+        "Heroes of the Storm": {
+          "name": "Heroes of the Storm",
+          "paths": [
+            "C:/Program Files (x86)/Diablo III/Diablo III Launcher.exe",
+            "C:/Program Files (x86)/Heroes of the Storm/Heroes of the Storm.exe"
+          ]
+        }
+      }
+    }
+  ]
+}
