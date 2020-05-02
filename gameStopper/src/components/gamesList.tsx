@@ -7,6 +7,7 @@ import { gamesStore } from "../stores/gamesStore";
 import { flatten } from "lodash";
 import { GamesListItem } from "./gamesListItem";
 import { mainViewStore } from "../stores/ui/mainViewStore";
+import { ColorE } from "../enums/color";
 
 @observer
 export class GamesList extends React.Component {
@@ -30,12 +31,14 @@ export class GamesList extends React.Component {
   }
 
   render() {
+    console.log(mainViewStore.gamesListRerender);
     return (
       <Card
         style={{
+          width: "100%",
           borderWidth: 1,
           borderColor: "red",
-          border: "1px solid red",
+          // border: `2px solid ${ColorE.LIST_BORDER_COLOR}`,
         }}
       >
         <CardHeader
@@ -51,17 +54,27 @@ export class GamesList extends React.Component {
           gamesStore.gamesMap.size > 0 || gamesStore.launchersMap.size > 0 ? (
             <div>
               {flatten(
-                Array.from(gamesStore.launchersMap.values()).map((launcher) => {
+                gamesStore.launchers.map((launcher) => {
                   const games = Array.from(launcher.gamesMap.values());
-                  console.log("@_@", games, launcher);
                   return [launcher, ...games];
                 })
-              ).map((item) => (
-                <GamesListItem
-                  item={item as any}
-                  onClick={() => mainViewStore.focusGamesListItem(item)}
-                />
-              ))}
+              ).map((item) => {
+                return (
+                  <GamesListItem
+                    item={item}
+                    onClick={() => mainViewStore.focusGamesListItem(item)}
+                  />
+                );
+              })}
+              <GamesListItem onClick={() => ""} title="Rest of the games" />
+              {gamesStore.games
+                .filter((game) => !game.launcher)
+                .map((game) => (
+                  <GamesListItem
+                    onClick={() => mainViewStore.focusGamesListItem(game)}
+                    item={game}
+                  />
+                ))}
             </div>
           ) : (
             <div

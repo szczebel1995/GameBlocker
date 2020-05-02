@@ -5,6 +5,7 @@ import Toggle from "react-toggle";
 import { FaCog } from "react-icons/fa";
 import { Card } from "./card";
 import { mainViewStore } from "../stores/ui/mainViewStore";
+import { ColorE } from "../enums/color";
 
 @observer
 export class Header extends React.Component {
@@ -12,7 +13,7 @@ export class Header extends React.Component {
     return (
       <Card
         style={{
-          padding: 10,
+          paddingBottom: 20,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -20,15 +21,46 @@ export class Header extends React.Component {
           boxSizing: "border-box",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: 20,
+            color: ColorE.TEXT_COLOR,
+          }}
+        >
           <img style={{ height: 50 }} src={logo} alt="logo" />
-          <div>GameBlocker</div>
-          <div>alpha</div>
+          <div style={{ display: "flex", alignItems: "flex-end" }}>
+            <div style={{ paddingLeft: 10, fontSize: 22, fontWeight: "bold" }}>
+              GameBlocker
+            </div>
+            <div
+              style={{
+                paddingLeft: 7,
+                opacity: 0.4,
+                fontSize: 16,
+                paddingBottom: 2,
+              }}
+            >
+              alpha
+            </div>
+          </div>
         </div>
-        <div style={{ display: "flex" }}>
-          <div>Score: {"score"}</div>
-          <Toggle />
-          <div>{"On"}</div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 20,
+            color: ColorE.TEXT_COLOR,
+            alignItems: "center",
+          }}
+        >
+          <div style={{ opacity: 0.4, fontSize: 18 }}>
+            <b>Score:</b> {"2d 15h 42m 11s"}
+          </div>
+          <div style={{ paddingLeft: 20, paddingRight: 20, marginBottom: -5 }}>
+            <Toggle />
+          </div>
+          {/* <div>{"On"}</div> */}
           <FaCog onClick={() => mainViewStore.toggleSettingsOpened()} />
         </div>
       </Card>

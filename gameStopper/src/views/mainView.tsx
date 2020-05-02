@@ -9,6 +9,7 @@ import { EditCard } from "../components/editCard";
 import { push as Menu } from "react-burger-menu";
 import Toggle from "react-toggle";
 import { AddCard } from "../components/addCard";
+import { ColorE } from "../enums/color";
 
 @observer
 export class MainView extends React.Component {
@@ -18,7 +19,10 @@ export class MainView extends React.Component {
     };
 
     return (
-      <div id="outer-container" style={{ backgroundColor: "gray" }}>
+      <div
+        id="outer-container"
+        style={{ backgroundColor: ColorE.MAIN_BGD, padding: 25 }}
+      >
         <Menu
           styles={{ bmBurgerButton: { display: "none" } }}
           isOpen={mainViewStore.settingsOpened}
@@ -55,7 +59,13 @@ export class MainView extends React.Component {
         </Menu>
         <div id="page-wrap">
           <Header />
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "50% 50%",
+              columnGap: 25,
+            }}
+          >
             <GamesList />
             {mainViewStore.currentRightCard === "edit" ? (
               <EditCard editedItem={mainViewStore.focusedItem as any} />

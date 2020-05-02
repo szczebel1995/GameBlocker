@@ -49,12 +49,25 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
         <InputRowItem
           label="Launcher:"
           input={
-            <input
+            <select
+              name=""
+              id=""
               value={game.launcher}
-              onChange={(e) => game.setLauncher(e.target.value)}
-              style={{ width: 200 }}
-              type="text"
-            />
+              onChange={(e) =>
+                game.setLauncher(e.target.value ? e.target.value : undefined)
+              }
+            >
+              <option value="">none</option>
+              {gamesStore.launchers.map((launcher) => (
+                <option value={launcher.id}>{launcher.name}</option>
+              ))}
+            </select>
+            // <input
+            //   value={game.launcher}
+            //   onChange={(e) => game.setLauncher(e.target.value)}
+            //   style={{ width: 200 }}
+            //   type="text"
+            // />
           }
         />
         <div>
@@ -140,6 +153,8 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                 this.state.type === "game"
                   ? gamesStore.addGame(this.state.game)
                   : gamesStore.addLauncher(this.state.launcher);
+                // console.log(gamesStore)
+                // mainViewStore.forceGamesListRerender();
               }}
             />
           }

@@ -65,9 +65,7 @@ export const GamesStore = types
     const removeGame = (id: string) => {
       const game = self.gamesMap.get(id);
       if (game?.launcher) {
-        const launcher = self.launchers.find(
-          (launcher) => launcher.name === game.launcher
-        );
+        const launcher = self.launchersMap.get(game.launcher);
         launcher?.removeGame(id);
       }
       self.gamesMap.delete(id);
@@ -81,8 +79,18 @@ export const GamesStore = types
       self.launchersMap.set(launcher.name, launcher);
     };
 
+    const addGameToLauncher = (game: IGameStore, newLauncherId: string) => {
+      self.launchersMap.get(game.launcher || "")?.removeGame(game.id);
+      self.launchersMap.get(newLauncherId)?.addGame(game);
+      game.setLauncher(newLauncherId);
+    };
+
     const addGame = (game: IGameStore) => {
       self.gamesMap.set(game.id, game);
+      if (game.launcher) {
+        const launcher = self.launchersMap.get(game.launcher);
+        launcher?.addGame(game);
+      }
     };
 
     return {
@@ -92,6 +100,7 @@ export const GamesStore = types
       scanForLaunchers,
       removeGame,
       removeLauncher,
+      addGameToLauncher,
     };
   });
 

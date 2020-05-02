@@ -14,6 +14,7 @@ export const MainViewStore = types
     settingsOpened: types.optional(types.boolean, false),
     searchGameValue: types.maybe(types.string),
     searchOpened: types.optional(types.boolean, false),
+    gamesListRerender: types.optional(types.number, 0),
   })
   .views((self) => ({
     get focusedItem() {
@@ -26,7 +27,7 @@ export const MainViewStore = types
   }))
   .actions((self) => {
     const focusGamesListItem = (item?: IGameStore | ILauncherStore) => {
-      self.focusedGamesListItem = item ? (item?.name as any) : undefined;
+      self.focusedGamesListItem = item ? (item?.id as any) : undefined;
       self.focusedGamesListItemType = item
         ? (item as any).gamesMap
           ? "launcher"
@@ -52,12 +53,17 @@ export const MainViewStore = types
       self.searchGameValue = search;
     };
 
+    const forceGamesListRerender = () => {
+      self.gamesListRerender = Math.random();
+    };
+
     return {
       toggleSettingsOpened,
       focusGamesListItem,
       toggleAddCardOpened,
       toggleSearch,
       updateSearchValue,
+      forceGamesListRerender,
     };
   });
 

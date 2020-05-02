@@ -8,7 +8,7 @@ import { Card } from "./card";
 import { gamesStore } from "../stores/gamesStore";
 import { LauncherStore, ILauncherStore } from "../stores/objects/launcherStore";
 import { GameStore, IGameStore } from "../stores/objects/gameStore";
-import { applySnapshot } from "mobx-state-tree";
+import { applySnapshot, onSnapshot } from "mobx-state-tree";
 import { isLauncher } from "../utils/types";
 
 export interface IEditCardProps {
@@ -17,67 +17,11 @@ export interface IEditCardProps {
 
 @observer
 export class EditCard extends React.Component<IEditCardProps> {
-  // state = {
-  //   id: "",
-  //   nameInput: "",
-  //   iconInput: "",
-  //   paths: [],
-  //   launcherInput: "",
-  // };
+  constructor(props: IEditCardProps) {
+    super(props);
 
-  // constructor(props: IEditCardProps) {
-  //   super(props);
-  //   this.state = this.getStateFromEditedItem(props.editedItem);
-  // }
-
-  // componentWillReceiveProps(newProps: IEditCardProps) {
-  //   if (newProps.editedItem.id !== this.state.id) {
-  //     this.setState(this.getStateFromEditedItem(newProps.editedItem));
-  //   }
-  // }
-
-  // componentDidUpdate() {
-  //   this.saveEditedObjectFromState();
-  // }
-
-  // getStateFromEditedItem(editedItem: ILauncherStore | IGameStore) {
-  //   const { icon, name, paths, id } = editedItem;
-
-  //   return {
-  //     id,
-  //     nameInput: name,
-  //     iconInput: icon || "",
-  //     paths: paths as any,
-  //     launcherInput: (editedItem as any).launcher
-  //       ? (editedItem as any).launcher
-  //       : undefined,
-  //   };
-  // }
-
-  // getEditedObjectFromState() {
-  //   const { iconInput, launcherInput, nameInput, id, paths } = this.state;
-  //   if (isLauncher(this.props.editedItem)) {
-  //     return LauncherStore.create({
-  //       id,
-  //       name: nameInput,
-  //       gamesMap: this.props.editedItem.gamesMap as any,
-  //       icon: iconInput,
-  //       paths,
-  //     });
-  //   } else {
-  //     return GameStore.create({
-  //       id,
-  //       name: nameInput,
-  //       paths,
-  //       icon: iconInput,
-  //       launcher: launcherInput,
-  //     });
-  //   }
-  // }
-
-  // saveEditedObjectFromState() {
-  //   applySnapshot(this.props.editedItem, this.getEditedObjectFromState());
-  // }
+    onSnapshot(props.editedItem, () => mainViewStore.forceGamesListRerender());
+  }
 
   renderGameEditForm(game: IGameStore) {
     return (
@@ -107,26 +51,28 @@ export class EditCard extends React.Component<IEditCardProps> {
             />
           }
         />
-        {/* <InputRowItem
-          label="Icon:"
-          input={
-            <input
-              value={game.icon}
-              onChange={(e) => game.setIcon(e.target.value)}
-              style={{ width: 200 }}
-              type="text"
-            />
-          }
-        /> */}
         <InputRowItem
           label="Launcher:"
           input={
-            <input
+            <select
+              name=""
+              id=""
               value={game.launcher}
-              onChange={(e) => game.setLauncher(e.target.value)}
-              style={{ width: 200 }}
-              type="text"
-            />
+              onChange={(e) => {
+                gamesStore.addGameToLauncher(game, e.target.value);
+              }}
+            >
+              <option value="">none</option>
+              {gamesStore.launchers.map((launcher) => (
+                <option value={launcher.id}>{launcher.name}</option>
+              ))}
+            </select>
+            //  <input
+            //   value={game.launcher}
+            //   onChange={(e) => game.setLauncher(e.target.value)}
+            //   style={{ width: 200 }}
+            //   type="text"
+            // />
           }
         />
         <div>
@@ -224,65 +170,6 @@ export class EditCard extends React.Component<IEditCardProps> {
         {isLauncher(mainViewStore.focusedItem)
           ? this.renderLauncherEditForm(mainViewStore.focusedItem)
           : this.renderGameEditForm(mainViewStore.focusedItem)}
-        {/* <CardHeader
-          title={item}
-          buttonLeft={
-            <FaTimes onClick={() => mainViewStore.focusGamesListItem()} />
-          }
-          buttonRight={
-            <FaTrash
-              onClick={() => {
-                mainViewStore.focusGamesListItem();
-                gamesStore.removeGame(item);
-              }}
-            />
-          }
-        />
-        <InputRowItem
-          label="Name:"
-          input={
-            <input
-              value={name}
-              onChange={(e) => }
-              style={{ width: 200 }}
-              type="text"
-            />
-          }
-        />
-        <InputRowItem
-          label="Icon:"
-          input={
-            <input
-              // value={this.state.iconInput}
-              // onChange={(e) =>
-              //   this.setState((prevState) => ({
-              //     ...prevState,
-              //     iconInput: e.target.value,
-              //   }))
-              // }
-              style={{ width: 200 }}
-              type="text"
-            />
-          }
-        />
-        {mainViewStore.focusedGamesListItemType === "game" ? (
-          <InputRowItem
-            label="Launcher:"
-            input={
-              <input
-                // value={this.state.launcherInput}
-                // onChange={(e) =>
-                //   this.setState((prevState) => ({
-                //     ...prevState,
-                //     launcherInput: e.target.value,
-                //   }))
-                // }
-                style={{ width: 200 }}
-                type="text"
-              />
-            }
-          />
-        ) : null} */}
       </Card>
     );
   }

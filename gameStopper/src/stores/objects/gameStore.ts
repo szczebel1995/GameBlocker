@@ -22,8 +22,8 @@ export const GameStore = types
       self.paths.remove(path);
     };
 
-    const setLauncher = (launcher?: string) => {
-      self.launcher = launcher;
+    const setLauncher = (id?: string) => {
+      self.launcher = id;
     };
 
     const setIcon = (icon?: string) => {
