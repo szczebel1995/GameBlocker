@@ -6,31 +6,76 @@ import { Card } from "../components/card";
 import logo from "../assets/img/logo.png";
 import { mainViewStore } from "../stores/ui/mainViewStore";
 import { EditCard } from "../components/editCard";
+import { push as Menu } from "react-burger-menu";
+import Toggle from "react-toggle";
+import { AddCard } from "../components/addCard";
 
 @observer
 export class MainView extends React.Component {
   render() {
+    const style = {
+      menuRowStyle: { display: "flex", justifyContent: "space-between" },
+    };
+
     return (
-      <div style={{ backgroundColor: "gray" }}>
-        <Header />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          <GamesList />
-          {mainViewStore.focusedGamesListItem ? (
-            <EditCard />
-          ) : (
-            <Card>
-              <div
-                className="flexCenter"
-                style={{ width: "100%", height: "100%" }}
-              >
-                <img
-                  style={{ opacity: 0.5, height: "40%" }}
-                  src={logo}
-                  alt="logo"
-                />
-              </div>
-            </Card>
-          )}
+      <div id="outer-container" style={{ backgroundColor: "gray" }}>
+        <Menu
+          styles={{ bmBurgerButton: { display: "none" } }}
+          isOpen={mainViewStore.settingsOpened}
+          right
+          pageWrapId={"page-wrap"}
+          outerContainerId={"outer-container"}
+        >
+          <div
+            style={{
+              backgroundColor: "red",
+              padding: 10,
+              height: "100%",
+              boxSizing: "border-box",
+            }}
+          >
+            <div
+              style={{ paddingBottom: 20, fontSize: 20, fontWeight: "bold" }}
+            >
+              Settings
+            </div>
+            <div style={style.menuRowStyle}>
+              <div>Launch at system startup:</div>
+              <Toggle />
+            </div>
+            <div style={style.menuRowStyle}>
+              <div>Contact:</div>
+              <div>email here</div>
+            </div>
+            <div style={style.menuRowStyle}>
+              <div>Donate:</div>
+              <div>Paypal me</div>
+            </div>
+          </div>
+        </Menu>
+        <div id="page-wrap">
+          <Header />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <GamesList />
+            {mainViewStore.currentRightCard === "edit" ? (
+              <EditCard editedItem={mainViewStore.focusedItem as any} />
+            ) : mainViewStore.currentRightCard === "add" ? (
+              <AddCard />
+            ) : (
+              <Card>
+                <div
+                  className="flexCenter"
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  <img
+                    style={{ opacity: 0.5, height: "40%" }}
+                    src={logo}
+                    alt="logo"
+                  />
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
     );

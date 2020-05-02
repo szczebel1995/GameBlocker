@@ -6,6 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { shell } from "electron";
 import { MainView } from "./views/mainView";
 import "react-toggle/style.css";
+// import "./burger.css";
 
 // const stripePromise = loadStripe("pk_test_xWT4tvG235qCFeW2nTWQVTnQ");
 

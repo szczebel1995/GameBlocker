@@ -14,7 +14,27 @@ export const GameStore = types
       self.name = name;
     };
 
+    const addPath = (path: string) => {
+      self.paths.push(path);
+    };
+
+    const removePath = (path: string) => {
+      self.paths.remove(path);
+    };
+
+    const setLauncher = (launcher?: string) => {
+      self.launcher = launcher;
+    };
+
+    const setIcon = (icon?: string) => {
+      self.icon = icon;
+    };
+
     return {
       setName,
+      addPath,
+      removePath,
+      setLauncher,
+      setIcon,
     };
   });

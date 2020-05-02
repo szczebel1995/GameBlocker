@@ -14,24 +14,12 @@
             "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Might & Magic Heroes VI.exe",
             "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/DirectX/DXSETUP.exe",
             "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/UbisoftGameLauncherInstaller-0255.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/vcredist_x86.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Steamworks Shared/_CommonRedist/DirectX/Jun2010/DXSETUP.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos_Unrestricted.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos.exe"
+            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/vcredist_x86.exe"
           ]
         },
         "The Talos Principle": {
           "name": "The Talos Principle",
           "paths": [
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/berkelium.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Editor.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Game.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/gu.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Might & Magic Heroes VI.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/DirectX/DXSETUP.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/UbisoftGameLauncherInstaller-0255.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Might and Magic Heroes VI/Support/vcredist_x86.exe",
-            "C:/Program Files (x86)/Steam/steamapps/common/Steamworks Shared/_CommonRedist/DirectX/Jun2010/DXSETUP.exe",
             "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos_Unrestricted.exe",
             "C:/Program Files (x86)/Steam/steamapps/common/The Talos Principle/Bin/x64/Talos.exe"
           ]
@@ -118,15 +106,11 @@
       "gamesMap": {
         "Diablo III": {
           "name": "Diablo III",
-          "paths": [
-            "C:/Program Files (x86)/Diablo III/Diablo III Launcher.exe",
-            "C:/Program Files (x86)/Heroes of the Storm/Heroes of the Storm.exe"
-          ]
+          "paths": ["C:/Program Files (x86)/Diablo III/Diablo III Launcher.exe"]
         },
         "Heroes of the Storm": {
           "name": "Heroes of the Storm",
           "paths": [
-            "C:/Program Files (x86)/Diablo III/Diablo III Launcher.exe",
             "C:/Program Files (x86)/Heroes of the Storm/Heroes of the Storm.exe"
           ]
         }

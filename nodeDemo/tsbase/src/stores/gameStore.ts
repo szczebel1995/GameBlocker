@@ -11,6 +11,14 @@ export const GameStore = types
       self.name = name;
     };
 
+    const addPath = (path: string) => {
+      self.paths.push(path);
+    };
+
+    const removePath = (path: string) => {
+      self.paths.remove(path);
+    };
+
     return {
       setName,
     };

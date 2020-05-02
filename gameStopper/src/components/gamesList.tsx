@@ -41,7 +41,11 @@ export class GamesList extends React.Component {
         <CardHeader
           title={"Games"}
           buttonLeft={gamesStore.inited ? <FaSearch /> : null}
-          buttonRight={gamesStore.inited ? <FaPlus /> : null}
+          buttonRight={
+            gamesStore.inited ? (
+              <FaPlus onClick={() => mainViewStore.toggleAddCardOpened(true)} />
+            ) : null
+          }
         />
         {gamesStore.inited ? (
           gamesStore.gamesMap.size > 0 || gamesStore.launchersMap.size > 0 ? (

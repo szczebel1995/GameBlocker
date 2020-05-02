@@ -4,6 +4,7 @@ import logo from "../assets/img/logo.png";
 import Toggle from "react-toggle";
 import { FaCog } from "react-icons/fa";
 import { Card } from "./card";
+import { mainViewStore } from "../stores/ui/mainViewStore";
 
 @observer
 export class Header extends React.Component {
@@ -28,7 +29,7 @@ export class Header extends React.Component {
           <div>Score: {"score"}</div>
           <Toggle />
           <div>{"On"}</div>
-          <FaCog />
+          <FaCog onClick={() => mainViewStore.toggleSettingsOpened()} />
         </div>
       </Card>
     );

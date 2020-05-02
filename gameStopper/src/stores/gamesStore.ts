@@ -44,13 +44,17 @@ export const GamesStore = types
       tempsave.launchers.map((launcher) => {
         (launcher as any).id = launcher.name;
         Object.values(launcher.gamesMap).forEach((game) =>
-          addGameToMap(
-            GameStore.create({ id: `${game?.name}`, ...game } as any)
+          addGame(
+            GameStore.create({
+              id: `${game?.name}`,
+              ...game,
+              launcher: launcher.name,
+            } as any)
           )
         );
         const gamesNames = Object.keys(launcher.gamesMap);
         launcher.gamesMap = zipObject(gamesNames, gamesNames) as any;
-        addLauncherToMap(LauncherStore.create(launcher as any));
+        addLauncher(LauncherStore.create(launcher as any));
       });
     };
 
@@ -58,24 +62,36 @@ export const GamesStore = types
       return [];
     };
 
-    const removeGame = (gameName: string) => {
-      self.gamesMap.delete(gameName);
+    const removeGame = (id: string) => {
+      const game = self.gamesMap.get(id);
+      if (game?.launcher) {
+        const launcher = self.launchers.find(
+          (launcher) => launcher.name === game.launcher
+        );
+        launcher?.removeGame(id);
+      }
+      self.gamesMap.delete(id);
     };
 
-    const addLauncherToMap = (launcher: ILauncherStore) => {
+    const removeLauncher = (id: string) => {
+      self.launchersMap.delete(id);
+    };
+
+    const addLauncher = (launcher: ILauncherStore) => {
       self.launchersMap.set(launcher.name, launcher);
     };
 
-    const addGameToMap = (game: IGameStore) => {
-      self.gamesMap.set(game.name, game);
+    const addGame = (game: IGameStore) => {
+      self.gamesMap.set(game.id, game);
     };
 
     return {
       afterCreate,
-      addLauncherToMap,
-      addGameToMap,
+      addLauncher,
+      addGame,
       scanForLaunchers,
       removeGame,
+      removeLauncher,
     };
   });
 
