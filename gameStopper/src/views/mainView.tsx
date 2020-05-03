@@ -59,15 +59,15 @@ export class MainView extends React.Component {
           // id="outer-container"
           style={{
             backgroundColor: ColorE.MAIN_BGD,
-            padding: 25,
+            padding: 20,
             height: "100vh",
             boxSizing: "border-box",
 
             display: "grid",
             gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
             gridTemplateRows: "60px minmax(0, 1fr)",
-            gridRowGap: 25,
-            columnGap: 25,
+            gridRowGap: 20,
+            columnGap: 20,
           }}
         >
           <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }}>

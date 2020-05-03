@@ -19,7 +19,8 @@ export const InputRowItem = (props: IInputRowItemProps) => {
         display: "grid",
         gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
         justifyItems: "start",
-        padding: 10,
+        alignItems: "center",
+        padding: "5px 10px",
       }}
     >
       <div style={{ width: "100%" }}>{props.label}</div>
