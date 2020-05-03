@@ -26,6 +26,7 @@ export const GamesListItem = (props: IGamesListItemProps) => {
         backgroundColor: isLauncherOrSeparator
           ? ColorE.LIST_ITEM_SEPARATOR_BGD
           : ColorE.LIST_BGD,
+        fontWeight: isLauncherOrSeparator ? "bold" : undefined,
       }}
     >
       {props.item ? (

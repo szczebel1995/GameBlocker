@@ -8,6 +8,7 @@ import { flatten } from "lodash";
 import { GamesListItem } from "./gamesListItem";
 import { mainViewStore } from "../stores/ui/mainViewStore";
 import { ColorE } from "../enums/color";
+import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
 
 @observer
 export class GamesList extends React.Component {
@@ -33,14 +34,7 @@ export class GamesList extends React.Component {
   render() {
     console.log(mainViewStore.gamesListRerender);
     return (
-      <Card
-        style={{
-          width: "100%",
-          borderWidth: 1,
-          borderColor: "red",
-          // border: `2px solid ${ColorE.LIST_BORDER_COLOR}`,
-        }}
-      >
+      <Card>
         <CardHeader
           title={"Games"}
           buttonLeft={gamesStore.inited ? <FaSearch /> : null}
@@ -50,43 +44,52 @@ export class GamesList extends React.Component {
             ) : null
           }
         />
-        {gamesStore.inited ? (
-          gamesStore.gamesMap.size > 0 || gamesStore.launchersMap.size > 0 ? (
-            <div>
-              {flatten(
-                gamesStore.launchers.map((launcher) => {
-                  const games = Array.from(launcher.gamesMap.values());
-                  return [launcher, ...games];
-                })
-              ).map((item) => {
-                return (
-                  <GamesListItem
-                    item={item}
-                    onClick={() => mainViewStore.focusGamesListItem(item)}
-                  />
-                );
-              })}
-              <GamesListItem onClick={() => ""} title="Rest of the games" />
-              {gamesStore.games
-                .filter((game) => !game.launcher)
-                .map((game) => (
-                  <GamesListItem
-                    onClick={() => mainViewStore.focusGamesListItem(game)}
-                    item={game}
-                  />
-                ))}
-            </div>
-          ) : (
+        <Scrollbar
+          autoHide={false}
+          renderThumbVertical={() => (
             <div
-              className="flexCenter"
-              style={{ height: "100%", width: "100%" }}
-            >
-              {this.renderNoGames()}
-            </div>
-          )
-        ) : (
-          <div>loading games</div>
-        )}
+              style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
+            ></div>
+          )}
+        >
+          {gamesStore.inited ? (
+            gamesStore.gamesMap.size > 0 || gamesStore.launchersMap.size > 0 ? (
+              <div>
+                {flatten(
+                  gamesStore.launchers.map((launcher) => {
+                    const games = Array.from(launcher.gamesMap.values());
+                    return [launcher, ...games];
+                  })
+                ).map((item) => {
+                  return (
+                    <GamesListItem
+                      item={item}
+                      onClick={() => mainViewStore.focusGamesListItem(item)}
+                    />
+                  );
+                })}
+                <GamesListItem onClick={() => ""} title="Rest of the games" />
+                {gamesStore.games
+                  .filter((game) => !game.launcher)
+                  .map((game) => (
+                    <GamesListItem
+                      onClick={() => mainViewStore.focusGamesListItem(game)}
+                      item={game}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <div
+                className="flexCenter"
+                style={{ height: "100%", width: "100%" }}
+              >
+                {this.renderNoGames()}
+              </div>
+            )
+          ) : (
+            <div>loading games</div>
+          )}
+        </Scrollbar>
       </Card>
     );
   }

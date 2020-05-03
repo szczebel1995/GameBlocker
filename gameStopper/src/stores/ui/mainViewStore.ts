@@ -68,6 +68,7 @@ export const MainViewStore = types
   });
 
 export const mainViewStore = MainViewStore.create({
+  currentRightCard: "edit",
   focusedGamesListItem: "Might and Magic Heroes VI",
   focusedGamesListItemType: "game",
 });

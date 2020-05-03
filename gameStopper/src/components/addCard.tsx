@@ -140,7 +140,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
 
   render() {
     return (
-      <Card style={{ border: "1px solid red" }}>
+      <Card>
         <CardHeader
           title={`Add new ${this.state.type}`}
           buttonLeft={

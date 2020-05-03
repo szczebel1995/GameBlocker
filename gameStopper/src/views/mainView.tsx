@@ -19,10 +19,7 @@ export class MainView extends React.Component {
     };
 
     return (
-      <div
-        id="outer-container"
-        style={{ backgroundColor: ColorE.MAIN_BGD, padding: 25 }}
-      >
+      <div id="outer-container">
         <Menu
           styles={{ bmBurgerButton: { display: "none" } }}
           isOpen={mainViewStore.settingsOpened}
@@ -31,6 +28,7 @@ export class MainView extends React.Component {
           outerContainerId={"outer-container"}
         >
           <div
+            id="page-wrap"
             style={{
               backgroundColor: "red",
               padding: 10,
@@ -57,35 +55,43 @@ export class MainView extends React.Component {
             </div>
           </div>
         </Menu>
-        <div id="page-wrap">
-          <Header />
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "50% 50%",
-              columnGap: 25,
-            }}
-          >
-            <GamesList />
-            {mainViewStore.currentRightCard === "edit" ? (
-              <EditCard editedItem={mainViewStore.focusedItem as any} />
-            ) : mainViewStore.currentRightCard === "add" ? (
-              <AddCard />
-            ) : (
-              <Card>
-                <div
-                  className="flexCenter"
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <img
-                    style={{ opacity: 0.5, height: "40%" }}
-                    src={logo}
-                    alt="logo"
-                  />
-                </div>
-              </Card>
-            )}
+        <div
+          // id="outer-container"
+          style={{
+            backgroundColor: ColorE.MAIN_BGD,
+            padding: 25,
+            height: "100vh",
+            boxSizing: "border-box",
+
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+            gridTemplateRows: "60px minmax(0, 1fr)",
+            gridRowGap: 25,
+            columnGap: 25,
+          }}
+        >
+          <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }}>
+            <Header />
           </div>
+          <GamesList />
+          {mainViewStore.currentRightCard === "edit" ? (
+            <EditCard editedItem={mainViewStore.focusedItem as any} />
+          ) : mainViewStore.currentRightCard === "add" ? (
+            <AddCard />
+          ) : (
+            <Card style={{}}>
+              <div
+                className="flexCenter"
+                style={{ width: "100%", height: "100%" }}
+              >
+                <img
+                  style={{ opacity: 0.5, height: "40%" }}
+                  src={logo}
+                  alt="logo"
+                />
+              </div>
+            </Card>
+          )}
         </div>
       </div>
     );

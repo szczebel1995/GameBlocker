@@ -10,6 +10,7 @@ import { LauncherStore, ILauncherStore } from "../stores/objects/launcherStore";
 import { GameStore, IGameStore } from "../stores/objects/gameStore";
 import { applySnapshot, onSnapshot } from "mobx-state-tree";
 import { isLauncher } from "../utils/types";
+import Select from "react-select";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -46,7 +47,7 @@ export class EditCard extends React.Component<IEditCardProps> {
             <input
               value={game.name}
               onChange={(e) => game.setName(e.target.value)}
-              style={{ width: 200 }}
+              style={{ width: "100%", boxSizing: "border-box" }}
               type="text"
             />
           }
@@ -61,6 +62,7 @@ export class EditCard extends React.Component<IEditCardProps> {
               onChange={(e) => {
                 gamesStore.addGameToLauncher(game, e.target.value);
               }}
+              style={{ width: "100%", boxSizing: "border-box", height: 22 }}
             >
               <option value="">none</option>
               {gamesStore.launchers.map((launcher) => (
@@ -166,7 +168,7 @@ export class EditCard extends React.Component<IEditCardProps> {
     }
 
     return (
-      <Card style={{ border: "1px solid red" }}>
+      <Card>
         {isLauncher(mainViewStore.focusedItem)
           ? this.renderLauncherEditForm(mainViewStore.focusedItem)
           : this.renderGameEditForm(mainViewStore.focusedItem)}

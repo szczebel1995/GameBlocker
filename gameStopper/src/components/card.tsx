@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ColorE } from "../enums/color";
 
 export interface ICardProps {
   children?: any;
@@ -8,5 +9,20 @@ export interface ICardProps {
 }
 
 export const Card = (props: ICardProps) => {
-  return <div style={props.style}>{props.children}</div>;
+  return (
+    <div
+      style={
+        props.style
+          ? props.style
+          : {
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              backgroundColor: ColorE.LIST_BGD,
+            }
+      }
+    >
+      {props.children}
+    </div>
+  );
 };
