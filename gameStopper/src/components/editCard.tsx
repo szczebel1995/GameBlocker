@@ -123,7 +123,7 @@ export class EditCard extends React.Component<IEditCardProps> {
                     ? { value: game.launcher, label: game.launcher }
                     : {
                         value: "",
-                        label: "none",
+                        label: "None",
                       }
                 }
                 onChange={(launcher) =>
@@ -134,10 +134,13 @@ export class EditCard extends React.Component<IEditCardProps> {
                       )
                     : null
                 }
-                options={gamesStore.launchers.map((launcher) => ({
-                  value: launcher.id,
-                  label: launcher.name,
-                }))}
+                options={[
+                  { value: "", label: "None" },
+                  ...gamesStore.launchers.map((launcher) => ({
+                    value: launcher.id,
+                    label: launcher.name,
+                  })),
+                ]}
               />
             }
           />
@@ -220,40 +223,107 @@ export class EditCard extends React.Component<IEditCardProps> {
             />
           }
         />
-        <InputRowItem
-          label="Name:"
-          input={
-            <input
-              value={launcher.name}
-              onChange={(e) => launcher.setName(e.target.value)}
-              style={{ width: 200 }}
-              type="text"
-            />
-          }
-        />
-        <div>
-          <div>Blocked files</div>
-          <div>
-            {launcher.paths.map((path) => (
-              <div
+        <div style={{ padding: "10px 5px" }}>
+          <InputRowItem
+            label="Name:"
+            input={
+              <input
+                value={launcher.name}
+                onChange={(e) => launcher.setName(e.target.value)}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "5px 10px",
+                  width: "100%",
+                  boxSizing: "border-box",
+                  height: 38,
+                  backgroundColor: ColorE.LIST_ITEM_BGD,
+                  border: "none",
+                  color: ColorE.TEXT_COLOR,
+                  paddingLeft: 10,
                 }}
-              >
-                <div>{path.split("/")[path.split("/").length - 1]}</div>
-                <div>
-                  <FaTimes />
-                </div>
-              </div>
-            ))}
+                type="text"
+              />
+            }
+          />
+        </div>
+        <div
+          style={{
+            fontSize: 18,
+            padding: 10,
+            fontWeight: "bold",
+            color: ColorE.TEXT_COLOR,
+          }}
+        >
+          Blocked files
+        </div>
+        <Scrollbars
+          autoHide={false}
+          renderThumbVertical={() => (
+            <div
+              style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
+            ></div>
+          )}
+        >
+          <div
+            style={{
+              color: ColorE.TEXT_COLOR,
+              padding: 5,
+              // height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              // justifyContent: "space-between",
+            }}
+          >
             <div>
+              {launcher.paths.map((path) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "5px 10px",
+                    opacity: 0.75,
+                  }}
+                >
+                  <div>{path.split("/")[path.split("/").length - 1]}</div>
+                  <div>
+                    <FaTimes />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                margin: 10,
+                padding: 10,
+                backgroundColor: ColorE.LIST_ITEM_BGD,
+              }}
+            >
               <FaPlus />
             </div>
           </div>
-        </div>
+        </Scrollbars>
+        {/* <div>
+            <div>Blocked files</div>
+            <div>
+              {launcher.paths.map((path) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "5px 10px",
+                  }}
+                >
+                  <div>{path.split("/")[path.split("/").length - 1]}</div>
+                  <div>
+                    <FaTimes />
+                  </div>
+                </div>
+              ))}
+              <div>
+                <FaPlus />
+              </div>
+            </div>
+          </div> */}
       </Card>
     );
   }
