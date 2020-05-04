@@ -10,12 +10,22 @@ import * as regedit from "regedit";
 
 const gamesStore = GamesStore.create({});
 
-const getLauncherFolder = (exeName: string): Promise<string[] | Error> => {
+// const getLauncherFolder = (exeName: string): Promise<string[] | Error> => {
+//   return new Promise((resolve) => {
+//     glob(
+//       `C://Program Files (x86)/**/${exeName}`,
+//       { strict: false },
+//       (err: any, files: any) => resolve(err ? err : files)
+//     );
+//   });
+// };
+
+const getLauncherFolders = (exeNames: string[]): Promise<string[] | Error> => {
   return new Promise((resolve) => {
     glob(
-      `C://Program Files (x86)/**/${exeName}`,
+      `C://Program Files (x86)/**/+(${exeNames.join("|")})`,
       { strict: false },
-      (err, files) => resolve(err ? err : files)
+      (err: any, files: any) => resolve(err ? err : files)
     );
   });
 };
@@ -31,38 +41,14 @@ const getLauncherGamesFolder = async (folderName: string) => {
 
 const getLauncherGames = async (gamesFolder: string, launcher: string) => {
   let gamesUrls: Error | string[] | any = await new Promise((resolve) => {
-    glob(`${gamesFolder}/**/*.exe`, { strict: false }, (err, files) =>
+    glob(`${gamesFolder}/**/*.exe`, { strict: false }, (err: any, files: any) =>
       resolve(err ? err : files)
     );
   });
-
+  let gamesUrlsMap: any = {};
   let gameNames = [];
-  if (launcher === "Steam") {
-    const excluded = ["Steamworks Shared"];
-    gameNames = uniq(
-      gamesUrls
-        .map((name) => name.split("/Steam/steamapps/")[1].split("/")[1])
-        .filter((name) => !excluded.includes(name))
-    );
-  } else if (launcher === "Origin") {
-    gameNames = uniq(
-      gamesUrls.map((name) => name.split("/Origin Games/")[1].split("/")[0])
-    );
-  } else if (launcher === "Uplay") {
-    gameNames = uniq(
-      gamesUrls.map(
-        (name) => name.split("/Ubisoft Game Launcher/games/")[1].split("/")[0]
-      )
-    );
-  } else if (launcher === "GOG") {
-    gameNames = uniq(
-      gamesUrls.map((name) => name.split("/GOG Galaxy/Games/")[1].split("/")[0])
-    );
-  } else if (launcher === "Epic Games") {
-    gameNames = uniq(
-      gamesUrls.map((name) => name.split("/Epic Games/")[1].split("/")[0])
-    );
-  } else if (launcher === "Battle.net") {
+
+  if (launcher === "Battle.net") {
     gamesUrls = compact(
       await Promise.all(
         battlenetGames.games.map((game) =>
@@ -72,15 +58,70 @@ const getLauncherGames = async (gamesFolder: string, launcher: string) => {
         )
       )
     );
-    gameNames = gamesUrls.map((name) => {
-      const splitedName = name.split("/");
-      return splitedName[splitedName.length - 2];
+    gameNames = gamesUrls.map((path: string) => {
+      const splitedPath = path.split("/");
+      const gameName = splitedPath[splitedPath.length - 2];
+      if (gamesUrlsMap[gameName]) {
+        gamesUrlsMap[gameName].push(path);
+      } else {
+        gamesUrlsMap[gameName] = [path];
+      }
+      return gameName;
     });
+  } else {
+    gamesUrlsMap = createMapFromLauncherGamesPaths(
+      gamesUrls,
+      gamesFolder,
+      launcher === "Steam" ? ["Steamworks Shared"] : [],
+      launcher
+    );
+    gameNames = Object.keys(gamesUrlsMap);
   }
 
-  return gameNames.map((name, i) =>
-    GameStore.create({ name, paths: gamesUrls })
+  return gameNames.map((name: string) =>
+    GameStore.create({ id: name, name, paths: gamesUrlsMap[name] })
   );
+};
+
+const createMapFromLauncherGamesPaths = (
+  gamesUrls: string[],
+  gamesFolderName: string,
+  excludedGames: string[],
+  launcher: string
+) => {
+  const gamesUrlsMap: any = {};
+  gamesUrls
+    .filter(
+      (path: string) =>
+        !excludedGames.includes(
+          getGameNameFromPath(path, gamesFolderName, launcher)
+        )
+    )
+    .map((path: string) => {
+      const gameName = getGameNameFromPath(path, gamesFolderName, launcher);
+      if (gamesUrlsMap[gameName]) {
+        gamesUrlsMap[gameName].push(path);
+      } else {
+        gamesUrlsMap[gameName] = [path];
+      }
+      return gameName;
+    });
+  return gamesUrlsMap;
+};
+
+const getGameNameFromPath = (
+  path: string,
+  gamesFolderName: string,
+  launcher: string
+) => {
+  // console.log(
+  //   path,
+  //   launcher,
+  //   path.split(gamesFolderName)[1].split("/")[launcher === "Steam" ? 1 : 0]
+  // );
+  return path.split(gamesFolderName)[1].split("/")[
+    launcher === "Steam" ? 1 : 0
+  ];
 };
 
 const getPfFolder = async (folderName: string) => {
@@ -88,24 +129,33 @@ const getPfFolder = async (folderName: string) => {
     glob(
       `C://Program Files (x86)/${folderName}`,
       { strict: false },
-      (err, files) => {
+      (err: any, files: any) => {
         resolve(err ? err : files);
       }
     );
   });
   const pf64: Error | string[] = await new Promise((resolve) => {
-    glob(`C://Program Files/${folderName}`, { strict: false }, (err, files) => {
-      resolve(err ? err : files);
-    });
+    glob(
+      `C://Program Files/${folderName}`,
+      { strict: false },
+      (err: any, files: any) => {
+        resolve(err ? err : files);
+      }
+    );
   });
   return { pf32, pf64 };
 };
 
-const getAllLauncherFolders = async () => {
+export const getAllLauncherFolders = async () => {
+  const launcherPaths = await getLauncherFolders(
+    launchersData.launchers.map((launcher) => launcher.exe)
+  );
   const launchers = await Promise.all(
-    launchersData.launchers.map((launcher) => {
+    launchersData.launchers.map((launcher, i) => {
       return new Promise(async (resolve) => {
-        const launcherPath = await getLauncherFolder(launcher.exe);
+        const launcherPath = (launcherPaths as any).filter((path) =>
+          path.includes(launcher.exe)
+        );
         const gamesFolderPath = await getLauncherGamesFolder(
           launcher.gamesFolder
         );
@@ -113,21 +163,140 @@ const getAllLauncherFolders = async () => {
           gamesFolderPath,
           launcher.name
         );
-        resolve(
-          LauncherStore.create({
-            name: launcher.name,
-            paths: launcherPath as string[],
-            gamesMap: zipObject(
-              launcherGames.map((game) => game.name),
-              launcherGames
-            ),
-          })
-        );
+        resolve({
+          id: launcher.name,
+          name: launcher.name,
+          paths: launcherPath as string[],
+          gamesMap: zipObject(
+            launcherGames.map((game: any) => game.name),
+            launcherGames
+          ),
+        });
       });
     })
   );
   console.log(launchers.map((launcher) => JSON.stringify(launcher)));
+  return launchers.map((launcher) => JSON.stringify(launcher));
 };
+
+// const getLauncherFolder = (exeName: string): Promise<string[] | Error> => {
+//   return new Promise((resolve) => {
+//     glob(
+//       `C://Program Files (x86)/**/${exeName}`,
+//       { strict: false },
+//       (err, files) => resolve(err ? err : files)
+//     );
+//   });
+// };
+
+// const getLauncherGamesFolder = async (folderName: string) => {
+//   if (!folderName) {
+//     return;
+//   }
+
+//   const paths = (await getPfFolder(folderName)) as any;
+//   return paths.pf64.length > 0 ? paths.pf64[0] : paths.pf32[0];
+// };
+
+// const getLauncherGames = async (gamesFolder: string, launcher: string) => {
+//   let gamesUrls: Error | string[] | any = await new Promise((resolve) => {
+//     glob(`${gamesFolder}/**/*.exe`, { strict: false }, (err, files) =>
+//       resolve(err ? err : files)
+//     );
+//   });
+
+//   let gameNames = [];
+//   if (launcher === "Steam") {
+//     const excluded = ["Steamworks Shared"];
+//     gameNames = uniq(
+//       gamesUrls
+//         .map((name) => name.split("/Steam/steamapps/")[1].split("/")[1])
+//         .filter((name) => !excluded.includes(name))
+//     );
+//   } else if (launcher === "Origin") {
+//     gameNames = uniq(
+//       gamesUrls.map((name) => name.split("/Origin Games/")[1].split("/")[0])
+//     );
+//   } else if (launcher === "Uplay") {
+//     gameNames = uniq(
+//       gamesUrls.map(
+//         (name) => name.split("/Ubisoft Game Launcher/games/")[1].split("/")[0]
+//       )
+//     );
+//   } else if (launcher === "GOG") {
+//     gameNames = uniq(
+//       gamesUrls.map((name) => name.split("/GOG Galaxy/Games/")[1].split("/")[0])
+//     );
+//   } else if (launcher === "Epic Games") {
+//     gameNames = uniq(
+//       gamesUrls.map((name) => name.split("/Epic Games/")[1].split("/")[0])
+//     );
+//   } else if (launcher === "Battle.net") {
+//     gamesUrls = compact(
+//       await Promise.all(
+//         battlenetGames.games.map((game) =>
+//           getPfFolder(`${game.path}/*.exe`).then((res: any) =>
+//             res.pf64.length > 0 ? res.pf64[0] : res.pf32[0]
+//           )
+//         )
+//       )
+//     );
+//     gameNames = gamesUrls.map((name) => {
+//       const splitedName = name.split("/");
+//       return splitedName[splitedName.length - 2];
+//     });
+//   }
+
+//   return gameNames.map((name, i) =>
+//     GameStore.create({ name, paths: gamesUrls })
+//   );
+// };
+
+// const getPfFolder = async (folderName: string) => {
+//   const pf32: Error | string[] = await new Promise((resolve) => {
+//     glob(
+//       `C://Program Files (x86)/${folderName}`,
+//       { strict: false },
+//       (err, files) => {
+//         resolve(err ? err : files);
+//       }
+//     );
+//   });
+//   const pf64: Error | string[] = await new Promise((resolve) => {
+//     glob(`C://Program Files/${folderName}`, { strict: false }, (err, files) => {
+//       resolve(err ? err : files);
+//     });
+//   });
+//   return { pf32, pf64 };
+// };
+
+// const getAllLauncherFolders = async () => {
+//   const launchers = await Promise.all(
+//     launchersData.launchers.map((launcher) => {
+//       return new Promise(async (resolve) => {
+//         const launcherPath = await getLauncherFolder(launcher.exe);
+//         const gamesFolderPath = await getLauncherGamesFolder(
+//           launcher.gamesFolder
+//         );
+//         const launcherGames = await getLauncherGames(
+//           gamesFolderPath,
+//           launcher.name
+//         );
+//         resolve(
+//           LauncherStore.create({
+//             name: launcher.name,
+//             paths: launcherPath as string[],
+//             gamesMap: zipObject(
+//               launcherGames.map((game) => game.name),
+//               launcherGames
+//             ),
+//           })
+//         );
+//       });
+//     })
+//   );
+//   console.log(launchers.map((launcher) => JSON.stringify(launcher)));
+// };
 
 const test = async () => {
   const policies = await new Promise((resolve) => {

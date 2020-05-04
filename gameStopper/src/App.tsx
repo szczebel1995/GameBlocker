@@ -7,6 +7,7 @@ import { shell } from "electron";
 import { MainView } from "./views/mainView";
 import "react-toggle/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 // import "./burger.css";
 
 // const stripePromise = loadStripe("pk_test_xWT4tvG235qCFeW2nTWQVTnQ");

@@ -1,13 +1,15 @@
-import { types } from "mobx-state-tree";
+import { types, flow } from "mobx-state-tree";
 import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import tempsave from "../assets/tempsave.json";
 import { zipObject } from "lodash";
+import { ipcStore } from "./ipcStore";
 
 export const GamesStore = types
   .model({
     launchersMap: types.map(LauncherStore),
     gamesMap: types.map(GameStore),
+    scanning: types.optional(types.boolean, false),
   })
   .views((self) => ({
     get games() {
@@ -25,38 +27,44 @@ export const GamesStore = types
     };
   })
   .actions((self) => {
-    const afterCreate = () => {
+    const afterCreate = flow(function* () {
       const savedGames = loadSavedGames();
       if (savedGames.length <= 0) {
         console.log("noGames");
       }
       // temp
-      scanForLaunchers();
+      // yield scanForLaunchers();
 
       self.inited = true;
-    };
+    });
 
     const scanForGames = (): IGameStore[] => {
       return [];
     };
 
-    const scanForLaunchers = (): ILauncherStore[] | any => {
-      tempsave.launchers.map((launcher) => {
-        (launcher as any).id = launcher.name;
-        Object.values(launcher.gamesMap).forEach((game) =>
-          addGame(
-            GameStore.create({
-              id: `${game?.name}`,
-              ...game,
-              launcher: launcher.name,
-            } as any)
-          )
-        );
-        const gamesNames = Object.keys(launcher.gamesMap);
-        launcher.gamesMap = zipObject(gamesNames, gamesNames) as any;
-        addLauncher(LauncherStore.create(launcher as any));
-      });
-    };
+    const scanForLaunchers = flow(function* () {
+      self.scanning = true;
+      const { launchers } = yield ipcStore.sendMessage("scan", "", "scanRes");
+      console.log(launchers);
+      launchers
+        .map((launcher: any) => JSON.parse(launcher))
+        .map((launcher: ILauncherStore) => {
+          (launcher as any).id = launcher.name;
+          Object.values(launcher.gamesMap).forEach((game) =>
+            addGame(
+              GameStore.create({
+                id: `${game?.name}`,
+                ...game,
+                launcher: launcher.name,
+              } as any)
+            )
+          );
+          const gamesNames = Object.keys(launcher.gamesMap);
+          launcher.gamesMap = zipObject(gamesNames, gamesNames) as any;
+          addLauncher(LauncherStore.create(launcher as any));
+        });
+      self.scanning = false;
+    });
 
     const loadSavedGames = () => {
       return [];

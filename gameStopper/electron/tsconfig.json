@@ -7,8 +7,11 @@
     "outDir": "../build",
     "rootDir": "../",
     "noEmitOnError": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true,
+    "baseUrl": "",
+    "paths": {
+      "*": ["typings/*"]
+    }
   }
 }

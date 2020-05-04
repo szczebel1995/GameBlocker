@@ -5,8 +5,11 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import * as psList from "ps-list";
+import { hello } from "./ipc";
 
 let win: BrowserWindow | null = null;
+
+hello;
 
 function createWindow() {
   win = new BrowserWindow({
