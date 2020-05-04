@@ -54,14 +54,17 @@ export class Header extends React.Component {
             alignItems: "center",
           }}
         >
-          <div style={{ opacity: 0.4, fontSize: 18 }}>
+          <div style={{ opacity: 0.8, fontSize: 18 }}>
             <b>Score:</b> {"2d 15h 42m 11s"}
           </div>
           <div style={{ paddingLeft: 20, paddingRight: 20, marginBottom: -5 }}>
             <Toggle />
           </div>
           {/* <div>{"On"}</div> */}
-          <FaCog onClick={() => mainViewStore.toggleSettingsOpened()} />
+          <FaCog
+            style={{ cursor: "pointer" }}
+            onClick={() => mainViewStore.toggleSettingsOpened()}
+          />
         </div>
       </Card>
     );

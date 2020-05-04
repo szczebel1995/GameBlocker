@@ -10,6 +10,13 @@ import { push as Menu } from "react-burger-menu";
 import Toggle from "react-toggle";
 import { AddCard } from "../components/addCard";
 import { ColorE } from "../enums/color";
+import { InputRowItem } from "../components/inputRowItem";
+import {
+  GiMagicPotion,
+  GiHealthPotion,
+  GiPotionBall,
+  GiBroadsword,
+} from "react-icons/gi";
 
 @observer
 export class MainView extends React.Component {
@@ -24,38 +31,84 @@ export class MainView extends React.Component {
           styles={{ bmBurgerButton: { display: "none" } }}
           isOpen={mainViewStore.settingsOpened}
           right
+          onStateChange={({ isOpen }) =>
+            !isOpen && mainViewStore.settingsOpened
+              ? mainViewStore.toggleSettingsOpened(false)
+              : undefined
+          }
           pageWrapId={"page-wrap"}
           outerContainerId={"outer-container"}
         >
           <div
-            id="page-wrap"
             style={{
-              backgroundColor: "red",
-              padding: 10,
               height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              color: ColorE.TEXT_COLOR,
+              backgroundColor: ColorE.LIST_ITEM_ACTIVE_BGD,
+              padding: 10,
+              paddingBottom: 20,
               boxSizing: "border-box",
             }}
           >
             <div
-              style={{ paddingBottom: 20, fontSize: 20, fontWeight: "bold" }}
+              style={
+                {
+                  // height: "100%",
+                }
+              }
             >
-              Settings
+              <div
+                style={{ paddingBottom: 20, fontSize: 22, fontWeight: "bold" }}
+              >
+                Settings
+              </div>
+              <InputRowItem
+                label={(<b>Launch at system startup:</b>) as any}
+                spacedBetween
+                input={<Toggle />}
+              />
+              <div style={{ height: 20 }}></div>
+              <InputRowItem
+                label={
+                  (
+                    <div>
+                      <div style={{ fontWeight: "bold" }}>Contact:</div>
+                      <a style={{ color: ColorE.TEXT_COLOR }} href="">
+                        contact@gameblocker.com
+                      </a>
+                    </div>
+                  ) as any
+                }
+                spacedBetween
+                input={""}
+              />
+              <InputRowItem
+                column
+                label={
+                  (
+                    <div>
+                      <div style={{ fontWeight: "bold" }}>
+                        Support this project:
+                      </div>
+                      <a style={{ color: ColorE.TEXT_COLOR }} href="">
+                        paypal.me
+                      </a>
+                    </div>
+                  ) as any
+                }
+                spacedBetween
+                input={""}
+              />
             </div>
-            <div style={style.menuRowStyle}>
-              <div>Launch at system startup:</div>
-              <Toggle />
-            </div>
-            <div style={style.menuRowStyle}>
-              <div>Contact:</div>
-              <div>email here</div>
-            </div>
-            <div style={style.menuRowStyle}>
-              <div>Donate:</div>
-              <div>Paypal me</div>
+            <div style={{ opacity: 0.8, fontSize: 14 }}>
+              <div>2020 © GameStopper</div>
             </div>
           </div>
         </Menu>
         <div
+          id="page-wrap"
           // id="outer-container"
           style={{
             backgroundColor: ColorE.MAIN_BGD,

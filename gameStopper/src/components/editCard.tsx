@@ -13,6 +13,7 @@ import { isLauncher } from "../utils/types";
 import Select from "react-select";
 import { ColorE } from "../enums/color";
 import Scrollbars from "react-custom-scrollbars";
+import { BlockedFileListItem } from "./blockedFileListItem";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -32,10 +33,14 @@ export class EditCard extends React.Component<IEditCardProps> {
         <CardHeader
           title={game.name}
           buttonLeft={
-            <FaTimes onClick={() => mainViewStore.focusGamesListItem()} />
+            <FaTimes
+              style={{ cursor: "pointer" }}
+              onClick={() => mainViewStore.focusGamesListItem()}
+            />
           }
           buttonRight={
             <FaTrash
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 mainViewStore.focusGamesListItem();
                 gamesStore.removeGame(game.id);
@@ -175,30 +180,18 @@ export class EditCard extends React.Component<IEditCardProps> {
           >
             <div>
               {game.paths.map((path) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "5px 10px",
-                    opacity: 0.75,
-                  }}
-                >
-                  <div>{path.split("/")[path.split("/").length - 1]}</div>
-                  <div>
-                    <FaTimes />
-                  </div>
-                </div>
+                <BlockedFileListItem path={path} />
               ))}
             </div>
             <div
+              className="blockedFileAddButton"
               style={{
                 margin: 10,
                 padding: 10,
                 backgroundColor: ColorE.LIST_ITEM_BGD,
               }}
             >
-              <FaPlus />
+              <FaPlus style={{ cursor: "pointer" }} />
             </div>
           </div>
         </Scrollbars>
@@ -212,10 +205,14 @@ export class EditCard extends React.Component<IEditCardProps> {
         <CardHeader
           title={launcher.name}
           buttonLeft={
-            <FaTimes onClick={() => mainViewStore.focusGamesListItem()} />
+            <FaTimes
+              style={{ cursor: "pointer" }}
+              onClick={() => mainViewStore.focusGamesListItem()}
+            />
           }
           buttonRight={
             <FaTrash
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 mainViewStore.focusGamesListItem();
                 gamesStore.removeLauncher(launcher.id);
@@ -285,7 +282,7 @@ export class EditCard extends React.Component<IEditCardProps> {
                 >
                   <div>{path.split("/")[path.split("/").length - 1]}</div>
                   <div>
-                    <FaTimes />
+                    <FaTimes style={{ cursor: "pointer" }} />
                   </div>
                 </div>
               ))}
@@ -297,7 +294,7 @@ export class EditCard extends React.Component<IEditCardProps> {
                 backgroundColor: ColorE.LIST_ITEM_BGD,
               }}
             >
-              <FaPlus />
+              <FaPlus style={{ cursor: "pointer" }} />
             </div>
           </div>
         </Scrollbars>

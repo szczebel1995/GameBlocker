@@ -7,14 +7,17 @@ export interface IGamesListItemProps {
   item?: ILauncherStore | IGameStore;
   onClick: () => any;
   title?: string;
+  focused?: boolean;
 }
 
 export const GamesListItem = (props: IGamesListItemProps) => {
   const isLauncherOrSeparator = props.title || (props.item as any).gamesMap;
   return (
     <div
+      className="gamesListItem"
       onClick={props.onClick}
       style={{
+        cursor: "pointer",
         padding: 10,
         // borderBottom: isLauncherOrSeparator
         //   ? `1px solid ${ColorE.LIST_BORDER_COLOR}`
@@ -23,7 +26,9 @@ export const GamesListItem = (props: IGamesListItemProps) => {
         //   ? `1px solid ${ColorE.LIST_BORDER_COLOR}`
         //   : undefined,
         color: ColorE.TEXT_COLOR,
-        backgroundColor: isLauncherOrSeparator
+        backgroundColor: props.focused
+          ? ColorE.LIST_ITEM_FOCUSED_BGD
+          : isLauncherOrSeparator
           ? ColorE.LIST_ITEM_SEPARATOR_BGD
           : ColorE.LIST_BGD,
         fontWeight: isLauncherOrSeparator ? "bold" : undefined,

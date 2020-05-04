@@ -22,7 +22,7 @@ export class GamesList extends React.Component {
           width: "100%",
         }}
       >
-        <FaSearch size={60} color="red" />
+        <FaSearch style={{ cursor: "pointer" }} size={60} color="red" />
         <div style={{ padding: 20 }}>
           Your Games list is empty. Scan computer for games to block.
         </div>
@@ -37,10 +37,17 @@ export class GamesList extends React.Component {
       <Card>
         <CardHeader
           title={"Games"}
-          buttonLeft={gamesStore.inited ? <FaSearch /> : null}
+          buttonLeft={
+            gamesStore.inited ? (
+              <FaSearch style={{ opacity: 0, cursor: "pointer" }} />
+            ) : null
+          }
           buttonRight={
             gamesStore.inited ? (
-              <FaPlus onClick={() => mainViewStore.toggleAddCardOpened(true)} />
+              <FaPlus
+                style={{ cursor: "pointer" }}
+                onClick={() => mainViewStore.toggleAddCardOpened(true)}
+              />
             ) : null
           }
         />
@@ -63,6 +70,10 @@ export class GamesList extends React.Component {
                 ).map((item) => {
                   return (
                     <GamesListItem
+                      focused={
+                        mainViewStore.focusedItem &&
+                        mainViewStore.focusedItem.id === item.id
+                      }
                       item={item}
                       onClick={() => mainViewStore.focusGamesListItem(item)}
                     />

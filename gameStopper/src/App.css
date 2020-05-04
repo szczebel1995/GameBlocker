@@ -26,3 +26,19 @@
   justify-content: center;
   align-items: center;
 }
+
+.gamesListItem:hover {
+  background-color: #c90003 !important;
+}
+.blockedFileListItem:hover {
+  opacity: 1 !important;
+  background-color: #c90003 !important;
+}
+
+.blockedFileAddButton:hover {
+  background-color: #383838 !important;
+}
+
+.button {
+  cursor: pointer;
+}
