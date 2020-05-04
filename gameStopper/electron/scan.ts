@@ -31,7 +31,7 @@ const getLauncherGames = async (gamesFolder: string, launcher: string) => {
     );
   });
   let gamesUrlsMap: any = {};
-  let gameNames = [];
+  let gameNames: any = [];
 
   if (launcher === "Battle.net") {
     gamesUrls = compact(

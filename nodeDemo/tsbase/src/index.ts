@@ -298,63 +298,143 @@ export const getAllLauncherFolders = async () => {
 //   console.log(launchers.map((launcher) => JSON.stringify(launcher)));
 // };
 
-const test = async () => {
-  const policies = await new Promise((resolve) => {
+// const test = async () => {
+//   const policies = await new Promise((resolve) => {
+//     regedit.list(
+//       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
+//       (err, res) => resolve(err ? err : res)
+//     );
+//   });
+//   if (!Object.values(policies)[0].keys.includes("explorer")) {
+//     console.log("creating");
+//     await new Promise((resolve) => {
+//       regedit.createKey(
+//         "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer",
+//         (err) => resolve(console.log(err))
+//       );
+//     });
+//     await new Promise((resolve) => {
+//       regedit.list(
+//         "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
+//         (err, res) => resolve(console.log(err, res))
+//       );
+//     });
+//     await new Promise((resolve) => {
+//       regedit.putValue(
+//         {
+//           "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer": {
+//             DisallowRun: {
+//               value: 1,
+//               type: "REG_DWORD",
+//             },
+//           },
+//         },
+//         (err, res) => resolve(err ? err : res)
+//       );
+//     });
+//     await new Promise((resolve) => {
+//       regedit.createKey(
+//         "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun",
+//         (err) => resolve(err)
+//       );
+//     });
+//   }
+
+//   const blocks = await new Promise((resolve) => {
+//     regedit.list(
+//       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
+//       (err, res) => resolve(err ? err : res)
+//     );
+//   });
+//   console.log(blocks);
+
+//   await new Promise((resolve) => {
+//     regedit.putValue(
+//       {
+//         "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun": {
+//           1: {
+//             value: "ManifoldGarden.exe",
+//             type: "REG_SZ",
+//           },
+//         },
+//       },
+//       (err, res) => resolve(err ? err : res)
+//     );
+//   });
+
+//   const blocks2 = await new Promise((resolve) => {
+//     regedit.list(
+//       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
+//       (err, res) => resolve(err ? err : res)
+//     );
+//   });
+//   console.log(blocks2);
+// };
+
+// test();
+
+// const blockGameInRegistry = () => {
+
+// }
+
+// getAllLauncherFolders();
+
+import { types } from "util";
+
+const explorerExist = async () => {
+  const policies: any = await new Promise((resolve) => {
     regedit.list(
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
-      (err, res) => resolve(err ? err : res)
+      (err: any, res: any) => resolve(err ? err : res)
     );
   });
-  if (!Object.values(policies)[0].keys.includes("explorer")) {
-    console.log("creating");
-    await new Promise((resolve) => {
-      regedit.createKey(
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer",
-        (err) => resolve(console.log(err))
-      );
-    });
-    await new Promise((resolve) => {
-      regedit.list(
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
-        (err, res) => resolve(console.log(err, res))
-      );
-    });
-    await new Promise((resolve) => {
-      regedit.putValue(
-        {
-          "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\explorer": {
-            DisallowRun: {
-              value: 1,
-              type: "REG_DWORD",
-            },
-          },
-        },
-        (err, res) => resolve(err ? err : res)
-      );
-    });
-    await new Promise((resolve) => {
-      regedit.createKey(
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun",
-        (err) => resolve(err)
-      );
-    });
-  }
+  console.log(1, policies);
+  const realPolicies =
+    policies["HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES"]
+      .keys;
+  return (
+    !types.isNativeError(policies) &&
+    realPolicies &&
+    realPolicies.includes("Explorer")
+  );
+};
 
+const blocksExist = async () => {
   const blocks = await new Promise((resolve) => {
     regedit.list(
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
       (err, res) => resolve(err ? err : res)
     );
   });
-  console.log(blocks);
+  console.log(2, types.isNativeError(blocks));
+  return !types.isNativeError(blocks);
+};
 
-  await new Promise((resolve) => {
+const createBlocksBase = async () => {
+  console.log("creating");
+  const explorerErr = await new Promise((resolve) => {
+    regedit.createKey(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\Explorer",
+      (err) => resolve(err)
+    );
+  });
+
+  if (types.isNativeError(explorerErr)) {
+    return explorerErr;
+  }
+
+  const explorerCreated: any = await explorerExist();
+  if (!explorerCreated) {
+    return new Error("failed to create Explorer");
+  }
+
+  const disallowRunErr = await new Promise((resolve) => {
     regedit.putValue(
       {
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun": {
-          1: {
-            value: "ManifoldGarden.exe",
-            type: "REG_SZ",
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\Explorer": {
+          DisallowRun: {
+            value: 1,
+            type: "REG_DWORD",
           },
         },
       },
@@ -362,18 +442,77 @@ const test = async () => {
     );
   });
 
-  const blocks2 = await new Promise((resolve) => {
+  if (types.isNativeError(disallowRunErr)) {
+    return disallowRunErr;
+  }
+
+  return createBlocksKey();
+};
+
+const createBlocksKey = () => {
+  return new Promise((resolve) => {
+    regedit.createKey(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun",
+      (err) => resolve(err)
+    );
+  });
+};
+
+const getBlocks = async () => {
+  const blocks: any = await new Promise((resolve) => {
     regedit.list(
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
       (err, res) => resolve(err ? err : res)
     );
   });
-  console.log(blocks2);
+  console.log(blocks);
+  const realBlocks =
+    blocks[
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN"
+    ].values;
+  return realBlocks ? Object.entries(realBlocks) : [];
 };
-// test();
 
-// const blockGameInRegistry = () => {
+export const addBlock = async (exes: string[]) => {
+  if (!(await explorerExist())) {
+    const err1 = await createBlocksBase();
+    if (types.isNativeError(err1)) {
+      return err1;
+    }
+  }
 
-// }
+  if (!(await blocksExist())) {
+    const err = await createBlocksKey();
+    if (types.isNativeError(err)) {
+      return err;
+    }
+  }
 
-getAllLauncherFolders();
+  const blocks = await getBlocks();
+
+  const values = {};
+  exes.forEach(
+    (exe, i) => (values[blocks.length + 1 + i] = { value: exe, type: "REG_SZ" })
+  );
+
+  return await new Promise((resolve) => {
+    regedit.putValue(
+      {
+        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun": values,
+      },
+      (err, res) => resolve(err ? err : res)
+    );
+  });
+};
+
+export const removeAllBlocks = async () => {
+  return new Promise((resolve) =>
+    regedit.deleteKey(
+      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
+      (err, res) => resolve(err ? err : res)
+    )
+  );
+};
+
+// removeAllBlocks();
+// addBlock(["ManifoldGarden.exe", "Steam.exe"]);
