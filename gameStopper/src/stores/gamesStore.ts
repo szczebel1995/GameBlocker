@@ -2,7 +2,7 @@ import { types, flow, onPatch, getSnapshot } from "mobx-state-tree";
 import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import tempsave from "../assets/tempsave.json";
-import { zipObject } from "lodash";
+import { zipObject, isEmpty } from "lodash";
 import { ipcStore } from "./ipcStore";
 import { localDbStore } from "./localDbStore";
 
@@ -33,11 +33,9 @@ export const GamesStore = types
       const savedGames = yield loadSavedGames();
       const savedLaunchers = yield loadSavedLaunchers();
 
-      console.log(savedGames);
       if (savedGames) {
         Object.values(savedGames).forEach((game: any) => addGame(game, false));
       }
-      console.log(savedLaunchers);
       if (savedLaunchers) {
         Object.values(savedLaunchers).forEach((launcher: any) =>
           addLauncher(launcher, false)

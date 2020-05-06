@@ -1,7 +1,7 @@
 import { types, flow } from "mobx-state-tree";
 import { gamesStore } from "./gamesStore";
 import { ipcStore } from "./ipcStore";
-import { flatten } from "lodash";
+import { flatten, isEmpty } from "lodash";
 import { localDbStore } from "./localDbStore";
 
 export const BlocksStore = types
@@ -10,7 +10,9 @@ export const BlocksStore = types
   })
   .actions((self) => {
     const afterCreate = flow(function* () {
-      self.blockOn = yield localDbStore.getFromDb("blockOn");
+      const blocks = Object.values(yield ipcStore.invoke("getBlocks", ""))[0];
+      self.blockOn = !isEmpty(blocks);
+      // self.blockOn = yield localDbStore.getFromDb("blockOn");
     });
 
     const startBlock = flow(function* () {

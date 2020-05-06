@@ -78,7 +78,7 @@ const createBlocksKey = () => {
   });
 };
 
-const getBlocks = async () => {
+export const getBlocks = async () => {
   const blocks: any = await new Promise((resolve) => {
     regedit.list(
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",

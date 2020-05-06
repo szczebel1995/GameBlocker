@@ -294,7 +294,19 @@ export class EditCard extends React.Component<IEditCardProps> {
                 backgroundColor: ColorE.LIST_ITEM_BGD,
               }}
             >
-              <FaPlus style={{ cursor: "pointer" }} />
+              <label className="custom-file-upload">
+                <input
+                  hidden
+                  type="file"
+                  onChange={(e) => {
+                    const filePath = e.target.files?.item(0)?.path;
+                    if (filePath) {
+                      launcher.addPath(filePath);
+                    }
+                  }}
+                />
+                <FaPlus style={{ cursor: "pointer" }} />
+              </label>
             </div>
           </div>
         </Scrollbars>
