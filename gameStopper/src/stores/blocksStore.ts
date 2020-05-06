@@ -1,19 +1,54 @@
-import { types } from "mobx-state-tree";
+import { types, flow } from "mobx-state-tree";
+import { gamesStore } from "./gamesStore";
+import { ipcStore } from "./ipcStore";
+import { flatten } from "lodash";
+import { localDbStore } from "./localDbStore";
 
 export const BlocksStore = types
   .model({
     blockOn: types.maybe(types.boolean),
   })
   .actions((self) => {
-    const afterCreate = async () => {
-      // console.log(await psList({ all: true }));
-    };
+    const afterCreate = flow(function* () {
+      self.blockOn = yield localDbStore.getFromDb("blockOn");
+    });
 
-    // const
+    const startBlock = flow(function* () {
+      console.log([
+        ...flatten(gamesStore.games.map((game) => game.paths)),
+        ...flatten(gamesStore.launchers.map((launcher) => launcher.paths)),
+      ]);
+      // yield ipcStore.sendMessage(
+      //   "addBlocks",
+      //   [
+      //     ...flatten(gamesStore.games.map((game) => game.paths)),
+      //     ...flatten(gamesStore.launchers.map((launcher) => launcher.paths)),
+      //   ],
+      //   "addBlocksRes"
+      // );
+      localDbStore.saveToDb("blockOn", true);
+      self.blockOn = true;
+    });
+
+    const stopBlock = flow(function* () {
+      console.log([
+        ...flatten(gamesStore.games.map((game) => game.paths)),
+        ...flatten(gamesStore.launchers.map((launcher) => launcher.paths)),
+      ]);
+      // yield ipcStore.sendMessage(
+      //   "removeBlocks",
+      //   "",
+      //   "removeBlocksRes"
+      // );
+      localDbStore.saveToDb("blockOn", false);
+      self.blockOn = false;
+    });
 
     return {
       afterCreate,
+      startBlock,
+      stopBlock,
     };
   });
 
-export const processStore = BlocksStore.create({});
+export const blocksStore = BlocksStore.create({});

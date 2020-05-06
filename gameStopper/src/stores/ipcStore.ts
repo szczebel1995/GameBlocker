@@ -15,9 +15,14 @@ export const IpcStore = types.model({}).actions((self) => {
     });
   };
 
+  const invoke = (room: string, value: any) => {
+    return ipcRenderer.invoke(room, value);
+  };
+
   return {
     afterCreate,
     sendMessage,
+    invoke,
   };
 });
 

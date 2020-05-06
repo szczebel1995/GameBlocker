@@ -1,9 +1,10 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, onPatch, getSnapshot } from "mobx-state-tree";
 import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import tempsave from "../assets/tempsave.json";
 import { zipObject } from "lodash";
 import { ipcStore } from "./ipcStore";
+import { localDbStore } from "./localDbStore";
 
 export const GamesStore = types
   .model({
@@ -28,18 +29,58 @@ export const GamesStore = types
   })
   .actions((self) => {
     const afterCreate = flow(function* () {
-      const savedGames = loadSavedGames();
-      if (savedGames.length <= 0) {
-        console.log("noGames");
+      // yield ipcStore.invoke("clearDb", "");
+      const savedGames = yield loadSavedGames();
+      const savedLaunchers = yield loadSavedLaunchers();
+
+      console.log(savedGames);
+      if (savedGames) {
+        Object.values(savedGames).forEach((game: any) => addGame(game, false));
       }
-      // temp
-      // yield scanForLaunchers();
+      console.log(savedLaunchers);
+      if (savedLaunchers) {
+        Object.values(savedLaunchers).forEach((launcher: any) =>
+          addLauncher(launcher, false)
+        );
+      }
 
       self.inited = true;
+      syncGamesUpdatesWithDb();
     });
+
+    const syncGamesUpdatesWithDb = () => {
+      onPatch(self.gamesMap, ({ op, path, value }) => {
+        const splitedPath = path.split("/");
+        if (splitedPath.length >= 3) {
+          localDbStore.saveToDb(
+            `games.${splitedPath[1]}`,
+            getSnapshot(self.gamesMap.get(splitedPath[1]) as any)
+          );
+        }
+        console.log(op, path, value);
+      });
+      onPatch(self.launchersMap, ({ op, path, value }) => {
+        const splitedPath = path.split("/");
+        if (splitedPath.length >= 3) {
+          localDbStore.saveToDb(
+            `launchers.${splitedPath[1]}`,
+            getSnapshot(self.launchersMap.get(splitedPath[1]) as any)
+          );
+        }
+        console.log(op, path, value);
+      });
+    };
 
     const scanForGames = (): IGameStore[] => {
       return [];
+    };
+
+    const loadSavedGames = () => {
+      return localDbStore.getFromDb("games");
+    };
+
+    const loadSavedLaunchers = () => {
+      return localDbStore.getFromDb("launchers");
     };
 
     const scanForLaunchers = flow(function* () {
@@ -66,39 +107,50 @@ export const GamesStore = types
       self.scanning = false;
     });
 
-    const loadSavedGames = () => {
-      return [];
-    };
-
-    const removeGame = (id: string) => {
+    const removeGame = (id: string, removeFromDb = true) => {
       const game = self.gamesMap.get(id);
       if (game?.launcher) {
         const launcher = self.launchersMap.get(game.launcher);
         launcher?.removeGame(id);
       }
+      if (removeFromDb) {
+        localDbStore.removeFromDb(`games.${id}`);
+      }
       self.gamesMap.delete(id);
     };
 
-    const removeLauncher = (id: string) => {
+    const removeLauncher = (id: string, removeFromDb = true) => {
       self.launchersMap.delete(id);
+      if (removeFromDb) {
+        localDbStore.removeFromDb(`launchers.${id}`);
+      }
     };
 
-    const addLauncher = (launcher: ILauncherStore) => {
-      self.launchersMap.set(launcher.name, launcher);
+    const addLauncher = (launcher: ILauncherStore, saveInDb = true) => {
+      self.launchersMap.set(launcher.id, launcher);
+      if (saveInDb) {
+        localDbStore.saveToDb(
+          `launchers.${launcher.id}`,
+          getSnapshot(launcher)
+        );
+      }
+    };
+
+    const addGame = (game: IGameStore, saveInDb = true) => {
+      self.gamesMap.set(game.id, game);
+      if (game.launcher) {
+        const launcher = self.launchersMap.get(game.launcher);
+        launcher?.addGame(game);
+      }
+      if (saveInDb) {
+        localDbStore.saveToDb(`games.${game.id}`, getSnapshot(game));
+      }
     };
 
     const addGameToLauncher = (game: IGameStore, newLauncherId: string) => {
       self.launchersMap.get(game.launcher || "")?.removeGame(game.id);
       self.launchersMap.get(newLauncherId)?.addGame(game);
       game.setLauncher(newLauncherId);
-    };
-
-    const addGame = (game: IGameStore) => {
-      self.gamesMap.set(game.id, game);
-      if (game.launcher) {
-        const launcher = self.launchersMap.get(game.launcher);
-        launcher?.addGame(game);
-      }
     };
 
     return {

@@ -1,6 +1,7 @@
 import { ipcMain } from "electron";
 import { getAllLauncherFolders } from "./scan";
 import { addBlocks, removeAllBlocks } from "./registry";
+import { localDbStore } from "./stores/localDbStore";
 
 export const hello = 1;
 
@@ -17,4 +18,17 @@ ipcMain.on("addBlocks", async (event, arg) => {
 ipcMain.on("removeBlocks", async (event, arg) => {
   const results = await removeAllBlocks();
   event.reply("removeBlocksRes", { results });
+});
+
+ipcMain.handle("getDbData", (event, key) => {
+  return localDbStore.getFromDb(key);
+});
+ipcMain.handle("saveDbData", (event, { key, data }) => {
+  return localDbStore.saveToDb(key, data);
+});
+ipcMain.handle("deleteDbData", (event, key) => {
+  return localDbStore.removeFromDb(key);
+});
+ipcMain.handle("clearDb", (event, key) => {
+  return localDbStore.clearDb();
 });

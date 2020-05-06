@@ -32,8 +32,14 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
 
     this.state = {
       type: "game",
-      game: GameStore.create({ id: `${Math.random()}`, name: "" }),
-      launcher: LauncherStore.create({ id: `${Math.random()}`, name: "" }),
+      game: GameStore.create({
+        id: `${Math.floor(Math.random() * 10000000)}`,
+        name: "",
+      }),
+      launcher: LauncherStore.create({
+        id: `${Math.floor(Math.random() * 10000000)}`,
+        name: "",
+      }),
     };
   }
 

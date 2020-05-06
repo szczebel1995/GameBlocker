@@ -6,6 +6,7 @@ import { FaCog } from "react-icons/fa";
 import { Card } from "./card";
 import { mainViewStore } from "../stores/ui/mainViewStore";
 import { ColorE } from "../enums/color";
+import { blocksStore } from "../stores/blocksStore";
 
 @observer
 export class Header extends React.Component {
@@ -58,7 +59,14 @@ export class Header extends React.Component {
             <b>Score:</b> {"2d 15h 42m 11s"}
           </div>
           <div style={{ paddingLeft: 20, paddingRight: 20, marginBottom: -5 }}>
-            <Toggle />
+            <Toggle
+              checked={blocksStore.blockOn}
+              onChange={(e) =>
+                e.target.checked
+                  ? blocksStore.startBlock()
+                  : blocksStore.stopBlock()
+              }
+            />
           </div>
           {/* <div>{"On"}</div> */}
           <FaCog
