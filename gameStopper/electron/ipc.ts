@@ -3,7 +3,7 @@ import { getAllLauncherFolders } from "./scan";
 import { addBlocks, removeAllBlocks, getBlocks } from "./registry";
 import { localDbStore } from "./stores/localDbStore";
 
-export const hello = 1;
+export const hello = 2;
 
 ipcMain.on("scan", async (event, arg) => {
   const launchers = await getAllLauncherFolders();

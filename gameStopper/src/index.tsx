@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import "react-toggle/style.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

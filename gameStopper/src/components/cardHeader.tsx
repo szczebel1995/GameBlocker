@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ColorE } from "../enums/color";
+import { styled } from "../themes";
 
 export interface ICardHeaderProps {
   title: string;
@@ -7,28 +8,31 @@ export interface ICardHeaderProps {
   buttonRight?: any;
 }
 
+const StyledCardHeader = styled.div`
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: ${(props) => props.theme.colors.secondary.normal};
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const BtnWrap = styled.div<{ side: "left" | "right" }>`
+  align-self: ${(props) => (props.side === "left" ? "flex-start" : "flex-end")};
+`;
+
 export const CardHeader = (props: ICardHeaderProps) => {
   return (
-    <div
-      style={{
-        color: ColorE.TEXT_COLOR,
-        // marginTop: -2,
-        // marginLeft: -2,
-        // marginRight: -2,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 15px",
-        backgroundColor: ColorE.LIST_ITEM_ACTIVE_BGD,
-        fontWeight: "bold",
-        fontSize: 20,
-      }}
-    >
-      <div>{props.buttonLeft ? props.buttonLeft : <div />}</div>
+    <StyledCardHeader>
+      <BtnWrap side={"left"}>
+        {props.buttonLeft ? props.buttonLeft : null}
+      </BtnWrap>
       <div>{props.title}</div>
-      <div style={{ alignSelf: "flex-end" }}>
-        {props.buttonRight ? props.buttonRight : <div />}
-      </div>
-    </div>
+      <BtnWrap side={"right"}>
+        {props.buttonRight ? props.buttonRight : null}
+      </BtnWrap>
+    </StyledCardHeader>
   );
 };

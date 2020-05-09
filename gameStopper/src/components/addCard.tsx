@@ -14,6 +14,7 @@ import Select from "react-select";
 import Scrollbars from "react-custom-scrollbars";
 import { Button } from "./button";
 import { BlockedFileListItem } from "./blockedFileListItem";
+import { ToggleButton } from "./toggleButton";
 
 export interface IAddCardProps {
   // addItem: IGameStore | ILauncherStore;
@@ -42,193 +43,6 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
       }),
     };
   }
-
-  // renderAddGame(game: IGameStore) {
-  //   return (
-  //     <div>
-  //       <InputRowItem
-  //         label="Name:"
-  //         input={
-  //           <input
-  //             value={game.name}
-  //             onChange={(e) => game.setName(e.target.value)}
-  //             style={{
-  //               width: "100%",
-  //               boxSizing: "border-box",
-  //               height: 38,
-  //               backgroundColor: ColorE.LIST_ITEM_BGD,
-  //               border: "none",
-  //               color: ColorE.TEXT_COLOR,
-  //               paddingLeft: 10,
-  //             }}
-  //             type="text"
-  //           />
-  //         }
-  //       />
-  //       <InputRowItem
-  //         label="Launcher:"
-  //         input={
-  //           // <select
-  //           //   name=""
-  //           //   id=""
-  //           //   value={game.launcher}
-  //           //   onChange={(e) =>
-  //           //     game.setLauncher(e.target.value ? e.target.value : undefined)
-  //           //   }
-  //           // >
-  //           //   <option value="">none</option>
-  //           //   {gamesStore.launchers.map((launcher) => (
-  //           //     <option value={launcher.id}>{launcher.name}</option>
-  //           //   ))}
-  //           // </select>
-  //           <Select
-  //             isSearchable={false}
-  //             styles={{
-  //               indicatorSeparator: (provided, state) => {
-  //                 return {
-  //                   ...provided,
-  //                   display: "none",
-  //                   // opacity: 0,
-  //                 };
-  //               },
-  //               valueContainer: (provided, state) => {
-  //                 return {
-  //                   ...provided,
-  //                   color: ColorE.TEXT_COLOR,
-  //                 };
-  //               },
-  //               menu: (provided, state) => {
-  //                 return {
-  //                   ...provided,
-  //                   backgroundColor: ColorE.LIST_ITEM_BGD,
-  //                   borderRadius: 0,
-  //                   color: ColorE.TEXT_COLOR,
-  //                 };
-  //               },
-  //               singleValue: (provided, state) => {
-  //                 return {
-  //                   ...provided,
-  //                   color: ColorE.TEXT_COLOR,
-  //                 };
-  //               },
-  //               control: (provided, state) => {
-  //                 return {
-  //                   ...provided,
-  //                   backgroundColor: ColorE.LIST_ITEM_BGD,
-  //                   borderRadius: 0,
-  //                   border: "none",
-  //                   outlineWidth: 0,
-  //                   outline: `1px solid ${ColorE.LIST_ITEM_BGD} !important`,
-  //                   color: ColorE.TEXT_COLOR,
-  //                 };
-  //               },
-  //               option: (provided, { isFocused, isSelected }) => {
-  //                 return {
-  //                   ...provided,
-  //                   backgroundColor: isFocused
-  //                     ? ColorE.LIST_ITEM_HOVERED_BGD
-  //                     : isSelected
-  //                     ? ColorE.LIST_ITEM_ACTIVE_BGD
-  //                     : ColorE.LIST_ITEM_BGD,
-  //                 };
-  //               },
-  //             }}
-  //             value={
-  //               game.launcher
-  //                 ? { value: game.launcher, label: game.launcher }
-  //                 : {
-  //                     value: "",
-  //                     label: "None",
-  //                   }
-  //             }
-  //             onChange={(launcher) =>
-  //               launcher ? game.setLauncher((launcher as any).value) : null
-  //             }
-  //             options={[
-  //               { value: "", label: "None" },
-  //               ...gamesStore.launchers.map((launcher) => ({
-  //                 value: launcher.id,
-  //                 label: launcher.name,
-  //               })),
-  //             ]}
-  //           />
-  //         }
-  //       />
-  //       <div>
-  //         <div>Blocked files</div>
-  //         <div>
-  //           {game.paths.map((path) => (
-  //             <div
-  //               style={{
-  //                 display: "flex",
-  //                 justifyContent: "space-between",
-  //                 alignItems: "center",
-  //                 padding: "5px 10px",
-  //               }}
-  //             >
-  //               <div>{path.split("/")[path.split("/").length - 1]}</div>
-  //               <div>
-  //                 <FaTimes />
-  //               </div>
-  //             </div>
-  //           ))}
-  //           <div>
-  //             <FaPlus />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // renderAddLauncher(launcher: ILauncherStore) {
-  //   return (
-  //     <div>
-  //       <InputRowItem
-  //         label="Name:"
-  //         input={
-  //           <input
-  //             value={launcher.name}
-  //             onChange={(e) => launcher.setName(e.target.value)}
-  //             style={{
-  //               width: "100%",
-  //               boxSizing: "border-box",
-  //               height: 38,
-  //               backgroundColor: ColorE.LIST_ITEM_BGD,
-  //               border: "none",
-  //               color: ColorE.TEXT_COLOR,
-  //               paddingLeft: 10,
-  //             }}
-  //             type="text"
-  //           />
-  //         }
-  //       />
-  //       <div>
-  //         <div>Blocked files</div>
-  //         <div>
-  //           {launcher.paths.map((path) => (
-  //             <div
-  //               style={{
-  //                 display: "flex",
-  //                 justifyContent: "space-between",
-  //                 alignItems: "center",
-  //                 padding: "5px 10px",
-  //               }}
-  //             >
-  //               <div>{path.split("/")[path.split("/").length - 1]}</div>
-  //               <div>
-  //                 <FaTimes />
-  //               </div>
-  //             </div>
-  //           ))}
-  //           <div>
-  //             <FaPlus />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   render() {
     const item =
@@ -262,8 +76,8 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             label={"Type:"}
             input={
               <div style={{ display: "flex" }}>
-                <Button
-                  toggled={this.state.type === "game"}
+                <ToggleButton
+                  on={this.state.type === "game"}
                   title={"Game"}
                   onClick={() =>
                     this.setState((prevState) => ({
@@ -273,8 +87,8 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                   }
                 />
                 <div style={{ width: 10 }}></div>
-                <Button
-                  toggled={this.state.type === "launcher"}
+                <ToggleButton
+                  on={this.state.type === "launcher"}
                   title={"Launcher"}
                   onClick={() =>
                     this.setState((prevState) => ({

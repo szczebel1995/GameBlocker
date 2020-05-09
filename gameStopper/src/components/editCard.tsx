@@ -299,7 +299,7 @@ export class EditCard extends React.Component<IEditCardProps> {
                   hidden
                   type="file"
                   onChange={(e) => {
-                    const filePath = e.target.files?.item(0)?.path;
+                    const filePath = (e.target.files?.item(0) as any).path;
                     if (filePath) {
                       launcher.addPath(filePath);
                     }
