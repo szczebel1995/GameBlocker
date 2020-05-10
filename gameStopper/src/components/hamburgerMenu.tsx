@@ -54,7 +54,6 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
             </div>
             <InputRowItem
               label={(<b>Launch at system startup:</b>) as any}
-              spacedBetween
               input={<Toggle />}
             />
             <div style={{ height: 20 }}></div>
@@ -69,7 +68,6 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
                   </div>
                 ) as any
               }
-              spacedBetween
               input={""}
             />
             <InputRowItem
@@ -86,7 +84,6 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
                   </div>
                 ) as any
               }
-              spacedBetween
               input={""}
             />
           </div>

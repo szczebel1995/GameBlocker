@@ -2,46 +2,37 @@ import * as React from "react";
 import { ILauncherStore } from "../stores/objects/launcherStore";
 import { IGameStore } from "../stores/objects/gameStore";
 import { ColorE } from "../enums/color";
+import { styled } from "../themes";
+import { isLauncher } from "../utils/types";
 
 export interface IGamesListItemProps {
   item?: ILauncherStore | IGameStore;
-  onClick: () => any;
+  onClick?: () => any;
   title?: string;
   focused?: boolean;
 }
 
+const StyledGamesListItem = styled.div<IGamesListItemProps>`
+  cursor: "pointer";
+  padding: 10;
+  color: ${(props) => props.theme.colors.secondary.text};
+  background-color: ${(props) =>
+    props.focused
+      ? props.theme.colors.secondary.bright
+      : isLauncher(props.item) || props.title
+      ? props.theme.colors.secondary.normal
+      : props.theme.colors.primary.normal};
+  font-weight: ${(props) =>
+    isLauncher(props.item) || props.title ? "bold" : undefined};
+  :hover {
+    background-color: ${(props) => props.theme.colors.secondary.bright};
+  }
+`;
+
 export const GamesListItem = (props: IGamesListItemProps) => {
-  const isLauncherOrSeparator = props.title || (props.item as any).gamesMap;
   return (
-    <div
-      className="gamesListItem"
-      onClick={props.onClick}
-      style={{
-        cursor: "pointer",
-        padding: 10,
-        // borderBottom: isLauncherOrSeparator
-        //   ? `1px solid ${ColorE.LIST_BORDER_COLOR}`
-        //   : undefined,
-        // borderTop: isLauncherOrSeparator
-        //   ? `1px solid ${ColorE.LIST_BORDER_COLOR}`
-        //   : undefined,
-        color: ColorE.TEXT_COLOR,
-        backgroundColor: props.focused
-          ? ColorE.LIST_ITEM_FOCUSED_BGD
-          : isLauncherOrSeparator
-          ? ColorE.LIST_ITEM_SEPARATOR_BGD
-          : ColorE.LIST_BGD,
-        fontWeight: isLauncherOrSeparator ? "bold" : undefined,
-      }}
-    >
-      {props.item ? (
-        <div>
-          <div>{props.item.icon}</div>
-          <div>{props.item.name}</div>
-        </div>
-      ) : (
-        <div>{props.title}</div>
-      )}
-    </div>
+    <StyledGamesListItem onClick={props.onClick}>
+      <div>{props.item ? props.item.name : props.title}</div>
+    </StyledGamesListItem>
   );
 };

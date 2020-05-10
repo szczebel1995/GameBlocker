@@ -6,16 +6,8 @@ import { Card } from "../components/card";
 import logo from "../assets/img/logo.png";
 import { mainViewStore } from "../stores/ui/mainViewStore";
 import { EditCard } from "../components/editCard";
-import Toggle from "react-toggle";
 import { AddCard } from "../components/addCard";
 import { ColorE } from "../enums/color";
-import { InputRowItem } from "../components/inputRowItem";
-import {
-  GiMagicPotion,
-  GiHealthPotion,
-  GiPotionBall,
-  GiBroadsword,
-} from "react-icons/gi";
 import { HamburgerMenu } from "../components/hamburgerMenu";
 
 @observer

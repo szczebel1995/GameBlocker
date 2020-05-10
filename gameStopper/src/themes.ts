@@ -1,6 +1,6 @@
 import Styled, { CreateStyled } from "@emotion/styled";
 
-export const themes: {dark: Theme} = {
+export const themes: { dark: Theme } = {
   dark: {
     colors: {
       primary: {
@@ -28,7 +28,7 @@ export const themes: {dark: Theme} = {
   },
 };
 
-type Theme = {
+export type Theme = {
   colors: {
     primary: {
       bright: string;

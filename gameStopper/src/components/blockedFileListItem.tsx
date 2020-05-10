@@ -15,10 +15,6 @@ const ListItem = styled.div`
   }
 `;
 
-export const Clickable = styled.div`
-  cursor: pointer;
-`;
-
 export interface IBlockedFileListItemProps {
   path: string;
 }
@@ -28,7 +24,7 @@ export const BlockedFileListItem = (props: IBlockedFileListItemProps) => {
 
   return (
     <ListItem>
-      <div>{fileName}</div>
+      {fileName}
       <FaTimes />
     </ListItem>
   );

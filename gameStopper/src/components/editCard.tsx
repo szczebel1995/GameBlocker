@@ -14,6 +14,7 @@ import Select from "react-select";
 import { ColorE } from "../enums/color";
 import Scrollbars from "react-custom-scrollbars";
 import { BlockedFileListItem } from "./blockedFileListItem";
+import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -162,11 +163,7 @@ export class EditCard extends React.Component<IEditCardProps> {
         </div>
         <Scrollbars
           autoHide={false}
-          renderThumbVertical={() => (
-            <div
-              style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
-            ></div>
-          )}
+          renderThumbVertical={() => <ScrollbarThumb />}
         >
           <div
             style={{
@@ -253,11 +250,7 @@ export class EditCard extends React.Component<IEditCardProps> {
         </div>
         <Scrollbars
           autoHide={false}
-          renderThumbVertical={() => (
-            <div
-              style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
-            ></div>
-          )}
+          renderThumbVertical={() => <ScrollbarThumb />}
         >
           <div
             style={{

@@ -1,28 +1,24 @@
 import * as React from "react";
 import { ColorE } from "../enums/color";
+import { styled, themes } from "../themes";
+import { css } from "@emotion/core";
 
 export interface ICardProps {
-  children?: any;
   style?: any;
-  padding?: number;
-  border?: boolean;
+  children?: any;
 }
 
+const StyledCard = styled.div<ICardProps>`
+  ${(props) => (props.style ? props.style : defaultStyle)}
+`;
+
+const defaultStyle = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: ${themes.dark.colors.primary.dim};
+`;
+
 export const Card = (props: ICardProps) => {
-  return (
-    <div
-      style={
-        props.style
-          ? props.style
-          : {
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: ColorE.LIST_BGD,
-            }
-      }
-    >
-      {props.children}
-    </div>
-  );
+  return <StyledCard {...props}>{props.children}</StyledCard>;
 };

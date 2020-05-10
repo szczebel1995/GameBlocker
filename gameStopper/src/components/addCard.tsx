@@ -15,6 +15,7 @@ import Scrollbars from "react-custom-scrollbars";
 import { Button } from "./button";
 import { BlockedFileListItem } from "./blockedFileListItem";
 import { ToggleButton } from "./toggleButton";
+import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
 
 export interface IAddCardProps {
   // addItem: IGameStore | ILauncherStore;
@@ -215,11 +216,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
         </div>
         <Scrollbars
           autoHide={false}
-          renderThumbVertical={() => (
-            <div
-              style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
-            ></div>
-          )}
+          renderThumbVertical={() => <ScrollbarThumb />}
         >
           <div
             style={{

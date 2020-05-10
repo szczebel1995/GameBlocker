@@ -7,138 +7,125 @@ import { gamesStore } from "../stores/gamesStore";
 import { flatten } from "lodash";
 import { GamesListItem } from "./gamesListItem";
 import { mainViewStore } from "../stores/ui/mainViewStore";
-import { ColorE } from "../enums/color";
 import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
 import { Button } from "./button";
 import Spinner from "react-loader-spinner";
+import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
+import { Clickable } from "./clickable";
+import { themes } from "../themes";
+import { Status } from "./status";
 
 @observer
 export class GamesList extends React.Component {
-  renderNoGames() {
-    return (
-      <div
-        style={{
-          color: ColorE.TEXT_COLOR,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <FaSearch
-          style={{ cursor: "pointer" }}
-          size={60}
-          color={ColorE.LIST_ITEM_ACTIVE_BGD}
+  renderStatus() {
+    const noGamesOrLaunchers =
+      gamesStore.gamesMap.size <= 0 && gamesStore.launchersMap.size <= 0;
+
+    if (gamesStore.scanning) {
+      return (
+        <Status
+          icon={
+            <Spinner
+              type="Rings"
+              color={themes.dark.colors.secondary.normal}
+              height={100}
+              width={100}
+            />
+          }
+          message="Scanning for games, this might take a while..."
         />
-        <div style={{ padding: 20 }}>
-          Your Games list is empty. Scan computer for games to block.
-        </div>
-        <Button title={"SCAN"} onClick={() => gamesStore.scanForLaunchers()} />
+      );
+    } else if (!gamesStore.inited) {
+      return (
+        <Status
+          icon={
+            <Spinner
+              type="Rings"
+              color={themes.dark.colors.secondary.normal}
+              height={100}
+              width={100}
+            />
+          }
+          message="Loading games..."
+        />
+      );
+    } else if (noGamesOrLaunchers) {
+      return (
+        <Status
+          icon={
+            <FaSearch size={60} color={themes.dark.colors.secondary.normal} />
+          }
+          message="Your Games list is empty. Scan computer for games to block."
+          bottomRow={
+            <Button
+              title={"SCAN"}
+              onClick={() => gamesStore.scanForLaunchers()}
+            />
+          }
+        />
+      );
+    }
+  }
+
+  renderGames() {
+    const launchersAndThierGames = flatten(
+      gamesStore.launchers.map((launcher) => {
+        const games = Array.from(launcher.gamesMap.values());
+        return [launcher, ...games];
+      })
+    );
+    const launcherlessGames = gamesStore.games.filter((game) => !game.launcher);
+
+    return (
+      <div>
+        {launchersAndThierGames.map((item) => (
+          <GamesListItem
+            item={item}
+            onClick={() => mainViewStore.focusGamesListItem(item)}
+            focused={
+              mainViewStore.focusedItem &&
+              mainViewStore.focusedItem.id === item.id
+            }
+          />
+        ))}
+        <GamesListItem title="Rest of the games" />
+        {launcherlessGames.map((game) => (
+          <GamesListItem
+            onClick={() => mainViewStore.focusGamesListItem(game)}
+            item={game}
+            focused={
+              mainViewStore.focusedItem &&
+              mainViewStore.focusedItem.id === game.id
+            }
+          />
+        ))}
       </div>
     );
   }
 
   render() {
     console.log(mainViewStore.gamesListRerender);
+
     return (
       <Card>
         <CardHeader
           title={"Games"}
-          buttonLeft={
-            gamesStore.inited ? (
-              <FaSearch style={{ opacity: 0, cursor: "pointer" }} />
-            ) : null
-          }
           buttonRight={
             gamesStore.inited ? (
-              <FaPlus
-                style={{ cursor: "pointer" }}
+              <Clickable
                 onClick={() => mainViewStore.toggleAddCardOpened(true)}
-              />
+              >
+                <FaPlus />
+              </Clickable>
             ) : null
           }
         />
-        {gamesStore.scanning ? (
-          <div
-            style={{
-              display: "flex",
-              height: "100%",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <Spinner
-                type="Rings"
-                color={ColorE.LIST_ITEM_ACTIVE_BGD}
-                height={100}
-                width={100}
-              />
-              <div
-                style={{
-                  fontSize: 18,
-                  color: ColorE.TEXT_COLOR,
-                  padding: 20,
-                  paddingTop: 0,
-                  opacity: 0.5,
-                }}
-              >
-                Scanning for games, this might take a while...
-              </div>
-            </div>
-          </div>
-        ) : (
-          <Scrollbar
-            autoHide={false}
-            renderThumbVertical={() => (
-              <div
-                style={{ width: 6, backgroundColor: "white", opacity: 0.1 }}
-              ></div>
-            )}
-          >
-            {gamesStore.inited ? (
-              gamesStore.gamesMap.size > 0 ||
-              gamesStore.launchersMap.size > 0 ? (
-                <div>
-                  {flatten(
-                    gamesStore.launchers.map((launcher) => {
-                      const games = Array.from(launcher.gamesMap.values());
-                      return [launcher, ...games];
-                    })
-                  ).map((item) => {
-                    return (
-                      <GamesListItem
-                        focused={
-                          mainViewStore.focusedItem &&
-                          mainViewStore.focusedItem.id === item.id
-                        }
-                        item={item}
-                        onClick={() => mainViewStore.focusGamesListItem(item)}
-                      />
-                    );
-                  })}
-                  <GamesListItem onClick={() => ""} title="Rest of the games" />
-                  {gamesStore.games
-                    .filter((game) => !game.launcher)
-                    .map((game) => (
-                      <GamesListItem
-                        onClick={() => mainViewStore.focusGamesListItem(game)}
-                        item={game}
-                      />
-                    ))}
-                </div>
-              ) : (
-                <div
-                  className="flexCenter"
-                  style={{ height: "100%", width: "100%" }}
-                >
-                  {this.renderNoGames()}
-                </div>
-              )
-            ) : null}
-          </Scrollbar>
-        )}
+        <Scrollbar
+          autoHide={false}
+          renderThumbVertical={() => <ScrollbarThumb />}
+        >
+          {this.renderStatus() || this.renderGames()}
+        </Scrollbar>
       </Card>
     );
   }

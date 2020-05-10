@@ -10,8 +10,9 @@ export interface ICardHeaderProps {
 
 const StyledCardHeader = styled.div`
   color: white;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
   align-items: center;
   padding: 10px 15px;
   background-color: ${(props) => props.theme.colors.secondary.normal};
@@ -20,7 +21,7 @@ const StyledCardHeader = styled.div`
 `;
 
 const BtnWrap = styled.div<{ side: "left" | "right" }>`
-  align-self: ${(props) => (props.side === "left" ? "flex-start" : "flex-end")};
+  justify-self: ${(props) => (props.side === "left" ? "start" : "end")};
 `;
 
 export const CardHeader = (props: ICardHeaderProps) => {
