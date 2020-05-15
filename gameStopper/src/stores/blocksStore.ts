@@ -8,7 +8,7 @@ export const BlocksStore = types
     blockOn: types.maybe(types.boolean),
   })
   .actions((self) => {
-    const afterCreate = flow(function* () {
+    const afterAttach = flow(function* () {
       checkIfBlockIsOn();
     });
 
@@ -18,6 +18,11 @@ export const BlocksStore = types
       // const blocks = Object.values(yield ipc.invoke("getBlocks", ""))[0];
       // self.blockOn = !isEmpty(blocks);
     });
+
+    const sjdfhksjdf = () => {
+      const ipc = getEnv<any>(self);
+      console.log(ipc, ipc.ipc2.invoke);
+    };
 
     const startBlock = flow(function* () {
       localDbStore.saveToDb("blockOn", true);
@@ -30,9 +35,10 @@ export const BlocksStore = types
     });
 
     return {
-      afterCreate,
       startBlock,
       stopBlock,
+      sjdfhksjdf,
+      afterAttach,
     };
   });
 
