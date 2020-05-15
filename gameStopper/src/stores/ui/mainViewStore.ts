@@ -1,15 +1,14 @@
 import { types } from "mobx-state-tree";
 import { GameStore, IGameStore } from "../objects/gameStore";
 import { LauncherStore, ILauncherStore } from "../objects/launcherStore";
-import { gamesStore } from "../gamesStore";
+import { isLauncher } from "../../utils/types";
 
 export type IMainViewStore = typeof MainViewStore.Type;
 export const MainViewStore = types
   .model({
     currentRightCard: types.maybe(types.enumeration(["add", "edit"])),
-    focusedGamesListItem: types.maybe(types.string),
-    focusedGamesListItemType: types.maybe(
-      types.enumeration(["launcher", "game"])
+    focusedGamesListItem: types.maybe(
+      types.reference(GameStore || LauncherStore)
     ),
     settingsOpened: types.optional(types.boolean, false),
     searchGameValue: types.maybe(types.string),
@@ -17,23 +16,16 @@ export const MainViewStore = types
     gamesListRerender: types.optional(types.number, 0),
   })
   .views((self) => ({
-    get focusedItem() {
+    get focusedGamesListItemType() {
       if (self.focusedGamesListItem) {
-        return self.focusedGamesListItemType === "launcher"
-          ? gamesStore.launchersMap.get(self.focusedGamesListItem)
-          : gamesStore.gamesMap.get(self.focusedGamesListItem);
+        return isLauncher(self.focusedGamesListItem) ? "launcher" : "game";
       }
     },
   }))
   .actions((self) => {
     const focusGamesListItem = (item?: IGameStore | ILauncherStore) => {
-      self.focusedGamesListItem = item ? (item?.id as any) : undefined;
-      self.focusedGamesListItemType = item
-        ? (item as any).gamesMap
-          ? "launcher"
-          : "game"
-        : undefined;
-      self.currentRightCard = self.focusedGamesListItem ? "edit" : undefined;
+      self.focusedGamesListItem = item as any;
+      self.currentRightCard = item ? "edit" : undefined;
     };
 
     const toggleSettingsOpened = (on?: boolean) => {
@@ -41,7 +33,6 @@ export const MainViewStore = types
     };
 
     const toggleAddCardOpened = (on: boolean) => {
-      // self.addCardOpened = on !== undefined ? on : !self.addCardOpened;
       self.currentRightCard = on ? "add" : undefined;
     };
 

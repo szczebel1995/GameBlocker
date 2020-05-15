@@ -41,7 +41,7 @@ export class MainView extends React.Component {
           </div>
           <GamesList />
           {mainViewStore.currentRightCard === "edit" ? (
-            <EditCard editedItem={mainViewStore.focusedItem as any} />
+            <EditCard editedItem={mainViewStore.focusedGamesListItem as any} />
           ) : mainViewStore.currentRightCard === "add" ? (
             <AddCard />
           ) : (

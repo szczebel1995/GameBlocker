@@ -7,6 +7,7 @@
   "main": "build/electron/main.js",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^5.6.4",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@stripe/stripe-js": "^1.4.0",
@@ -39,9 +40,9 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
     "electron:windev": "concurrently \"SET BROWSER=none && npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
@@ -81,6 +82,7 @@
     "concurrently": "^5.1.0",
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
+    "react-app-rewired": "^2.1.6",
     "wait-on": "^4.0.2"
   }
 }

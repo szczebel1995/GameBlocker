@@ -83,8 +83,8 @@ export class GamesList extends React.Component {
             item={item}
             onClick={() => mainViewStore.focusGamesListItem(item)}
             focused={
-              mainViewStore.focusedItem &&
-              mainViewStore.focusedItem.id === item.id
+              mainViewStore.focusedGamesListItem &&
+              mainViewStore.focusedGamesListItem.id === item.id
             }
           />
         ))}
@@ -94,8 +94,8 @@ export class GamesList extends React.Component {
             onClick={() => mainViewStore.focusGamesListItem(game)}
             item={game}
             focused={
-              mainViewStore.focusedItem &&
-              mainViewStore.focusedItem.id === game.id
+              mainViewStore.focusedGamesListItem &&
+              mainViewStore.focusedGamesListItem.id === game.id
             }
           />
         ))}

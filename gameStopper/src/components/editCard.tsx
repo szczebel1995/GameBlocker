@@ -331,15 +331,12 @@ export class EditCard extends React.Component<IEditCardProps> {
   }
 
   render() {
-    console.log(this.state);
-    const item = mainViewStore.focusedGamesListItem as string;
-
-    if (!mainViewStore.focusedItem) {
+    if (!mainViewStore.focusedGamesListItem) {
       return null;
     }
 
-    return isLauncher(mainViewStore.focusedItem)
-      ? this.renderLauncherEditForm(mainViewStore.focusedItem)
-      : this.renderGameEditForm(mainViewStore.focusedItem);
+    return isLauncher(mainViewStore.focusedGamesListItem)
+      ? this.renderLauncherEditForm(mainViewStore.focusedGamesListItem)
+      : this.renderGameEditForm(mainViewStore.focusedGamesListItem);
   }
 }

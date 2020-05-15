@@ -3,21 +3,17 @@ import { getAllLauncherFolders } from "./scan";
 import { addBlocks, removeAllBlocks, getBlocks } from "./registry";
 import { localDbStore } from "./stores/localDbStore";
 
-export const hello = 2;
-
-ipcMain.on("scan", async (event, arg) => {
+ipcMain.handle("scan", async (event, arg) => {
   const launchers = await getAllLauncherFolders();
-  event.reply("scanRes", { launchers });
+  return { launchers };
 });
 
-ipcMain.on("addBlocks", async (event, arg) => {
-  const results = await addBlocks([arg.exes]);
-  event.reply("addBlocksRes", { results });
+ipcMain.handle("addBlocks", async (event, arg) => {
+  return await addBlocks([arg.exes]);
 });
 
-ipcMain.on("removeBlocks", async (event, arg) => {
-  const results = await removeAllBlocks();
-  event.reply("removeBlocksRes", { results });
+ipcMain.handle("removeBlocks", async (event, arg) => {
+  return await removeAllBlocks();
 });
 
 ipcMain.handle("getBlocks", async (event, arg) => {
