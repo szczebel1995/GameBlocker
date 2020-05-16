@@ -1,5 +1,5 @@
-window.require = () => ({
-  remote: {
-    require: require,
-  },
-});
+// window.require = () => ({
+//   remote: {
+//     require: require,
+//   },
+// });

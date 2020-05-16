@@ -1,44 +1,44 @@
 import { types, flow, getEnv } from "mobx-state-tree";
-import { IIpcStore } from "./ipcStore";
 import { isEmpty } from "lodash";
-import { localDbStore } from "./storage/localDbStore";
+import { types as uTypes } from "util";
 
 export const BlocksStore = types
   .model({
     blockOn: types.maybe(types.boolean),
   })
   .actions((self) => {
-    const afterAttach = flow(function* () {
+    const afterAttach = () => {
       checkIfBlockIsOn();
-    });
-
-    const checkIfBlockIsOn = flow(function* () {
-      const ipc = getEnv<any>(self);
-      console.log(ipc, ipc.ipc2.invoke);
-      // const blocks = Object.values(yield ipc.invoke("getBlocks", ""))[0];
-      // self.blockOn = !isEmpty(blocks);
-    });
-
-    const sjdfhksjdf = () => {
-      const ipc = getEnv<any>(self);
-      console.log(ipc, ipc.ipc2.invoke);
     };
 
-    const startBlock = flow(function* () {
-      localDbStore.saveToDb("blockOn", true);
+    const checkIfBlockIsOn = flow(function* () {
+      const { ipc } = getEnv<any>(self);
+      const blocks = Object.values(yield ipc.invoke("getBlocks", ""))[0];
+      self.blockOn = !isEmpty(blocks);
+    });
+
+    const startBlock = flow(function* (exesToBlock: string[]) {
+      const { ipc } = getEnv<any>(self);
+      const err = yield ipc.invoke("addBlocks", exesToBlock);
+      if (uTypes.isNativeError(err)) {
+        throw err;
+      }
       self.blockOn = true;
     });
 
     const stopBlock = flow(function* () {
-      localDbStore.saveToDb("blockOn", false);
+      const { ipc } = getEnv<any>(self);
+      const err = yield ipc.invoke("removeBlocks");
+      if (uTypes.isNativeError(err)) {
+        throw err;
+      }
       self.blockOn = false;
     });
 
     return {
+      afterAttach,
       startBlock,
       stopBlock,
-      sjdfhksjdf,
-      afterAttach,
     };
   });
 

@@ -1,3 +1,3 @@
-export const electron = {
-  ipcRenderer: jest.fn(),
+export const ipcRenderer = {
+  invoke: jest.fn(() => Promise.resolve({})),
 };

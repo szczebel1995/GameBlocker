@@ -9,7 +9,7 @@ ipcMain.handle("scan", async (event, arg) => {
 });
 
 ipcMain.handle("addBlocks", async (event, arg) => {
-  return await addBlocks([arg.exes]);
+  return await addBlocks(arg);
 });
 
 ipcMain.handle("removeBlocks", async (event, arg) => {

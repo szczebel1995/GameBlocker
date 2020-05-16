@@ -1,9 +1,7 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, getEnv } from "mobx-state-tree";
 import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import { zipObject } from "lodash";
-import { ipcStore } from "./ipcStore";
-import { localDbStore } from "./storage/localDbStore";
 import { types as uTypes } from "util";
 
 export const GamesStore = types
@@ -28,9 +26,9 @@ export const GamesStore = types
     };
   })
   .actions((self) => {
-    const afterCreate = flow(function* () {
-      // init();
-    });
+    const afterAttach = () => {
+      init();
+    };
 
     const init = flow(function* () {
       yield loadSavedGamesAndLaunchers();
@@ -39,13 +37,14 @@ export const GamesStore = types
     });
 
     const syncGamesAndLaunchersMapWithDb = () => {
-      localDbStore.toggleSyncMapWithDb({
+      const { db } = getEnv(self);
+      db.toggleSyncMapWithDb({
         on: true,
         syncId: "gamesStoreSync",
         map: self.gamesMap,
         dbKey: "games",
       });
-      localDbStore.toggleSyncMapWithDb({
+      db.toggleSyncMapWithDb({
         on: true,
         syncId: "gamesStoreSync",
         map: self.launchersMap,
@@ -54,8 +53,9 @@ export const GamesStore = types
     };
 
     const loadSavedGamesAndLaunchers = flow(function* () {
-      const games: IGameStore[] | Error = yield localDbStore.getFromDb("games");
-      const launchers: ILauncherStore[] | Error = yield localDbStore.getFromDb(
+      const { db } = getEnv(self);
+      const games: IGameStore[] | Error = yield db.getFromDb("games");
+      const launchers: ILauncherStore[] | Error = yield db.getFromDb(
         "launchers"
       );
       if (uTypes.isNativeError(games) || uTypes.isNativeError(launchers)) {
@@ -67,7 +67,8 @@ export const GamesStore = types
 
     const scanForLaunchers = flow(function* () {
       self.scanning = true;
-      const { launchers } = yield ipcStore.invoke("scan", "");
+      const { ipc } = getEnv(self);
+      const { launchers } = yield ipc.invoke("scan", "");
       launchers
         .map((launcher: string) => JSON.parse(launcher))
         .map((launcher: ILauncherStore) => {
@@ -126,7 +127,7 @@ export const GamesStore = types
     };
 
     return {
-      afterCreate,
+      afterAttach,
       addLauncher,
       addGame,
       scanForLaunchers,

@@ -6,7 +6,7 @@
 module.exports = {
   jest: function (config) {
     config.setupFilesAfterEnv = ["./jest.setup.js"];
-    config.target = "electron-renderer";
+    // config.target = "electron-renderer";
     return config;
   },
 };
