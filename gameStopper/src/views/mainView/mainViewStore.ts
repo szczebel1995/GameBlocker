@@ -1,7 +1,10 @@
 import { types } from "mobx-state-tree";
-import { GameStore, IGameStore } from "../objects/gameStore";
-import { LauncherStore, ILauncherStore } from "../objects/launcherStore";
 import { isLauncher } from "../../utils/types";
+import { GameStore, IGameStore } from "../../stores/objects/gameStore";
+import {
+  LauncherStore,
+  ILauncherStore,
+} from "../../stores/objects/launcherStore";
 
 export type IMainViewStore = typeof MainViewStore.Type;
 export const MainViewStore = types

@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import { MainView } from "./views/mainView";
 import { ThemeProvider, withTheme } from "emotion-theming";
 import { themes, Theme } from "./themes";
 import { Global, css } from "@emotion/core";
+import { MainView } from "./views/mainView/mainView";
 
 const makeGlobalStyles = (theme: Theme) => css`
   body {

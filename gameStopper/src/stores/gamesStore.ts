@@ -3,6 +3,7 @@ import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import { zipObject } from "lodash";
 import { types as uTypes } from "util";
+import { IEnvStore } from "./envStore";
 
 export const GamesStore = types
   .model({
@@ -19,7 +20,7 @@ export const GamesStore = types
     },
   }))
   .volatile((self) => {
-    const inited = false;
+    let inited: boolean | undefined;
 
     return {
       inited,
@@ -31,20 +32,24 @@ export const GamesStore = types
     };
 
     const init = flow(function* () {
-      yield loadSavedGamesAndLaunchers();
+      const err = yield loadSavedGamesAndLaunchers();
+      if (err) {
+        self.inited = false;
+        return err;
+      }
       syncGamesAndLaunchersMapWithDb();
       self.inited = true;
     });
 
     const syncGamesAndLaunchersMapWithDb = () => {
-      const { db } = getEnv(self);
-      db.toggleSyncMapWithDb({
+      const { db } = getEnv<IEnvStore>(self);
+      db.toggleSyncDbWithMap({
         on: true,
         syncId: "gamesStoreSync",
         map: self.gamesMap,
         dbKey: "games",
       });
-      db.toggleSyncMapWithDb({
+      db.toggleSyncDbWithMap({
         on: true,
         syncId: "gamesStoreSync",
         map: self.launchersMap,
@@ -53,21 +58,21 @@ export const GamesStore = types
     };
 
     const loadSavedGamesAndLaunchers = flow(function* () {
-      const { db } = getEnv(self);
+      const { db } = getEnv<IEnvStore>(self);
       const games: IGameStore[] | Error = yield db.getFromDb("games");
       const launchers: ILauncherStore[] | Error = yield db.getFromDb(
         "launchers"
       );
       if (uTypes.isNativeError(games) || uTypes.isNativeError(launchers)) {
-        return console.error(games, launchers);
+        return uTypes.isNativeError(games) ? games : launchers;
       }
-      games.forEach((game) => addGame(game));
       launchers.forEach((launcher) => addLauncher(launcher));
+      games.forEach((game) => addGame(game));
     });
 
     const scanForLaunchers = flow(function* () {
       self.scanning = true;
-      const { ipc } = getEnv(self);
+      const { ipc } = getEnv<IEnvStore>(self);
       const { launchers } = yield ipc.invoke("scan", "");
       launchers
         .map((launcher: string) => JSON.parse(launcher))
@@ -108,8 +113,12 @@ export const GamesStore = types
     };
 
     const addGameToLauncher = (game: IGameStore, newLauncherId: string) => {
+      const launcherToAttachGameTo = self.launchersMap.get(newLauncherId);
+      if (!launcherToAttachGameTo) {
+        throw new Error("cannot add game to launcher that is not in the map");
+      }
       self.launchersMap.get(game.launcher || "")?.removeGame(game.id);
-      self.launchersMap.get(newLauncherId)?.addGame(game);
+      launcherToAttachGameTo.addGame(game);
       game.setLauncher(newLauncherId);
     };
 

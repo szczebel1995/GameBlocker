@@ -4,9 +4,12 @@ import {
   IMSTMap,
   onPatch,
   getSnapshot,
+  getEnv,
+  getParent,
 } from "mobx-state-tree";
-import { ipcStore } from "../ipcStore";
 import { types as uTypes } from "util";
+import { IpcStore } from "../ipcStore";
+import { IEnvStore } from "../envStore";
 
 export const LocalDbStore = types
   .model({})
@@ -15,19 +18,22 @@ export const LocalDbStore = types
   }))
   .actions((self) => {
     const saveToDb = (key: string, data: any) => {
-      return ipcStore.invoke("saveDbData", { key, data });
+      const { ipc } = getParent<IEnvStore>(self);
+      return ipc.invoke("saveDbData", { key, data });
     };
 
     const getFromDb = async (key: string) => {
-      const data = await ipcStore.invoke("getDbData", key);
+      const { ipc } = getParent<IEnvStore>(self);
+      const data = await ipc.invoke("getDbData", key);
       return uTypes.isNativeError(data) ? data : Object.values(data);
     };
 
     const removeFromDb = (key: string) => {
-      return ipcStore.invoke("deleteDbData", key);
+      const { ipc } = getParent<IEnvStore>(self);
+      return ipc.invoke("deleteDbData", key);
     };
 
-    const toggleSyncMapWithDb = ({
+    const toggleSyncDbWithMap = ({
       on,
       syncId,
       map,
@@ -39,18 +45,19 @@ export const LocalDbStore = types
       dbKey: string;
     }) => {
       if (on) {
-        const sync = syncMapWithDb(map, dbKey);
+        const sync = _syncMapWithDb(map, dbKey);
         self.syncMap.set(syncId, sync);
       } else {
         const disposer = self.syncMap.get(syncId);
         if (!disposer) {
-          return console.error("can't turn off sync that is not in the map");
+          throw new Error("can't turn off sync that is not in the map");
         }
         disposer();
+        self.syncMap.delete(syncId);
       }
     };
 
-    const syncMapWithDb = (map: IMSTMap<any>, dbKey: string) => {
+    const _syncMapWithDb = (map: IMSTMap<any>, dbKey: string) => {
       return onPatch(map, ({ op, path, value }) => {
         const splitedPath = path.split("/");
         const storeId = splitedPath[1];
@@ -61,7 +68,10 @@ export const LocalDbStore = types
           removeFromDb(`${dbKey}.${storeId}`);
         } else {
           const store = storeWasModified ? map.get(storeId) : value;
-          saveToDb(`${dbKey}.${storeId}`, getSnapshot(store));
+          saveToDb(
+            `${dbKey}.${storeId}`,
+            storeWasModified ? getSnapshot(store) : value
+          );
         }
       });
     };
@@ -70,7 +80,8 @@ export const LocalDbStore = types
       saveToDb,
       getFromDb,
       removeFromDb,
-      toggleSyncMapWithDb,
+      toggleSyncDbWithMap,
+      _syncMapWithDb,
     };
   });
 
