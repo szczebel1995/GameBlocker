@@ -3,18 +3,18 @@ import { styled } from "../themes";
 import { StyledButton } from "./button";
 
 export interface IButtonProps {
-  on: boolean;
+  toggledOn: boolean;
   title: string;
   onClick: () => any;
 }
 
 const StyledToggleButton = styled(StyledButton)<IButtonProps>`
   background-color: ${(props) =>
-    props.on
+    props.toggledOn
       ? props.theme.colors.secondary.normal
       : props.theme.colors.primary.normal};
   border-color: ${(props) =>
-    props.on ? props.theme.colors.secondary.normal : "transparent"};
+    props.toggledOn ? props.theme.colors.secondary.normal : "transparent"};
 `;
 
 const Title = styled.div`

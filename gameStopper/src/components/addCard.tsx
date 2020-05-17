@@ -4,18 +4,16 @@ import { Card } from "./card";
 import { IGameStore, GameStore } from "../stores/objects/gameStore";
 import { ILauncherStore, LauncherStore } from "../stores/objects/launcherStore";
 import { CardHeader } from "./cardHeader";
-import { isLauncher } from "../utils/types";
-import { FaTimes, FaPlus, FaTrash, FaCheck } from "react-icons/fa";
+import { FaTimes, FaPlus, FaCheck } from "react-icons/fa";
 import { InputRowItem } from "./inputRowItem";
-import { mainViewStore } from "../stores/ui/mainViewStore";
 import { gamesStore } from "../stores/gamesStore";
 import { ColorE } from "../enums/color";
 import Select from "react-select";
 import Scrollbars from "react-custom-scrollbars";
-import { Button } from "./button";
 import { BlockedFileListItem } from "./blockedFileListItem";
 import { ToggleButton } from "./toggleButton";
 import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
+import { mainViewStore } from "../views/mainView/mainViewStore";
 
 export interface IAddCardProps {
   // addItem: IGameStore | ILauncherStore;
@@ -78,7 +76,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             input={
               <div style={{ display: "flex" }}>
                 <ToggleButton
-                  on={this.state.type === "game"}
+                  toggledOn={this.state.type === "game"}
                   title={"Game"}
                   onClick={() =>
                     this.setState((prevState) => ({
@@ -89,7 +87,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                 />
                 <div style={{ width: 10 }}></div>
                 <ToggleButton
-                  on={this.state.type === "launcher"}
+                  toggledOn={this.state.type === "launcher"}
                   title={"Launcher"}
                   onClick={() =>
                     this.setState((prevState) => ({

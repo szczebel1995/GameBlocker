@@ -1,7 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { InputRowItem } from "./inputRowItem";
-import { mainViewStore } from "../stores/ui/mainViewStore";
 import { FaTrash, FaTimes, FaPlus } from "react-icons/fa";
 import { CardHeader } from "./cardHeader";
 import { Card } from "./card";
@@ -15,6 +14,7 @@ import { ColorE } from "../enums/color";
 import Scrollbars from "react-custom-scrollbars";
 import { BlockedFileListItem } from "./blockedFileListItem";
 import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
+import { mainViewStore } from "../views/mainView/mainViewStore";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;

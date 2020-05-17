@@ -1,10 +1,10 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { push as Menu } from "react-burger-menu";
-import { mainViewStore } from "../stores/ui/mainViewStore";
 import { InputRowItem } from "./inputRowItem";
 import Toggle from "react-toggle";
 import { styled } from "../themes";
+import { mainViewStore } from "../views/mainView/mainViewStore";
 
 export interface IHamburgerMenuProps {}
 

@@ -6,7 +6,6 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 import { gamesStore } from "../stores/gamesStore";
 import { flatten } from "lodash";
 import { GamesListItem } from "./gamesListItem";
-import { mainViewStore } from "../stores/ui/mainViewStore";
 import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
 import { Button } from "./button";
 import Spinner from "react-loader-spinner";
@@ -14,6 +13,7 @@ import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
 import { Clickable } from "./clickable";
 import { themes } from "../themes";
 import { Status } from "./status";
+import { mainViewStore } from "../views/mainView/mainViewStore";
 
 @observer
 export class GamesList extends React.Component {

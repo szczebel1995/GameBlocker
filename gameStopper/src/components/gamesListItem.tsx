@@ -19,11 +19,11 @@ const StyledGamesListItem = styled.div<IGamesListItemProps>`
   background-color: ${(props) =>
     props.focused
       ? props.theme.colors.secondary.bright
-      : isLauncher(props.item) || props.title
+      : props.title || isLauncher(props.item)
       ? props.theme.colors.secondary.normal
       : props.theme.colors.primary.normal};
   font-weight: ${(props) =>
-    isLauncher(props.item) || props.title ? "bold" : undefined};
+    props.title || isLauncher(props.item) ? "bold" : undefined};
   :hover {
     background-color: ${(props) => props.theme.colors.secondary.bright};
   }
@@ -31,7 +31,7 @@ const StyledGamesListItem = styled.div<IGamesListItemProps>`
 
 export const GamesListItem = (props: IGamesListItemProps) => {
   return (
-    <StyledGamesListItem onClick={props.onClick}>
+    <StyledGamesListItem {...props}>
       <div>{props.item ? props.item.name : props.title}</div>
     </StyledGamesListItem>
   );
