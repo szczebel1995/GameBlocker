@@ -1,19 +1,19 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Card } from "./card";
-import { CardHeader } from "./cardHeader";
+import { Card } from "../dumb/card";
+import { CardHeader } from "../dumb/cardHeader";
 import { FaSearch, FaPlus } from "react-icons/fa";
-import { gamesStore } from "../stores/gamesStore";
+import { gamesStore } from "../../stores/gamesStore";
 import { flatten } from "lodash";
-import { GamesListItem } from "./gamesListItem";
+import { GamesListItem } from "../dumb/gamesListItem";
 import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
-import { Button } from "./button";
+import { Button } from "../dumb/button";
 import Spinner from "react-loader-spinner";
-import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
-import { Clickable } from "./clickable";
-import { themes } from "../themes";
-import { Status } from "./status";
-import { mainViewStore } from "../views/mainView/mainViewStore";
+import { ScrollbarThumb } from "../dumb/scrollbarThumb";
+import { Clickable } from "../dumb/clickable";
+import { themes } from "../../themes";
+import { Status } from "../dumb/status";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
 
 @observer
 export class GamesList extends React.Component {

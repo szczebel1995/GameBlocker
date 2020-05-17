@@ -3,10 +3,10 @@ import { observer } from "mobx-react";
 import logo from "../assets/img/logo.png";
 import Toggle from "react-toggle";
 import { FaCog } from "react-icons/fa";
-import { Card } from "./card";
-import { ColorE } from "../enums/color";
-import { blocksStore } from "../stores/blocksStore";
-import { mainViewStore } from "../views/mainView/mainViewStore";
+import { Card } from "../dumb/card";
+import { ColorE } from "../../enums/color";
+import { blocksStore } from "../../stores/blocksStore";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
 
 @observer
 export class Header extends React.Component {

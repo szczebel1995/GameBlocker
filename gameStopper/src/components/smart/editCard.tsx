@@ -1,20 +1,23 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { InputRowItem } from "./inputRowItem";
+import { InputRowItem } from "../dumb/inputRowItem";
 import { FaTrash, FaTimes, FaPlus } from "react-icons/fa";
-import { CardHeader } from "./cardHeader";
-import { Card } from "./card";
-import { gamesStore } from "../stores/gamesStore";
-import { LauncherStore, ILauncherStore } from "../stores/objects/launcherStore";
-import { GameStore, IGameStore } from "../stores/objects/gameStore";
+import { CardHeader } from "../dumb/cardHeader";
+import { Card } from "../dumb/card";
+import { gamesStore } from "../../stores/gamesStore";
+import {
+  LauncherStore,
+  ILauncherStore,
+} from "../../stores/objects/launcherStore";
+import { GameStore, IGameStore } from "../../stores/objects/gameStore";
 import { applySnapshot, onSnapshot } from "mobx-state-tree";
-import { isLauncher } from "../utils/types";
+import { isLauncher } from "../../utils/types";
 import Select from "react-select";
-import { ColorE } from "../enums/color";
+import { ColorE } from "../../enums/color";
 import Scrollbars from "react-custom-scrollbars";
-import { BlockedFileListItem } from "./blockedFileListItem";
-import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
-import { mainViewStore } from "../views/mainView/mainViewStore";
+import { BlockedFileListItem } from "../dumb/blockedFileListItem";
+import { ScrollbarThumb } from "../dumb/scrollbarThumb";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;

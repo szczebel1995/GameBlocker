@@ -1,14 +1,14 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Header } from "../../components/header";
-import { GamesList } from "../../components/gamesList";
-import { Card } from "../../components/card";
+import { Header } from "../../components/smart/header";
+import { GamesList } from "../../components/smart/gamesList";
+import { Card } from "../../components/dumb/card";
 import logo from "../../assets/img/logo.png";
 import { mainViewStore } from "./mainViewStore";
-import { EditCard } from "../../components/editCard";
-import { AddCard } from "../../components/addCard";
+import { EditCard } from "../../components/smart/editCard";
+import { AddCard } from "../../components/smart/addCard";
 import { ColorE } from "../../enums/color";
-import { HamburgerMenu } from "../../components/hamburgerMenu";
+import { HamburgerMenu } from "../../components/smart/hamburgerMenu";
 
 @observer
 export class MainView extends React.Component {

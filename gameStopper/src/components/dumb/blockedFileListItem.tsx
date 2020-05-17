@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FaTimes } from "react-icons/fa";
-import { styled } from "../themes";
+import { styled } from "../../themes";
 
 const ListItem = styled.div`
   cursor: pointer;

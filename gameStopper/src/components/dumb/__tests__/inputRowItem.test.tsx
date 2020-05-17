@@ -3,13 +3,13 @@ import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "emotion-theming";
-import { themes } from "../../themes";
-import { GamesListItem } from "../gamesListItem";
+import { themes } from "../../../themes";
+import { InputRowItem } from "../inputRowItem";
 
 it("renders without crashing", () => {
   const card = render(
     <ThemeProvider theme={themes.dark}>
-      <GamesListItem title="sdflj" />
+      <InputRowItem label="" input={<div />} />
     </ThemeProvider>
   );
 });

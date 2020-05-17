@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ColorE } from "../enums/color";
-import { styled } from "../themes";
+import { ColorE } from "../../enums/color";
+import { styled } from "../../themes";
 import { css } from "@emotion/core";
 
 export interface IButtonProps {

@@ -1,19 +1,22 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Card } from "./card";
-import { IGameStore, GameStore } from "../stores/objects/gameStore";
-import { ILauncherStore, LauncherStore } from "../stores/objects/launcherStore";
-import { CardHeader } from "./cardHeader";
+import { Card } from "../dumb/card";
+import { IGameStore, GameStore } from "../../stores/objects/gameStore";
+import {
+  ILauncherStore,
+  LauncherStore,
+} from "../../stores/objects/launcherStore";
+import { CardHeader } from "../dumb/cardHeader";
 import { FaTimes, FaPlus, FaCheck } from "react-icons/fa";
-import { InputRowItem } from "./inputRowItem";
-import { gamesStore } from "../stores/gamesStore";
-import { ColorE } from "../enums/color";
+import { InputRowItem } from "../dumb/inputRowItem";
+import { gamesStore } from "../../stores/gamesStore";
+import { ColorE } from "../../enums/color";
 import Select from "react-select";
 import Scrollbars from "react-custom-scrollbars";
-import { BlockedFileListItem } from "./blockedFileListItem";
-import { ToggleButton } from "./toggleButton";
-import { ScrollbarThumb } from "./scrollbar/scrollbarThumb";
-import { mainViewStore } from "../views/mainView/mainViewStore";
+import { BlockedFileListItem } from "../dumb/blockedFileListItem";
+import { ToggleButton } from "../dumb/toggleButton";
+import { ScrollbarThumb } from "../dumb/scrollbarThumb";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
 
 export interface IAddCardProps {
   // addItem: IGameStore | ILauncherStore;

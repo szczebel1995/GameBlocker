@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "../themes";
+import { styled } from "../../themes";
 import { StyledButton } from "./button";
 
 export interface IButtonProps {

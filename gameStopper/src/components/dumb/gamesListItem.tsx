@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ILauncherStore } from "../stores/objects/launcherStore";
-import { IGameStore } from "../stores/objects/gameStore";
-import { ColorE } from "../enums/color";
-import { styled } from "../themes";
-import { isLauncher } from "../utils/types";
+import { ILauncherStore } from "../../stores/objects/launcherStore";
+import { IGameStore } from "../../stores/objects/gameStore";
+import { ColorE } from "../../enums/color";
+import { styled } from "../../themes";
+import { isLauncher } from "../../utils/types";
 
 export interface IGamesListItemProps {
   item?: ILauncherStore | IGameStore;
