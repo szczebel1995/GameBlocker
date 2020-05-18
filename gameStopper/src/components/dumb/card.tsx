@@ -8,15 +8,15 @@ export interface ICardProps {
   children?: any;
 }
 
-const StyledCard = styled.div<ICardProps>`
-  ${(props) => (props.style ? props.style : defaultStyle)}
-`;
-
 const defaultStyle = css`
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: ${themes.dark.colors.primary.dim};
+`;
+
+const StyledCard = styled.div<ICardProps>`
+  ${(props) => (props.style ? props.style : defaultStyle)}
 `;
 
 export const Card = (props: ICardProps) => {

@@ -17,6 +17,9 @@ import { BlockedFileListItem } from "../dumb/blockedFileListItem";
 import { ToggleButton } from "../dumb/toggleButton";
 import { ScrollbarThumb } from "../dumb/scrollbarThumb";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
+import { isLauncher } from "../../utils/types";
+import { SelectInput } from "../dumb/selectInput";
+import { FilesList } from "../dumb/filesList";
 
 export interface IAddCardProps {
   // addItem: IGameStore | ILauncherStore;
@@ -49,6 +52,8 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
   render() {
     const item =
       this.state.type === "launcher" ? this.state.launcher : this.state.game;
+    const itemIsGame = !isLauncher(item);
+
     return (
       <Card>
         <CardHeader
@@ -64,11 +69,9 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 mainViewStore.focusGamesListItem();
-                this.state.type === "game"
+                itemIsGame
                   ? gamesStore.addGame(this.state.game)
                   : gamesStore.addLauncher(this.state.launcher);
-                // console.log(gamesStore)
-                // mainViewStore.forceGamesListRerender();
               }}
             />
           }
@@ -79,7 +82,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             input={
               <div style={{ display: "flex" }}>
                 <ToggleButton
-                  toggledOn={this.state.type === "game"}
+                  toggledOn={itemIsGame}
                   title={"Game"}
                   onClick={() =>
                     this.setState((prevState) => ({
@@ -90,7 +93,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                 />
                 <div style={{ width: 10 }}></div>
                 <ToggleButton
-                  toggledOn={this.state.type === "launcher"}
+                  toggledOn={!itemIsGame}
                   title={"Launcher"}
                   onClick={() =>
                     this.setState((prevState) => ({
@@ -121,132 +124,37 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
               />
             }
           />
-          {this.state.type === "game" ? (
+          {itemIsGame ? (
             <InputRowItem
               label="Launcher:"
               input={
-                <Select
-                  isSearchable={false}
-                  styles={{
-                    indicatorSeparator: (provided, state) => {
-                      return {
-                        ...provided,
-                        display: "none",
-                        // opacity: 0,
-                      };
-                    },
-                    valueContainer: (provided, state) => {
-                      return {
-                        ...provided,
-                        color: ColorE.TEXT_COLOR,
-                      };
-                    },
-                    menu: (provided, state) => {
-                      return {
-                        ...provided,
-                        backgroundColor: ColorE.LIST_ITEM_BGD,
-                        borderRadius: 0,
-                        color: ColorE.TEXT_COLOR,
-                      };
-                    },
-                    singleValue: (provided, state) => {
-                      return {
-                        ...provided,
-                        color: ColorE.TEXT_COLOR,
-                      };
-                    },
-                    control: (provided, state) => {
-                      return {
-                        ...provided,
-                        backgroundColor: ColorE.LIST_ITEM_BGD,
-                        borderRadius: 0,
-                        border: "none",
-                        outlineWidth: 0,
-                        outline: `1px solid ${ColorE.LIST_ITEM_BGD} !important`,
-                        color: ColorE.TEXT_COLOR,
-                      };
-                    },
-                    option: (provided, { isFocused, isSelected }) => {
-                      return {
-                        ...provided,
-                        backgroundColor: isFocused
-                          ? ColorE.LIST_ITEM_HOVERED_BGD
-                          : isSelected
-                          ? ColorE.LIST_ITEM_ACTIVE_BGD
-                          : ColorE.LIST_ITEM_BGD,
-                      };
-                    },
-                  }}
+                <SelectInput
                   value={
-                    (item as any).launcher
+                    (item as IGameStore).launcher
                       ? {
-                          value: (item as any).launcher,
-                          label: (item as any).launcher,
+                          value: (item as IGameStore).launcher,
+                          label: (item as IGameStore).launcher,
                         }
-                      : {
-                          value: "",
-                          label: "None",
-                        }
+                      : { value: "", label: "None" }
                   }
                   onChange={(launcher) =>
                     launcher
-                      ? (item as any).setLauncher((launcher as any).value)
+                      ? (item as IGameStore).setLauncher(launcher.value)
                       : null
                   }
-                  options={[
-                    { value: "", label: "None" },
-                    ...gamesStore.launchers.map((launcher) => ({
-                      value: launcher.id,
-                      label: launcher.name,
-                    })),
-                  ]}
+                  values={gamesStore.launchers.map((launcher) => ({
+                    value: launcher.id,
+                    label: launcher.name,
+                  }))}
                 />
               }
             />
           ) : null}
         </div>
-        <div
-          style={{
-            fontSize: 18,
-            padding: 10,
-            fontWeight: "bold",
-            color: ColorE.TEXT_COLOR,
-          }}
-        >
-          Blocked files
-        </div>
-        <Scrollbars
-          autoHide={false}
-          renderThumbVertical={() => <ScrollbarThumb />}
-        >
-          <div
-            style={{
-              color: ColorE.TEXT_COLOR,
-              padding: 5,
-              // height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              // justifyContent: "space-between",
-            }}
-          >
-            <div>
-              {(item as any).paths.map((path: string) => (
-                <BlockedFileListItem path={path} />
-              ))}
-            </div>
-            <div
-              className="blockedFileAddButton"
-              style={{
-                cursor: "pointer",
-                margin: 10,
-                padding: 10,
-                backgroundColor: ColorE.LIST_ITEM_BGD,
-              }}
-            >
-              <FaPlus />
-            </div>
-          </div>
-        </Scrollbars>
+        <FilesList
+          listTitle={"Blocked files"}
+          filesPaths={(item as any).paths}
+        />
       </Card>
     );
   }

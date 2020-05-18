@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import logo from "../assets/img/logo.png";
+import logo from "../../assets/img/logo.png";
 import Toggle from "react-toggle";
 import { FaCog } from "react-icons/fa";
 import { Card } from "../dumb/card";
