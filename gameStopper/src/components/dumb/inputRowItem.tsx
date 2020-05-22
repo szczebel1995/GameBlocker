@@ -13,14 +13,13 @@ const StyledInputRowItem = styled.div<IInputRowItemProps>`
   grid-template-columns: ${(props) =>
     props.column ? undefined : "minmax(0, 1fr) minmax(0, 1fr)"};
   align-items: center;
-  padding: 5px 10px;
   color: ${(props) => props.theme.colors.primary.text};
   box-sizing: border-box;
 `;
 
 const ColumnWrapper = styled.div<{ side: "left" | "right" }>`
-  width: "100%";
-  align-self: ${(props) => (props.side === "left" ? "start" : "end")};
+  width: 100%;
+  justify-self: ${(props) => (props.side === "left" ? "start" : "end")};
 `;
 
 export const InputRowItem = (props: IInputRowItemProps) => {

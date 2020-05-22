@@ -7,23 +7,20 @@ import {
   LauncherStore,
 } from "../../stores/objects/launcherStore";
 import { CardHeader } from "../dumb/cardHeader";
-import { FaTimes, FaPlus, FaCheck } from "react-icons/fa";
+import { FaTimes, FaCheck } from "react-icons/fa";
 import { InputRowItem } from "../dumb/inputRowItem";
 import { gamesStore } from "../../stores/gamesStore";
-import { ColorE } from "../../enums/color";
-import Select from "react-select";
-import Scrollbars from "react-custom-scrollbars";
-import { BlockedFileListItem } from "../dumb/blockedFileListItem";
 import { ToggleButton } from "../dumb/toggleButton";
-import { ScrollbarThumb } from "../dumb/scrollbarThumb";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { isLauncher } from "../../utils/types";
+import { isGame } from "../../utils/types";
 import { SelectInput } from "../dumb/selectInput";
 import { FilesList } from "../dumb/filesList";
+import { TextInput } from "../dumb/textInput";
+import { randomNumber } from "../../utils";
+import { ButtonGroup } from "../dumb/buttonGroup";
+import { CardSegment } from "../dumb/cardSegment";
 
-export interface IAddCardProps {
-  // addItem: IGameStore | ILauncherStore;
-}
+export interface IAddCardProps {}
 
 interface IAddCardState {
   type: "game" | "launcher";
@@ -38,35 +35,25 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
 
     this.state = {
       type: "game",
-      game: GameStore.create({
-        id: `${Math.floor(Math.random() * 10000000)}`,
-        name: "",
-      }),
-      launcher: LauncherStore.create({
-        id: `${Math.floor(Math.random() * 10000000)}`,
-        name: "",
-      }),
+      game: GameStore.create({ id: `${randomNumber()}`, name: "" }),
+      launcher: LauncherStore.create({ id: `${randomNumber()}`, name: "" }),
     };
   }
 
   render() {
     const item =
       this.state.type === "launcher" ? this.state.launcher : this.state.game;
-    const itemIsGame = !isLauncher(item);
+    const itemIsGame = isGame(item);
 
     return (
       <Card>
         <CardHeader
           title={`Add new ${this.state.type}`}
           buttonLeft={
-            <FaTimes
-              style={{ cursor: "pointer" }}
-              onClick={() => mainViewStore.focusGamesListItem()}
-            />
+            <FaTimes onClick={() => mainViewStore.focusGamesListItem()} />
           }
           buttonRight={
             <FaCheck
-              style={{ cursor: "pointer" }}
               onClick={() => {
                 mainViewStore.focusGamesListItem();
                 itemIsGame
@@ -76,11 +63,11 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             />
           }
         />
-        <div style={{ padding: "10px 5px" }}>
+        <CardSegment>
           <InputRowItem
             label={"Type:"}
             input={
-              <div style={{ display: "flex" }}>
+              <ButtonGroup>
                 <ToggleButton
                   toggledOn={itemIsGame}
                   title={"Game"}
@@ -91,7 +78,6 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                     }))
                   }
                 />
-                <div style={{ width: 10 }}></div>
                 <ToggleButton
                   toggledOn={!itemIsGame}
                   title={"Launcher"}
@@ -102,45 +88,31 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                     }))
                   }
                 />
-              </div>
+              </ButtonGroup>
             }
           />
           <InputRowItem
             label="Name:"
             input={
-              <input
+              <TextInput
+                placeholder={"Name..."}
                 value={item.name}
-                onChange={(e) => item.setName(e.target.value)}
-                style={{
-                  width: "100%",
-                  boxSizing: "border-box",
-                  height: 38,
-                  backgroundColor: ColorE.LIST_ITEM_BGD,
-                  border: "none",
-                  color: ColorE.TEXT_COLOR,
-                  paddingLeft: 10,
-                }}
-                type="text"
+                onChange={(name) => item.setName(name)}
               />
             }
           />
-          {itemIsGame ? (
+          {isGame(item) && (
             <InputRowItem
               label="Launcher:"
               input={
                 <SelectInput
                   value={
-                    (item as IGameStore).launcher
-                      ? {
-                          value: (item as IGameStore).launcher,
-                          label: (item as IGameStore).launcher,
-                        }
+                    item.launcher
+                      ? { value: item.launcher, label: item.launcher }
                       : { value: "", label: "None" }
                   }
                   onChange={(launcher) =>
-                    launcher
-                      ? (item as IGameStore).setLauncher(launcher.value)
-                      : null
+                    launcher ? item.setLauncher(launcher.value) : null
                   }
                   values={gamesStore.launchers.map((launcher) => ({
                     value: launcher.id,
@@ -149,12 +121,33 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
                 />
               }
             />
-          ) : null}
-        </div>
-        <FilesList
-          listTitle={"Blocked files"}
-          filesPaths={(item as any).paths}
-        />
+          )}
+        </CardSegment>
+        <CardSegment height={"100%"}>
+          <FilesList
+            listTitle={"Blocked files"}
+            // filesPaths={(item as any).paths}
+            filesPaths={[
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+              "sdfgsdsgf",
+            ]}
+            onFileAdded={(path) => item.addPath(path)}
+          />
+        </CardSegment>
       </Card>
     );
   }

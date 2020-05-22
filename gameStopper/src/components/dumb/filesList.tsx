@@ -9,6 +9,7 @@ export interface IFilesListProps {
   filesPaths: string[];
   listTitle: string;
   height?: number | string;
+  onFileAdded: (path: string) => any;
 }
 
 export const FilesList = (props: IFilesListProps) => {
@@ -24,14 +25,19 @@ export const FilesList = (props: IFilesListProps) => {
         style={{
           textAlign: "center",
           fontSize: 18,
-          padding: 10,
+          // padding: 10,
           fontWeight: "bold",
           color: ColorE.TEXT_COLOR,
         }}
       >
         {props.listTitle}
       </div>
-      <div style={{ height: props.height ? props.height : "100%" }}>
+      <div
+        style={{
+          height: props.height ? props.height : "100%",
+          margin: "10px 0px",
+        }}
+      >
         <Scrollbars
           autoHide={false}
           renderThumbVertical={() => <ScrollbarThumb />}
@@ -39,31 +45,38 @@ export const FilesList = (props: IFilesListProps) => {
           <div
             style={{
               color: ColorE.TEXT_COLOR,
-              padding: 5,
+              padding: "0px 10px 0px 0px",
               display: "flex",
               flexDirection: "column",
             }}
           >
-            <div>
-              {props.filesPaths.map((path) => (
-                <BlockedFileListItem path={path} />
-              ))}
-            </div>
-            <div
-              className="blockedFileAddButton"
-              style={{
-                textAlign: "center",
-                cursor: "pointer",
-                margin: 10,
-                padding: 10,
-                backgroundColor: ColorE.LIST_ITEM_BGD,
-              }}
-            >
-              <FaPlus />
-            </div>
+            {props.filesPaths.map((path) => (
+              <BlockedFileListItem path={path} />
+            ))}
           </div>
         </Scrollbars>
       </div>
+      <label
+        className="blockedFileAddButton"
+        style={{
+          textAlign: "center",
+          cursor: "pointer",
+          padding: 10,
+          backgroundColor: ColorE.LIST_ITEM_BGD,
+        }}
+      >
+        <input
+          hidden
+          type="file"
+          onChange={(e) => {
+            const filePath = e.target.files?.item(0)?.path;
+            if (filePath) {
+              console.log(filePath);
+            }
+          }}
+        />
+        <FaPlus />
+      </label>
     </div>
   );
 };
