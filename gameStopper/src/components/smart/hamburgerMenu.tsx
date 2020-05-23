@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { push as Menu } from "react-burger-menu";
+import { slide as Menu } from "react-burger-menu";
 import { InputRowItem } from "../dumb/inputRowItem";
 import Toggle from "react-toggle";
 import { styled } from "../../themes";
@@ -10,7 +10,7 @@ export interface IHamburgerMenuProps {}
 
 const MenuContentWrapper = styled.div`
   height: 100%;
-  /* display: flex !important; */
+  display: flex !important;
   flex-direction: column;
   justify-content: space-between;
   background-color: ${(props) => props.theme.colors.secondary.normal};
@@ -19,6 +19,7 @@ const MenuContentWrapper = styled.div`
   padding-bottom: 20px;
   box-sizing: border-box;
   align-items: center;
+  outline: none;
   & > a {
     color: ${(props) => props.theme.colors.secondary.text};
   }
@@ -34,7 +35,9 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
   render() {
     return (
       <Menu
-        styles={{ bmBurgerButton: { display: "none" } }}
+        styles={{
+          bmBurgerButton: { display: "none" },
+        }}
         isOpen={mainViewStore.settingsOpened}
         right
         onStateChange={({ isOpen }) =>
@@ -61,10 +64,10 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
               label={
                 (
                   <div>
-                    <div style={{ fontWeight: "bold" }}>Contact:</div>
-                    <a /* style={{ color: ColorE.TEXT_COLOR }} */ href="">
-                      contact@gameblocker.com
-                    </a>
+                    <div>
+                      <b>Contact:</b>
+                    </div>
+                    <a href="">contact@gameblocker.com</a>
                   </div>
                 ) as any
               }
@@ -75,21 +78,17 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
               label={
                 (
                   <div>
-                    <div style={{ fontWeight: "bold" }}>
-                      Support this project:
+                    <div>
+                      <b>Support this project:</b>
                     </div>
-                    <a /* style={{ color: ColorE.TEXT_COLOR }} */ href="">
-                      paypal.me
-                    </a>
+                    <a href="">paypal.me</a>
                   </div>
                 ) as any
               }
               input={""}
             />
           </div>
-          <MenuFooter style={{ opacity: 0.8, fontSize: 14 }}>
-            2020 © GameStopper
-          </MenuFooter>
+          <MenuFooter>2020 © GameStopper</MenuFooter>
         </MenuContentWrapper>
       </Menu>
     );

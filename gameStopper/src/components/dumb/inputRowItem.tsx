@@ -8,7 +8,7 @@ export interface IInputRowItemProps {
   column?: boolean;
 }
 
-const StyledInputRowItem = styled.div<IInputRowItemProps>`
+const StyledInputRowItem = styled.div<{ column?: boolean }>`
   display: grid;
   grid-template-columns: ${(props) =>
     props.column ? undefined : "minmax(0, 1fr) minmax(0, 1fr)"};
@@ -24,7 +24,7 @@ const ColumnWrapper = styled.div<{ side: "left" | "right" }>`
 
 export const InputRowItem = (props: IInputRowItemProps) => {
   return (
-    <StyledInputRowItem {...props}>
+    <StyledInputRowItem column={props.column}>
       <ColumnWrapper side={"left"}>{props.label}</ColumnWrapper>
       <ColumnWrapper side={"right"}>{props.input}</ColumnWrapper>
     </StyledInputRowItem>

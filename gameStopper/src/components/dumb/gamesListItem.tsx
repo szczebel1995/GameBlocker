@@ -20,7 +20,7 @@ const getBackgroundColor = (props: IGamesListItemProps & { theme: Theme }) => {
   if (isFocused) {
     return colors.secondary.bright;
   } else if (isSeparator) {
-    return colors.secondary.normal;
+    return colors.secondary.dim;
   } else {
     return colors.primary.normal;
   }

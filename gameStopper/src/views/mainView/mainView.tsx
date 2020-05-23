@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Header } from "../../components/smart/header";
+import { HeaderRight } from "../../components/smart/headerRight";
 import { GamesList } from "../../components/smart/gamesList";
 import { Card } from "../../components/dumb/card";
 import logo from "../../assets/img/logo.png";
@@ -10,18 +10,16 @@ import { AddCard } from "../../components/smart/addCard";
 import { ColorE } from "../../enums/color";
 import { HamburgerMenu } from "../../components/smart/hamburgerMenu";
 import { gamesStore } from "../../stores/gamesStore";
+import { LogoWithName } from "../../components/dumb/logoWithName";
 
 @observer
 export class MainView extends React.Component {
   render() {
-    const style = {
-      menuRowStyle: { display: "flex", justifyContent: "space-between" },
-    };
-
     return (
       <div id="outer-container">
         <HamburgerMenu />
-        <div
+
+        <main
           id="page-wrap"
           // id="outer-container"
           style={{
@@ -37,9 +35,8 @@ export class MainView extends React.Component {
             columnGap: 20,
           }}
         >
-          <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }}>
-            <Header />
-          </div>
+          <LogoWithName />
+          <HeaderRight />
           <GamesList />
           {mainViewStore.currentRightCard === "edit" ? (
             <EditCard
@@ -64,7 +61,7 @@ export class MainView extends React.Component {
               </div>
             </Card>
           )}
-        </div>
+        </main>
       </div>
     );
   }
