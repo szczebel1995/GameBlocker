@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ILauncherStore } from "../../stores/objects/launcherStore";
 import { IGameStore } from "../../stores/objects/gameStore";
-import { ColorE } from "../../enums/color";
-import { styled } from "../../themes";
+import { styled, Theme } from "../../themes";
 import { isLauncher } from "../../utils/types";
+import { css } from "@emotion/core";
 
 export interface IGamesListItemProps {
   item?: ILauncherStore | IGameStore;
@@ -12,18 +12,29 @@ export interface IGamesListItemProps {
   focused?: boolean;
 }
 
+const getBackgroundColor = (props: IGamesListItemProps & { theme: Theme }) => {
+  const { colors } = props.theme;
+  const isSeparator = props.title || isLauncher(props.item);
+  const isFocused = props.focused;
+
+  if (isFocused) {
+    return colors.secondary.bright;
+  } else if (isSeparator) {
+    return colors.secondary.normal;
+  } else {
+    return colors.primary.normal;
+  }
+};
+
 const StyledGamesListItem = styled.div<IGamesListItemProps>`
-  cursor: "pointer";
-  padding: 10;
+  cursor: pointer;
+  padding: 10px;
   color: ${(props) => props.theme.colors.secondary.text};
-  background-color: ${(props) =>
-    props.focused
-      ? props.theme.colors.secondary.bright
-      : props.title || isLauncher(props.item)
-      ? props.theme.colors.secondary.normal
-      : props.theme.colors.primary.normal};
+  background-color: ${(props) => getBackgroundColor(props)};
   font-weight: ${(props) =>
     props.title || isLauncher(props.item) ? "bold" : undefined};
+  text-align: ${(props) =>
+    props.title || isLauncher(props.item) ? "center" : null};
   :hover {
     background-color: ${(props) => props.theme.colors.secondary.bright};
   }
@@ -32,7 +43,7 @@ const StyledGamesListItem = styled.div<IGamesListItemProps>`
 export const GamesListItem = (props: IGamesListItemProps) => {
   return (
     <StyledGamesListItem {...props}>
-      <div>{props.item ? props.item.name : props.title}</div>
+      {props.item ? props.item.name : props.title}
     </StyledGamesListItem>
   );
 };

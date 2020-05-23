@@ -11,9 +11,10 @@ const StatusWrapper = styled.div`
 `;
 
 const StatusMessage = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   padding: 20px;
   opacity: 0.7;
+  text-align: center;
 `;
 
 export const Status = ({
@@ -21,8 +22,8 @@ export const Status = ({
   message,
   bottomRow,
 }: {
-  icon: any;
   message: string;
+  icon?: any;
   bottomRow?: any;
 }) => {
   return (

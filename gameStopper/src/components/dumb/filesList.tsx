@@ -3,7 +3,9 @@ import Scrollbars from "react-custom-scrollbars";
 import { ScrollbarThumb } from "./scrollbarThumb";
 import { BlockedFileListItem } from "./blockedFileListItem";
 import { FaPlus } from "react-icons/fa";
-import { ColorE } from "../../enums/color";
+import { FileInputButton } from "./fileInputButton";
+import { styled } from "../../themes";
+import { Status } from "./status";
 
 export interface IFilesListProps {
   filesPaths: string[];
@@ -12,71 +14,53 @@ export interface IFilesListProps {
   onFileAdded: (path: string) => any;
 }
 
+const ListTitle = styled.div`
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: ${(props) => props.theme.colors.primary.text};
+`;
+
+const ListWrapper = styled.div<{ height?: number | string }>`
+  height: ${(props) => (props.height ? props.height : "100%")};
+  margin: 10px 0px;
+`;
+
+const ListContentWrapper = styled.div`
+  padding-right: 10px;
+`;
+
+const StyledFilesList = styled.div<{ height?: number | string }>`
+  display: flex;
+  flex-direction: column;
+  height: ${(props) => (props.height ? props.height : "100%")};
+`;
+
 export const FilesList = (props: IFilesListProps) => {
+  const listIsEmpty = props.filesPaths.length <= 0;
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: props.height ? props.height : "100%",
-      }}
-    >
-      <div
-        style={{
-          textAlign: "center",
-          fontSize: 18,
-          // padding: 10,
-          fontWeight: "bold",
-          color: ColorE.TEXT_COLOR,
-        }}
-      >
-        {props.listTitle}
-      </div>
-      <div
-        style={{
-          height: props.height ? props.height : "100%",
-          margin: "10px 0px",
-        }}
-      >
-        <Scrollbars
-          autoHide={false}
-          renderThumbVertical={() => <ScrollbarThumb />}
-        >
-          <div
-            style={{
-              color: ColorE.TEXT_COLOR,
-              padding: "0px 10px 0px 0px",
-              display: "flex",
-              flexDirection: "column",
-            }}
+    <StyledFilesList height={props.height}>
+      <ListTitle>{props.listTitle}</ListTitle>
+      <ListWrapper height={props.height}>
+        {listIsEmpty ? (
+          <Status message={"No blocked files"} />
+        ) : (
+          <Scrollbars
+            autoHide={false}
+            renderThumbVertical={() => <ScrollbarThumb />}
           >
-            {props.filesPaths.map((path) => (
-              <BlockedFileListItem path={path} />
-            ))}
-          </div>
-        </Scrollbars>
-      </div>
-      <label
-        className="blockedFileAddButton"
-        style={{
-          textAlign: "center",
-          cursor: "pointer",
-          padding: 10,
-          backgroundColor: ColorE.LIST_ITEM_BGD,
-        }}
-      >
-        <input
-          hidden
-          type="file"
-          onChange={(e) => {
-            const filePath = e.target.files?.item(0)?.path;
-            if (filePath) {
-              console.log(filePath);
-            }
-          }}
-        />
-        <FaPlus />
-      </label>
-    </div>
+            <ListContentWrapper>
+              {props.filesPaths.map((path) => (
+                <BlockedFileListItem path={path} />
+              ))}
+            </ListContentWrapper>
+          </Scrollbars>
+        )}
+      </ListWrapper>
+      <FileInputButton
+        icon={<FaPlus />}
+        onFileChosen={(path) => console.log(path)}
+      />
+    </StyledFilesList>
   );
 };

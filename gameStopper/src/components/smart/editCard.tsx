@@ -1,19 +1,19 @@
-import * as React from "react";
 import { observer } from "mobx-react";
-import { InputRowItem } from "../dumb/inputRowItem";
-import { FaTrash, FaTimes } from "react-icons/fa";
-import { CardHeader } from "../dumb/cardHeader";
-import { Card } from "../dumb/card";
-import { gamesStore } from "../../stores/gamesStore";
-import { ILauncherStore } from "../../stores/objects/launcherStore";
-import { IGameStore } from "../../stores/objects/gameStore";
 import { onSnapshot } from "mobx-state-tree";
-import { isLauncher } from "../../utils/types";
-import { ColorE } from "../../enums/color";
+import * as React from "react";
+import { FaTimes, FaTrash } from "react-icons/fa";
+import { gamesStore } from "../../stores/gamesStore";
+import { IGameStore } from "../../stores/objects/gameStore";
+import { ILauncherStore } from "../../stores/objects/launcherStore";
+import { isLauncher, isGame } from "../../utils/types";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
+import { Card } from "../dumb/card";
+import { CardHeader } from "../dumb/cardHeader";
 import { FilesList } from "../dumb/filesList";
+import { InputRowItem } from "../dumb/inputRowItem";
 import { SelectInput } from "../dumb/selectInput";
 import { TextInput } from "../dumb/textInput";
+import { CardSegment } from "../dumb/cardSegment";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -28,7 +28,7 @@ export class EditCard extends React.Component<IEditCardProps> {
   }
 
   render() {
-    const item = mainViewStore.focusedGamesListItem;
+    const item = this.props.editedItem; //mainViewStore.focusedGamesListItem;
     const itemIsGame = !isLauncher(item);
 
     if (!item) {
@@ -55,7 +55,7 @@ export class EditCard extends React.Component<IEditCardProps> {
             />
           }
         />
-        <div style={{ padding: "10px 5px" }}>
+        <CardSegment>
           <InputRowItem
             label="Name:"
             input={
@@ -65,7 +65,7 @@ export class EditCard extends React.Component<IEditCardProps> {
               />
             }
           />
-          {itemIsGame ? (
+          {isGame(item) ? (
             <InputRowItem
               label="Launcher:"
               input={
@@ -94,12 +94,14 @@ export class EditCard extends React.Component<IEditCardProps> {
               }
             />
           ) : null}
-        </div>
-        <FilesList
-          filesPaths={item.paths}
-          listTitle="Blocked files"
-          onFileAdded={(path) => item.addPath(path)}
-        />
+        </CardSegment>
+        <CardSegment height="100%">
+          <FilesList
+            filesPaths={item.paths}
+            listTitle="Blocked files"
+            onFileAdded={(path) => item.addPath(path)}
+          />
+        </CardSegment>
       </Card>
     );
   }

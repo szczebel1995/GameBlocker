@@ -9,7 +9,7 @@ const StyledButtonGroup = styled.div`
   display: grid;
   grid-template-columns: repeat(
     ${(props) => React.Children.count(props.children)},
-    minmax(10px, auto)
+    minmax(10px, max-content)
   );
   grid-column-gap: 10px;
 `;

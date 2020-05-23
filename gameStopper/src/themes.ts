@@ -4,7 +4,7 @@ export const themes: { dark: Theme } = {
   dark: {
     colors: {
       primary: {
-        bright: "",
+        bright: "#383838",
         normal: "#2A2A2A",
         dim: "#191919",
         text: "white",

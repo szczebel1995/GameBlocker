@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ColorE } from "../../enums/color";
 import { styled, themes } from "../../themes";
 import { css } from "@emotion/core";
 

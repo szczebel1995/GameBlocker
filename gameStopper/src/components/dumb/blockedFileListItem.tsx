@@ -7,7 +7,7 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 5px 10px; */
+  color: ${(props) => props.theme.colors.primary.text};
   opacity: 0.75;
   :hover {
     opacity: 1;

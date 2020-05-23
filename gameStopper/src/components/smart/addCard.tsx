@@ -1,24 +1,24 @@
-import * as React from "react";
 import { observer } from "mobx-react";
-import { Card } from "../dumb/card";
-import { IGameStore, GameStore } from "../../stores/objects/gameStore";
+import * as React from "react";
+import { FaCheck, FaTimes } from "react-icons/fa";
+import { gamesStore } from "../../stores/gamesStore";
+import { GameStore, IGameStore } from "../../stores/objects/gameStore";
 import {
   ILauncherStore,
   LauncherStore,
 } from "../../stores/objects/launcherStore";
-import { CardHeader } from "../dumb/cardHeader";
-import { FaTimes, FaCheck } from "react-icons/fa";
-import { InputRowItem } from "../dumb/inputRowItem";
-import { gamesStore } from "../../stores/gamesStore";
-import { ToggleButton } from "../dumb/toggleButton";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { isGame } from "../../utils/types";
-import { SelectInput } from "../dumb/selectInput";
-import { FilesList } from "../dumb/filesList";
-import { TextInput } from "../dumb/textInput";
 import { randomNumber } from "../../utils";
+import { isGame } from "../../utils/types";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { ButtonGroup } from "../dumb/buttonGroup";
+import { Card } from "../dumb/card";
+import { CardHeader } from "../dumb/cardHeader";
 import { CardSegment } from "../dumb/cardSegment";
+import { FilesList } from "../dumb/filesList";
+import { InputRowItem } from "../dumb/inputRowItem";
+import { SelectInput } from "../dumb/selectInput";
+import { TextInput } from "../dumb/textInput";
+import { ToggleButton } from "../dumb/toggleButton";
 
 export interface IAddCardProps {}
 
@@ -126,25 +126,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
         <CardSegment height={"100%"}>
           <FilesList
             listTitle={"Blocked files"}
-            // filesPaths={(item as any).paths}
-            filesPaths={[
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-              "sdfgsdsgf",
-            ]}
+            filesPaths={(item as any).paths}
             onFileAdded={(path) => item.addPath(path)}
           />
         </CardSegment>

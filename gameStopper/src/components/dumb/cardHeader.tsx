@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ColorE } from "../../enums/color";
 import { styled } from "../../themes";
 import { Clickable } from "./clickable";
 

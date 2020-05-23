@@ -61,4 +61,4 @@ export const MainViewStore = types
     };
   });
 
-export const mainViewStore = MainViewStore.create({ currentRightCard: "add" });
+export const mainViewStore = MainViewStore.create({});

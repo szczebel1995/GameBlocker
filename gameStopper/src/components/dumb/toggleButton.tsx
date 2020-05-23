@@ -1,6 +1,7 @@
 import * as React from "react";
-import { styled } from "../../themes";
+import { styled, Theme } from "../../themes";
 import { StyledButton } from "./button";
+import { css } from "@emotion/core";
 
 export interface IButtonProps {
   toggledOn: boolean;
@@ -8,23 +9,23 @@ export interface IButtonProps {
   onClick: () => any;
 }
 
-const StyledToggleButton = styled(StyledButton)<IButtonProps>`
-  background-color: ${(props) =>
-    props.toggledOn
-      ? props.theme.colors.secondary.normal
-      : props.theme.colors.primary.normal};
-  border-color: ${(props) =>
-    props.toggledOn ? props.theme.colors.secondary.normal : "transparent"};
+const selectedStyle = ({ colors }: Theme) => css`
+  background-color: ${colors.secondary.normal};
+  border-color: ${colors.secondary.normal};
 `;
 
-const Title = styled.div`
-  margin-top: -2px;
+const notSelectedStyle = ({ colors }: Theme) => css`
+  background-color: ${colors.primary.normal};
+  border-color: transparent;
+`;
+
+const StyledToggleButton = styled(StyledButton)<IButtonProps>`
+  ${(props) =>
+    props.toggledOn
+      ? selectedStyle(props.theme)
+      : notSelectedStyle(props.theme)}
 `;
 
 export const ToggleButton = (props: IButtonProps) => {
-  return (
-    <StyledToggleButton {...props}>
-      <Title>{props.title}</Title>
-    </StyledToggleButton>
-  );
+  return <StyledToggleButton {...props}>{props.title}</StyledToggleButton>;
 };

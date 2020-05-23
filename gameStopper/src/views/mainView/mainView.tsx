@@ -9,6 +9,7 @@ import { EditCard } from "../../components/smart/editCard";
 import { AddCard } from "../../components/smart/addCard";
 import { ColorE } from "../../enums/color";
 import { HamburgerMenu } from "../../components/smart/hamburgerMenu";
+import { gamesStore } from "../../stores/gamesStore";
 
 @observer
 export class MainView extends React.Component {
@@ -41,7 +42,12 @@ export class MainView extends React.Component {
           </div>
           <GamesList />
           {mainViewStore.currentRightCard === "edit" ? (
-            <EditCard editedItem={mainViewStore.focusedGamesListItem as any} />
+            <EditCard
+              editedItem={
+                gamesStore
+                  .games[0] /* mainViewStore.focusedGamesListItem as any */
+              }
+            />
           ) : mainViewStore.currentRightCard === "add" ? (
             <AddCard />
           ) : (
