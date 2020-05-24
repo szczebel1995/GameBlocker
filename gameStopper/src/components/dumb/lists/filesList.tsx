@@ -50,8 +50,8 @@ export const FilesList = (props: IFilesListProps) => {
             renderThumbVertical={() => <ScrollbarThumb />}
           >
             <ListContentWrapper>
-              {props.filesPaths.map((path) => (
-                <FileListItem path={path} />
+              {props.filesPaths.map((path, i) => (
+                <FileListItem key={`${path}${i}`} path={path} />
               ))}
             </ListContentWrapper>
           </Scrollbars>

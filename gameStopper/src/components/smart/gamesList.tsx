@@ -9,6 +9,7 @@ import { Card } from "../dumb/cards/card";
 import { CardHeader } from "../dumb/cards/cardHeader";
 import { GamesListItem } from "../dumb/lists/gamesListItem";
 import { ScrollbarThumb } from "../dumb/scrollbarThumb";
+import { GamesListStatus } from "./gamesListStatus";
 
 @observer
 export class GamesList extends React.Component {
@@ -37,44 +38,41 @@ export class GamesList extends React.Component {
           autoHide={false}
           renderThumbVertical={() => <ScrollbarThumb />}
         >
-          {
-            // <GamesListStatus />
-            false || (
-              <div>
-                {launchersAndThierGames.map((item) => (
-                  <GamesListItem
-                    item={item}
-                    onClick={() =>
-                      mainViewStore.focusGamesListItem(
-                        gamesStore.gamesMap.get(item.id)
-                      )
-                    }
-                    focused={
-                      false
-                      // mainViewStore.focusedGamesListItem &&
-                      // mainViewStore.focusedGamesListItem.id === item.id
-                    }
-                  />
-                ))}
-                <GamesListItem title="Rest of the games" />
-                {launcherlessGames.map((game) => (
-                  <GamesListItem
-                    onClick={() =>
-                      mainViewStore.focusGamesListItem(
-                        gamesStore.gamesMap.get(game.id)
-                      )
-                    }
-                    item={game}
-                    focused={
-                      false
-                      // mainViewStore.focusedGamesListItem &&
-                      // mainViewStore.focusedGamesListItem.id === game.id
-                    }
-                  />
-                ))}
-              </div>
-            )
-          }
+          {<GamesListStatus /> || (
+            <div>
+              {launchersAndThierGames.map((item) => (
+                <GamesListItem
+                  item={item}
+                  onClick={() =>
+                    mainViewStore.focusGamesListItem(
+                      gamesStore.gamesMap.get(item.id)
+                    )
+                  }
+                  focused={
+                    false
+                    // mainViewStore.focusedGamesListItem &&
+                    // mainViewStore.focusedGamesListItem.id === item.id
+                  }
+                />
+              ))}
+              <GamesListItem title="Rest of the games" />
+              {launcherlessGames.map((game) => (
+                <GamesListItem
+                  onClick={() =>
+                    mainViewStore.focusGamesListItem(
+                      gamesStore.gamesMap.get(game.id)
+                    )
+                  }
+                  item={game}
+                  focused={
+                    false
+                    // mainViewStore.focusedGamesListItem &&
+                    // mainViewStore.focusedGamesListItem.id === game.id
+                  }
+                />
+              ))}
+            </div>
+          )}
         </Scrollbar>
       </Card>
     );

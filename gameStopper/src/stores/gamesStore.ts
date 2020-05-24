@@ -27,20 +27,11 @@ export const GamesStore = types
     };
   })
   .actions((self) => {
-    const afterCreate = () => {
-      const game = GameStore.create({
-        id: "sdfjllskdfj",
-        name: "Legends of Runeterra",
-      });
-      addGame(game);
-    };
-
     const afterAttach = () => {
       init();
     };
 
     const init = flow(function* () {
-      console.log("@_@", self.gamesMap);
       const err = yield loadSavedGamesAndLaunchers();
       if (err) {
         self.inited = false;
@@ -145,7 +136,6 @@ export const GamesStore = types
     };
 
     return {
-      afterCreate,
       afterAttach,
       addLauncher,
       addGame,
