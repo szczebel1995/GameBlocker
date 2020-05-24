@@ -4,7 +4,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "emotion-theming";
 import { themes } from "../../../themes";
-import { ToggleButton } from "../toggleButton";
+import { ToggleButton } from "../buttons/toggleButton";
 
 it("renders without crashing", () => {
   const card = render(

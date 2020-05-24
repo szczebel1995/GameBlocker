@@ -10,15 +10,15 @@ import {
 import { randomNumber } from "../../utils";
 import { isGame } from "../../utils/types";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { ButtonGroup } from "../dumb/buttonGroup";
-import { Card } from "../dumb/card";
-import { CardHeader } from "../dumb/cardHeader";
-import { CardSegment } from "../dumb/cardSegment";
-import { FilesList } from "../dumb/filesList";
-import { InputRowItem } from "../dumb/inputRowItem";
-import { SelectInput } from "../dumb/selectInput";
-import { TextInput } from "../dumb/textInput";
-import { ToggleButton } from "../dumb/toggleButton";
+import { Card } from "../dumb/cards/card";
+import { CardHeader } from "../dumb/cards/cardHeader";
+import { FilesList } from "../dumb/lists/filesList";
+import { InputRow } from "../dumb/inputs/inputRow";
+import { SelectInput } from "../dumb/inputs/selectInput";
+import { TextInput } from "../dumb/inputs/textInput";
+import { ToggleButton } from "../dumb/buttons/toggleButton";
+import { CardSegment } from "../dumb/cards/cardSegment";
+import { ButtonGroup } from "../dumb/buttons/buttonGroup";
 
 export interface IAddCardProps {}
 
@@ -64,7 +64,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
           }
         />
         <CardSegment>
-          <InputRowItem
+          <InputRow
             label={"Type:"}
             input={
               <ButtonGroup>
@@ -91,7 +91,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
               </ButtonGroup>
             }
           />
-          <InputRowItem
+          <InputRow
             label="Name:"
             input={
               <TextInput
@@ -102,7 +102,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             }
           />
           {isGame(item) && (
-            <InputRowItem
+            <InputRow
               label="Launcher:"
               input={
                 <SelectInput

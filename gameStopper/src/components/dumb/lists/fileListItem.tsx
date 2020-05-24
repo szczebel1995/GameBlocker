@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FaTimes } from "react-icons/fa";
-import { styled } from "../../themes";
+import { styled } from "../../../themes";
 
 const ListItem = styled.div`
   cursor: pointer;
@@ -15,11 +15,11 @@ const ListItem = styled.div`
   }
 `;
 
-export interface IBlockedFileListItemProps {
+export interface IFileListItemProps {
   path: string;
 }
 
-export const BlockedFileListItem = (props: IBlockedFileListItemProps) => {
+export const FileListItem = (props: IFileListItemProps) => {
   const fileName = props.path.split("/")[props.path.split("/").length - 1];
 
   return (

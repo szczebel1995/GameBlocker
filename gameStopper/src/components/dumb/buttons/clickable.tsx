@@ -1,4 +1,4 @@
-import { styled } from "../../themes";
+import { styled } from "../../../themes";
 
 export const Clickable = styled.div`
   cursor: pointer;

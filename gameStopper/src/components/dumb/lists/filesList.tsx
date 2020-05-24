@@ -1,11 +1,11 @@
 import * as React from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { ScrollbarThumb } from "./scrollbarThumb";
-import { BlockedFileListItem } from "./blockedFileListItem";
+import { ScrollbarThumb } from "../scrollbarThumb";
+import { FileListItem } from "./fileListItem";
 import { FaPlus } from "react-icons/fa";
-import { FileInputButton } from "./fileInputButton";
-import { styled } from "../../themes";
-import { Status } from "./status";
+import { FileInput } from "../inputs/fileInput";
+import { styled } from "../../../themes";
+import { Status } from "../status";
 
 export interface IFilesListProps {
   filesPaths: string[];
@@ -51,16 +51,13 @@ export const FilesList = (props: IFilesListProps) => {
           >
             <ListContentWrapper>
               {props.filesPaths.map((path) => (
-                <BlockedFileListItem path={path} />
+                <FileListItem path={path} />
               ))}
             </ListContentWrapper>
           </Scrollbars>
         )}
       </ListWrapper>
-      <FileInputButton
-        icon={<FaPlus />}
-        onFileChosen={(path) => console.log(path)}
-      />
+      <FileInput icon={<FaPlus />} onFileChosen={(path) => console.log(path)} />
     </StyledFilesList>
   );
 };

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { styled } from "../../themes";
+import { styled } from "../../../themes";
 
-export interface IInputRowItemProps {
+export interface IInputRowProps {
   label: string;
   input: any;
   column?: boolean;
@@ -24,7 +24,7 @@ const ColumnWrapper = styled.div<{ side: "left" | "right"; flex?: boolean }>`
     props.side === "left" ? "flex-start" : "flex-end"};
 `;
 
-export const InputRowItem = (props: IInputRowItemProps) => {
+export const InputRow = (props: IInputRowProps) => {
   return (
     <StyledInputRowItem column={props.column}>
       <ColumnWrapper flex={props.flex} side={"left"}>

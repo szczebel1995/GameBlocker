@@ -4,7 +4,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "emotion-theming";
 import { themes } from "../../../themes";
-import { Clickable } from "../clickable";
+import { Clickable } from "../buttons/clickable";
 
 it("renders without crashing", () => {
   const card = render(

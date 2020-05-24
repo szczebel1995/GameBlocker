@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import * as React from "react";
-import { styled, Theme } from "../../themes";
+import { styled, Theme } from "../../../themes";
 
 export interface IButtonProps
   extends Omit<React.HTMLProps<HTMLButtonElement>, "type"> {

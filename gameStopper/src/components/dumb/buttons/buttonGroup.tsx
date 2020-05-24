@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "../../themes";
+import { styled } from "../../../themes";
 
 export interface IButtonGroupProps {
   columnGap?: number;

@@ -5,12 +5,10 @@ import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
 import { FaPlus } from "react-icons/fa";
 import { gamesStore } from "../../stores/gamesStore";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { Card } from "../dumb/card";
-import { CardHeader } from "../dumb/cardHeader";
-import { Clickable } from "../dumb/clickable";
-import { GamesListItem } from "../dumb/gamesListItem";
+import { Card } from "../dumb/cards/card";
+import { CardHeader } from "../dumb/cards/cardHeader";
+import { GamesListItem } from "../dumb/lists/gamesListItem";
 import { ScrollbarThumb } from "../dumb/scrollbarThumb";
-import { GamesListStatus } from "./gamesListStatus";
 
 @observer
 export class GamesList extends React.Component {
@@ -31,11 +29,7 @@ export class GamesList extends React.Component {
           title={"Games"}
           buttonRight={
             gamesStore.inited ? (
-              <Clickable
-                onClick={() => mainViewStore.toggleAddCardOpened(true)}
-              >
-                <FaPlus />
-              </Clickable>
+              <FaPlus onClick={() => mainViewStore.toggleAddCardOpened(true)} />
             ) : null
           }
         />

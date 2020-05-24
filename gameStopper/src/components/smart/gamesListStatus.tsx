@@ -4,8 +4,8 @@ import Spinner from "react-loader-spinner";
 import { Status } from "../dumb/status";
 import { themes } from "../../themes";
 import { FaSearch } from "react-icons/fa";
-import { Button } from "../dumb/button";
 import { observer } from "mobx-react";
+import { Button } from "../dumb/buttons/button";
 
 @observer
 export class GamesListStatus extends React.Component {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, Theme } from "../../themes";
+import { styled, Theme } from "../../../themes";
 import { StyledButton } from "./button";
 import { css } from "@emotion/core";
 

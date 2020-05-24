@@ -1,11 +1,11 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { slide as Menu } from "react-burger-menu";
-import { InputRowItem } from "../dumb/inputRowItem";
+import { InputRow } from "../dumb/inputs/inputRow";
 import Toggle from "react-toggle";
 import { styled } from "../../themes";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { CardSegment } from "../dumb/cardSegment";
+import { CardSegment } from "../dumb/cards/cardSegment";
 
 export interface IHamburgerMenuProps {
   pageWrapId?: string;
@@ -62,19 +62,19 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
               <Title>Settings</Title>
             </CardSegment>
             <CardSegment>
-              <InputRowItem
+              <InputRow
                 flex
                 label={(<b>Launch at system startup:</b>) as any}
                 input={<Toggle />}
               />
             </CardSegment>
             <CardSegment>
-              <InputRowItem
+              <InputRow
                 column
                 label={(<b>Contact:</b>) as any}
                 input={<a href="">contact@gameblocker.com</a>}
               />
-              <InputRowItem
+              <InputRow
                 column
                 label={(<b>Support this project:</b>) as any}
                 input={<a href="">paypal.me</a>}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Select, { ValueType } from "react-select";
-import { ColorE } from "../../enums/color";
+import { ColorE } from "../../../enums/color";
 
 type OptionType = { label?: string; value?: string };
 

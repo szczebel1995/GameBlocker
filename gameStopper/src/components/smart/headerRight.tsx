@@ -5,7 +5,7 @@ import Toggle from "react-toggle";
 import { blocksStore } from "../../stores/blocksStore";
 import { styled } from "../../themes";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { ButtonGroup } from "../dumb/buttonGroup";
+import { ButtonGroup } from "../dumb/buttons/buttonGroup";
 
 const StyledHeaderRight = styled.div`
   display: flex;

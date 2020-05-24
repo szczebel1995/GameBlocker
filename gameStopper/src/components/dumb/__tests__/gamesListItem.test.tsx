@@ -4,7 +4,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "emotion-theming";
 import { themes } from "../../../themes";
-import { GamesListItem } from "../gamesListItem";
+import { GamesListItem } from "../lists/gamesListItem";
 
 it("renders without crashing", () => {
   const card = render(

@@ -1,6 +1,5 @@
 import * as React from "react";
-import { styled } from "../../themes";
-import { InputProps } from "react-select";
+import { styled } from "../../../themes";
 
 export interface ITextInputProps
   extends Omit<React.HTMLProps<HTMLInputElement>, "onChange"> {

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { styled } from "../../themes";
-import { Clickable } from "./clickable";
+import { styled } from "../../../themes";
+import { Clickable } from "../buttons/clickable";
 
 export interface ICardHeaderProps {
   title: string;

@@ -7,13 +7,13 @@ import { IGameStore } from "../../stores/objects/gameStore";
 import { ILauncherStore } from "../../stores/objects/launcherStore";
 import { isLauncher, isGame } from "../../utils/types";
 import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { Card } from "../dumb/card";
-import { CardHeader } from "../dumb/cardHeader";
-import { FilesList } from "../dumb/filesList";
-import { InputRowItem } from "../dumb/inputRowItem";
-import { SelectInput } from "../dumb/selectInput";
-import { TextInput } from "../dumb/textInput";
-import { CardSegment } from "../dumb/cardSegment";
+import { Card } from "../dumb/cards/card";
+import { CardHeader } from "../dumb/cards/cardHeader";
+import { FilesList } from "../dumb/lists/filesList";
+import { InputRow } from "../dumb/inputs/inputRow";
+import { SelectInput } from "../dumb/inputs/selectInput";
+import { TextInput } from "../dumb/inputs/textInput";
+import { CardSegment } from "../dumb/cards/cardSegment";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -56,7 +56,7 @@ export class EditCard extends React.Component<IEditCardProps> {
           }
         />
         <CardSegment>
-          <InputRowItem
+          <InputRow
             label="Name:"
             input={
               <TextInput
@@ -66,7 +66,7 @@ export class EditCard extends React.Component<IEditCardProps> {
             }
           />
           {isGame(item) ? (
-            <InputRowItem
+            <InputRow
               label="Launcher:"
               input={
                 <SelectInput

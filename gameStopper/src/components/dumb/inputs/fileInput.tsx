@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyledButton } from "./button";
+import { StyledButton } from "../buttons/button";
 
 export interface IFileInputProps {
   icon: any;
@@ -8,7 +8,7 @@ export interface IFileInputProps {
 
 const Label = StyledButton.withComponent("label");
 
-export const FileInputButton = (props: IFileInputProps) => {
+export const FileInput = (props: IFileInputProps) => {
   return (
     <Label primary title={undefined} onClick={() => undefined}>
       <input

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Card } from "../dumb/card";
+import { Card } from "../dumb/cards/card";
 import { Status } from "../dumb/status";
 import { AddCard } from "./addCard";
 import { EditCard } from "./editCard";
