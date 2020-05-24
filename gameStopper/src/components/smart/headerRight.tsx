@@ -5,6 +5,7 @@ import Toggle from "react-toggle";
 import { styled } from "../../themes";
 import { ButtonGroup } from "../dumb/buttons/buttonGroup";
 import { rootStore } from "../../stores/rootStore";
+import { Timer } from "../dumb/timer";
 
 const StyledHeaderRight = styled.div`
   display: flex;
@@ -24,9 +25,10 @@ export class HeaderRight extends React.Component {
     return (
       <StyledHeaderRight>
         <ButtonGroup columnGap={15}>
-          {blocksStore.blockOn && (
+          {blocksStore.blockOn && blocksStore.blockStartTimestamp && (
             <Score>
-              <b>Score:</b> {blocksStore.blockStartTimestamp}
+              <b>Score:</b>{" "}
+              <Timer startTimestamp={blocksStore.blockStartTimestamp} />
             </Score>
           )}
           <Toggle

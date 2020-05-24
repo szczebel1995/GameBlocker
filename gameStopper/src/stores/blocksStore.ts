@@ -42,6 +42,7 @@ export const BlocksStore = types
       if (isError(err)) {
         throw err;
       }
+      self.blockStartTimestamp = Date.now();
       self.blockOn = true;
     });
 
