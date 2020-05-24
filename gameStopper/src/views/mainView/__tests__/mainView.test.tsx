@@ -4,12 +4,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider } from "emotion-theming";
 import { themes } from "../../../themes";
-import { FileListItem } from "../lists/fileListItem";
+import { MainView } from "../mainView";
 
 it("renders without crashing", () => {
   const card = render(
     <ThemeProvider theme={themes.dark}>
-      <FileListItem path={""} />
+      <MainView />
     </ThemeProvider>
   );
 });

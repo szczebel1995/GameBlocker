@@ -1,6 +1,7 @@
 import * as React from "react";
 import Select, { ValueType } from "react-select";
-import { ColorE } from "../../../enums/color";
+import { withTheme } from "emotion-theming";
+import { Theme } from "../../../themes";
 
 type OptionType = { label?: string; value?: string };
 
@@ -10,7 +11,8 @@ export interface ISelectInputProps {
   values: OptionType[];
 }
 
-export const SelectInput = (props: ISelectInputProps) => {
+const _SelectInput = (props: ISelectInputProps & { theme: Theme }) => {
+  const { colors } = props.theme;
   return (
     <Select
       isSearchable={false}
@@ -21,34 +23,34 @@ export const SelectInput = (props: ISelectInputProps) => {
         }),
         valueContainer: (provided, state) => ({
           ...provided,
-          color: ColorE.TEXT_COLOR,
+          color: colors.primary.text,
         }),
         menu: (provided, state) => ({
           ...provided,
-          backgroundColor: ColorE.LIST_ITEM_BGD,
+          backgroundColor: colors.primary.normal,
           borderRadius: 0,
-          color: ColorE.TEXT_COLOR,
+          color: colors.primary.text,
         }),
         singleValue: (provided, state) => ({
           ...provided,
-          color: ColorE.TEXT_COLOR,
+          color: colors.primary.text,
         }),
         control: (provided, state) => ({
           ...provided,
-          backgroundColor: ColorE.LIST_ITEM_BGD,
+          backgroundColor: colors.primary.normal,
           borderRadius: 0,
           border: "none",
           outlineWidth: 0,
-          outline: `1px solid ${ColorE.LIST_ITEM_BGD} !important`,
-          color: ColorE.TEXT_COLOR,
+          outline: `1px solid ${colors.primary.normal} !important`,
+          color: colors.primary.text,
         }),
         option: (provided, { isFocused, isSelected }) => ({
           ...provided,
           backgroundColor: isFocused
-            ? ColorE.LIST_ITEM_HOVERED_BGD
+            ? colors.secondary.bright
             : isSelected
-            ? ColorE.LIST_ITEM_ACTIVE_BGD
-            : ColorE.LIST_ITEM_BGD,
+            ? colors.secondary.normal
+            : colors.primary.normal,
         }),
       }}
       value={props.value}
@@ -61,3 +63,5 @@ export const SelectInput = (props: ISelectInputProps) => {
     />
   );
 };
+
+export const SelectInput = withTheme(_SelectInput);
