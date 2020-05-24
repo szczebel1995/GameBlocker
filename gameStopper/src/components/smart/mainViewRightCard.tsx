@@ -4,20 +4,16 @@ import { Card } from "../dumb/cards/card";
 import { Status } from "../dumb/status";
 import { AddCard } from "./addCard";
 import { EditCard } from "./editCard";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import logo from "../../assets/img/logo.png";
-import { gamesStore } from "../../stores/gamesStore";
+import { rootStore } from "../../stores/rootStore";
 
 @observer
 export class MainViewRightCard extends React.Component {
   render() {
+    const { gamesStore, mainViewStore } = rootStore;
     if (mainViewStore.currentRightCard === "edit") {
       return (
-        <EditCard
-          editedItem={
-            gamesStore.games[0] /* mainViewStore.focusedGamesListItem as any */
-          }
-        />
+        <EditCard editedItem={mainViewStore.focusedGamesListItem as any} />
       );
     } else if (mainViewStore.currentRightCard === "add") {
       return <AddCard />;

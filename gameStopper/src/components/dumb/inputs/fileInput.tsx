@@ -15,7 +15,7 @@ export const FileInput = (props: IFileInputProps) => {
         hidden
         type="file"
         onChange={(e) => {
-          const filePath = e.target.files?.item(0)?.path;
+          const filePath = (e.target.files?.item(0) as any)?.path;
           if (filePath) {
             props.onFileChosen(filePath);
           }

@@ -5,6 +5,9 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import * as psList from "ps-list";
+import { initIpc } from "./ipc";
+
+initIpc();
 
 let win: BrowserWindow | null = null;
 
@@ -19,7 +22,6 @@ function createWindow() {
 
   win.webContents.on("new-window", function (e, url) {
     e.preventDefault();
-    console.log("AYYY");
     shell.openExternal(url);
   });
 
@@ -72,14 +74,3 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
-const huje = async () => {
-  console.log(
-    (await psList({ all: true })).filter((process) =>
-      process.name.includes("steam")
-    ),
-    "eo"
-  );
-};
-huje();
-//

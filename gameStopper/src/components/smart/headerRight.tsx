@@ -2,10 +2,9 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { FaCog } from "react-icons/fa";
 import Toggle from "react-toggle";
-import { blocksStore } from "../../stores/blocksStore";
 import { styled } from "../../themes";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { ButtonGroup } from "../dumb/buttons/buttonGroup";
+import { rootStore } from "../../stores/rootStore";
 
 const StyledHeaderRight = styled.div`
   display: flex;
@@ -21,6 +20,7 @@ const Score = styled.div`
 @observer
 export class HeaderRight extends React.Component {
   render() {
+    const { blocksStore, mainViewStore } = rootStore;
     return (
       <StyledHeaderRight>
         <ButtonGroup columnGap={15}>

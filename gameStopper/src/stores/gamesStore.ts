@@ -2,8 +2,8 @@ import { types, flow, getEnv } from "mobx-state-tree";
 import { LauncherStore, ILauncherStore } from "./objects/launcherStore";
 import { GameStore, IGameStore } from "./objects/gameStore";
 import { zipObject } from "lodash";
-import { types as uTypes } from "util";
 import { IEnvStore } from "./envStore";
+import { isError } from "../utils/types";
 
 export const GamesStore = types
   .model({
@@ -63,11 +63,14 @@ export const GamesStore = types
       const launchers: ILauncherStore[] | Error = yield db.getFromDb(
         "launchers"
       );
-      if (uTypes.isNativeError(games) || uTypes.isNativeError(launchers)) {
-        return uTypes.isNativeError(games) ? games : launchers;
+      if (isError(games) || isError(launchers)) {
+        return isError(games) ? games : launchers;
       }
-      launchers.forEach((launcher) => addLauncher(launcher));
-      games.forEach((game) => addGame(game));
+      console.log(games, launchers);
+      launchers.forEach((launcher) =>
+        addLauncher(LauncherStore.create(launcher as any))
+      );
+      games.forEach((game) => addGame(GameStore.create(game)));
     });
 
     const scanForLaunchers = flow(function* () {
@@ -114,11 +117,11 @@ export const GamesStore = types
 
     const addGameToLauncher = (game: IGameStore, newLauncherId: string) => {
       const launcherToAttachGameTo = self.launchersMap.get(newLauncherId);
-      if (!launcherToAttachGameTo) {
-        throw new Error("cannot add game to launcher that is not in the map");
-      }
       self.launchersMap.get(game.launcher || "")?.removeGame(game.id);
-      launcherToAttachGameTo.addGame(game);
+      if (launcherToAttachGameTo) {
+        // throw new Error("cannot add game to launcher that is not in the map");
+        launcherToAttachGameTo.addGame(game);
+      }
       game.setLauncher(newLauncherId);
     };
 

@@ -156,6 +156,5 @@ export const getAllLauncherFolders = async () => {
     })
   );
 
-  console.log(launchers.map((launcher) => JSON.stringify(launcher)));
   return launchers.map((launcher) => JSON.stringify(launcher));
 };

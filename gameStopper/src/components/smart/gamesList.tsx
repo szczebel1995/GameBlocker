@@ -3,17 +3,17 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { Scrollbars as Scrollbar } from "react-custom-scrollbars";
 import { FaPlus } from "react-icons/fa";
-import { gamesStore } from "../../stores/gamesStore";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { Card } from "../dumb/cards/card";
 import { CardHeader } from "../dumb/cards/cardHeader";
 import { GamesListItem } from "../dumb/lists/gamesListItem";
 import { ScrollbarThumb } from "../dumb/scrollbarThumb";
 import { GamesListStatus } from "./gamesListStatus";
+import { rootStore } from "../../stores/rootStore";
 
 @observer
 export class GamesList extends React.Component {
   render() {
+    const { mainViewStore, gamesStore } = rootStore;
     console.log(mainViewStore.gamesListRerender);
 
     const launchersAndThierGames = flatten(
@@ -38,20 +38,17 @@ export class GamesList extends React.Component {
           autoHide={false}
           renderThumbVertical={() => <ScrollbarThumb />}
         >
-          {<GamesListStatus /> || (
+          {mainViewStore.gamesListStatus ? (
+            <GamesListStatus />
+          ) : (
             <div>
               {launchersAndThierGames.map((item) => (
                 <GamesListItem
                   item={item}
-                  onClick={() =>
-                    mainViewStore.focusGamesListItem(
-                      gamesStore.gamesMap.get(item.id)
-                    )
-                  }
+                  onClick={() => mainViewStore.focusGamesListItem(item)}
                   focused={
-                    false
-                    // mainViewStore.focusedGamesListItem &&
-                    // mainViewStore.focusedGamesListItem.id === item.id
+                    mainViewStore.focusedGamesListItem &&
+                    mainViewStore.focusedGamesListItem.id === item.id
                   }
                 />
               ))}
@@ -65,9 +62,8 @@ export class GamesList extends React.Component {
                   }
                   item={game}
                   focused={
-                    false
-                    // mainViewStore.focusedGamesListItem &&
-                    // mainViewStore.focusedGamesListItem.id === game.id
+                    mainViewStore.focusedGamesListItem &&
+                    mainViewStore.focusedGamesListItem.id === game.id
                   }
                 />
               ))}

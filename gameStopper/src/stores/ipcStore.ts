@@ -1,6 +1,6 @@
 import { types } from "mobx-state-tree";
-// const { ipcRenderer } = window.require("electron");
-import { ipcRenderer } from "electron";
+const { ipcRenderer } = window.require("electron");
+// import { ipcRenderer } from "electron";
 
 export type IIpcStore = typeof IpcStore.Type;
 export const IpcStore = types.model({}).actions((self) => {

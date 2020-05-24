@@ -4,8 +4,8 @@ import { slide as Menu } from "react-burger-menu";
 import { InputRow } from "../dumb/inputs/inputRow";
 import Toggle from "react-toggle";
 import { styled } from "../../themes";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { CardSegment } from "../dumb/cards/cardSegment";
+import { rootStore } from "../../stores/rootStore";
 
 export interface IHamburgerMenuProps {
   pageWrapId?: string;
@@ -41,6 +41,7 @@ const MenuFooter = styled.div`
 @observer
 export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
   render() {
+    const { mainViewStore } = rootStore;
     return (
       <Menu
         styles={{
@@ -64,7 +65,7 @@ export class HamburgerMenu extends React.Component<IHamburgerMenuProps> {
             <CardSegment>
               <InputRow
                 flex
-                label={(<b>Launch at system startup:</b>) as any}
+                label={"Launch at system startup:"}
                 input={<Toggle />}
               />
             </CardSegment>

@@ -1,19 +1,18 @@
 import * as React from "react";
-import { gamesStore } from "../../stores/gamesStore";
 import Spinner from "react-loader-spinner";
 import { Status } from "../dumb/status";
 import { themes } from "../../themes";
 import { FaSearch } from "react-icons/fa";
 import { observer } from "mobx-react";
 import { Button } from "../dumb/buttons/button";
+import { rootStore } from "../../stores/rootStore";
 
 @observer
 export class GamesListStatus extends React.Component {
   render() {
-    const noGamesOrLaunchers =
-      gamesStore.gamesMap.size <= 0 && gamesStore.launchersMap.size <= 0;
+    const { mainViewStore, gamesStore } = rootStore;
 
-    if (!gamesStore.inited) {
+    if (mainViewStore.gamesListStatus === "initing") {
       return (
         <Status
           icon={
@@ -27,7 +26,7 @@ export class GamesListStatus extends React.Component {
           message="Loading games..."
         />
       );
-    } else if (gamesStore.scanning) {
+    } else if (mainViewStore.gamesListStatus === "scanning") {
       return (
         <Status
           icon={
@@ -41,7 +40,7 @@ export class GamesListStatus extends React.Component {
           message="Scanning for games, this might take a while..."
         />
       );
-    } else if (noGamesOrLaunchers) {
+    } else if (mainViewStore.gamesListStatus === "empty") {
       return (
         <Status
           icon={
@@ -56,6 +55,8 @@ export class GamesListStatus extends React.Component {
           }
         />
       );
+    } else {
+      return null;
     }
   }
 }

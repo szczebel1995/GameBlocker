@@ -8,7 +8,6 @@ const explorerExist = async () => {
       (err: any, res: any) => resolve(err ? err : res)
     );
   });
-  console.log(1, policies);
   const realPolicies =
     policies["HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES"]
       .keys;
@@ -26,12 +25,10 @@ const blocksExist = async () => {
       (err, res) => resolve(err ? err : res)
     );
   });
-  console.log(2, types.isNativeError(blocks));
   return !types.isNativeError(blocks);
 };
 
 const createBlocksBase = async () => {
-  console.log("creating");
   const explorerErr = await new Promise((resolve) => {
     regedit.createKey(
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\Explorer",
@@ -85,7 +82,6 @@ export const getBlocks = async () => {
       (err, res) => resolve(err ? err : res)
     );
   });
-  console.log(blocks);
   const realBlocks =
     blocks[
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN"

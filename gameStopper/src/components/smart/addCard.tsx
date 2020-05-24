@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { gamesStore } from "../../stores/gamesStore";
 import { GameStore, IGameStore } from "../../stores/objects/gameStore";
 import {
   ILauncherStore,
@@ -9,7 +8,6 @@ import {
 } from "../../stores/objects/launcherStore";
 import { randomNumber } from "../../utils";
 import { isGame } from "../../utils/types";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { Card } from "../dumb/cards/card";
 import { CardHeader } from "../dumb/cards/cardHeader";
 import { FilesList } from "../dumb/lists/filesList";
@@ -19,6 +17,7 @@ import { TextInput } from "../dumb/inputs/textInput";
 import { ToggleButton } from "../dumb/buttons/toggleButton";
 import { CardSegment } from "../dumb/cards/cardSegment";
 import { ButtonGroup } from "../dumb/buttons/buttonGroup";
+import { rootStore } from "../../stores/rootStore";
 
 export interface IAddCardProps {}
 
@@ -41,6 +40,8 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
   }
 
   render() {
+    const { mainViewStore, gamesStore } = rootStore;
+
     const item =
       this.state.type === "launcher" ? this.state.launcher : this.state.game;
     const itemIsGame = isGame(item);
@@ -128,6 +129,7 @@ export class AddCard extends React.Component<IAddCardProps, IAddCardState> {
             listTitle={"Blocked files"}
             filesPaths={(item as any).paths}
             onFileAdded={(path) => item.addPath(path)}
+            onFileRemoved={(path) => item.removePath(path)}
           />
         </CardSegment>
       </Card>

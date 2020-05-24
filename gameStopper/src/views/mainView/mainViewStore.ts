@@ -1,4 +1,4 @@
-import { types } from "mobx-state-tree";
+import { types, getParent } from "mobx-state-tree";
 import { isLauncher } from "../../utils/types";
 import { GameStore, IGameStore } from "../../stores/objects/gameStore";
 import {
@@ -11,7 +11,7 @@ export const MainViewStore = types
   .model({
     currentRightCard: types.maybe(types.enumeration(["add", "edit"])),
     focusedGamesListItem: types.maybe(
-      types.reference(GameStore || LauncherStore)
+      types.reference(types.union(LauncherStore, GameStore))
     ),
     settingsOpened: types.optional(types.boolean, false),
     searchGameValue: types.maybe(types.string),
@@ -23,6 +23,19 @@ export const MainViewStore = types
       if (self.focusedGamesListItem) {
         return isLauncher(self.focusedGamesListItem) ? "launcher" : "game";
       }
+    },
+    get gamesListStatus() {
+      const { gamesStore } = getParent<any>(self);
+      const noGamesOrLaunchers =
+        gamesStore.gamesMap.size <= 0 && gamesStore.launchersMap.size <= 0;
+
+      return !gamesStore.inited
+        ? "initing"
+        : gamesStore.scanning
+        ? "scanning"
+        : noGamesOrLaunchers
+        ? "empty"
+        : "";
     },
   }))
   .actions((self) => {

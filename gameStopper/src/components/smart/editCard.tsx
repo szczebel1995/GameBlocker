@@ -2,11 +2,9 @@ import { observer } from "mobx-react";
 import { onSnapshot } from "mobx-state-tree";
 import * as React from "react";
 import { FaTimes, FaTrash } from "react-icons/fa";
-import { gamesStore } from "../../stores/gamesStore";
 import { IGameStore } from "../../stores/objects/gameStore";
 import { ILauncherStore } from "../../stores/objects/launcherStore";
 import { isLauncher, isGame } from "../../utils/types";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
 import { Card } from "../dumb/cards/card";
 import { CardHeader } from "../dumb/cards/cardHeader";
 import { FilesList } from "../dumb/lists/filesList";
@@ -14,6 +12,7 @@ import { InputRow } from "../dumb/inputs/inputRow";
 import { SelectInput } from "../dumb/inputs/selectInput";
 import { TextInput } from "../dumb/inputs/textInput";
 import { CardSegment } from "../dumb/cards/cardSegment";
+import { rootStore } from "../../stores/rootStore";
 
 export interface IEditCardProps {
   editedItem: ILauncherStore | IGameStore;
@@ -24,11 +23,14 @@ export class EditCard extends React.Component<IEditCardProps> {
   constructor(props: IEditCardProps) {
     super(props);
 
-    onSnapshot(props.editedItem, () => mainViewStore.forceGamesListRerender());
+    onSnapshot(props.editedItem, () =>
+      rootStore.mainViewStore.forceGamesListRerender()
+    );
   }
 
   render() {
-    const item = this.props.editedItem; //mainViewStore.focusedGamesListItem;
+    const { mainViewStore, gamesStore } = rootStore;
+    const item = this.props.editedItem;
     const itemIsGame = !isLauncher(item);
 
     if (!item) {
@@ -100,6 +102,7 @@ export class EditCard extends React.Component<IEditCardProps> {
             filesPaths={item.paths}
             listTitle="Blocked files"
             onFileAdded={(path) => item.addPath(path)}
+            onFileRemoved={(path) => item.removePath(path)}
           />
         </CardSegment>
       </Card>

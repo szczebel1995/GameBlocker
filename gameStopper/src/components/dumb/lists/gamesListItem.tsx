@@ -21,7 +21,7 @@ const getBackgroundColor = (props: IGamesListItemProps & { theme: Theme }) => {
   } else if (isSeparator) {
     return colors.secondary.dim;
   } else {
-    return colors.primary.normal;
+    return colors.primary.dim;
   }
 };
 

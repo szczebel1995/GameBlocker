@@ -5,6 +5,7 @@ import { styled } from "../../../themes";
 const ListItem = styled.div`
   cursor: pointer;
   display: flex;
+  padding: 5px;
   justify-content: space-between;
   align-items: center;
   color: ${(props) => props.theme.colors.primary.text};
@@ -17,6 +18,7 @@ const ListItem = styled.div`
 
 export interface IFileListItemProps {
   path: string;
+  onRemove: () => any;
 }
 
 export const FileListItem = (props: IFileListItemProps) => {
@@ -25,7 +27,7 @@ export const FileListItem = (props: IFileListItemProps) => {
   return (
     <ListItem>
       {fileName}
-      <FaTimes />
+      <FaTimes onClick={props.onRemove} />
     </ListItem>
   );
 };

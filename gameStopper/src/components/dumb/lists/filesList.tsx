@@ -6,12 +6,14 @@ import { FaPlus } from "react-icons/fa";
 import { FileInput } from "../inputs/fileInput";
 import { styled } from "../../../themes";
 import { Status } from "../status";
+import { observer } from "mobx-react";
 
 export interface IFilesListProps {
   filesPaths: string[];
   listTitle: string;
   height?: number | string;
   onFileAdded: (path: string) => any;
+  onFileRemoved: (path: string) => any;
 }
 
 const ListTitle = styled.div`
@@ -36,28 +38,45 @@ const StyledFilesList = styled.div<{ height?: number | string }>`
   height: ${(props) => (props.height ? props.height : "100%")};
 `;
 
-export const FilesList = (props: IFilesListProps) => {
-  const listIsEmpty = props.filesPaths.length <= 0;
-  return (
-    <StyledFilesList height={props.height}>
-      <ListTitle>{props.listTitle}</ListTitle>
-      <ListWrapper height={props.height}>
-        {listIsEmpty ? (
-          <Status message={"No blocked files"} />
-        ) : (
-          <Scrollbars
-            autoHide={false}
-            renderThumbVertical={() => <ScrollbarThumb />}
-          >
-            <ListContentWrapper>
-              {props.filesPaths.map((path, i) => (
-                <FileListItem key={`${path}${i}`} path={path} />
-              ))}
-            </ListContentWrapper>
-          </Scrollbars>
-        )}
-      </ListWrapper>
-      <FileInput icon={<FaPlus />} onFileChosen={(path) => console.log(path)} />
-    </StyledFilesList>
-  );
-};
+@observer
+export class FilesList extends React.Component<IFilesListProps> {
+  render() {
+    const {
+      filesPaths,
+      height,
+      listTitle,
+      onFileAdded,
+      onFileRemoved,
+    } = this.props;
+    const listIsEmpty = filesPaths.length <= 0;
+    return (
+      <StyledFilesList height={height}>
+        <ListTitle>{listTitle}</ListTitle>
+        <ListWrapper height={height}>
+          {listIsEmpty ? (
+            <Status message={"No blocked files"} />
+          ) : (
+            <Scrollbars
+              autoHide={false}
+              renderThumbVertical={() => <ScrollbarThumb />}
+            >
+              <ListContentWrapper>
+                {filesPaths.map((path, i) => (
+                  <FileListItem
+                    key={`${path}${i}`}
+                    path={path}
+                    onRemove={() => onFileRemoved(path)}
+                  />
+                ))}
+              </ListContentWrapper>
+            </Scrollbars>
+          )}
+        </ListWrapper>
+        <FileInput
+          icon={<FaPlus />}
+          onFileChosen={(path) => onFileAdded(path)}
+        />
+      </StyledFilesList>
+    );
+  }
+}

@@ -4,12 +4,10 @@ import {
   IMSTMap,
   onPatch,
   getSnapshot,
-  getEnv,
   getParent,
 } from "mobx-state-tree";
-import { types as uTypes } from "util";
-import { IpcStore } from "../ipcStore";
 import { IEnvStore } from "../envStore";
+import { isError } from "../../utils/types";
 
 export const LocalDbStore = types
   .model({})
@@ -25,7 +23,7 @@ export const LocalDbStore = types
     const getFromDb = async (key: string) => {
       const { ipc } = getParent<IEnvStore>(self);
       const data = await ipc.invoke("getDbData", key);
-      return uTypes.isNativeError(data) ? data : Object.values(data);
+      return isError(data) ? data : Object.values(data);
     };
 
     const removeFromDb = (key: string) => {
