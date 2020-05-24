@@ -24,14 +24,16 @@ export class HeaderRight extends React.Component {
     return (
       <StyledHeaderRight>
         <ButtonGroup columnGap={15}>
-          <Score>
-            <b>Score:</b> {"2d 15h 42m 11s"}
-          </Score>
+          {blocksStore.blockOn && (
+            <Score>
+              <b>Score:</b> {blocksStore.blockStartTimestamp}
+            </Score>
+          )}
           <Toggle
             checked={blocksStore.blockOn}
             onChange={(e) =>
               e.target.checked
-                ? blocksStore.startBlock([])
+                ? blocksStore.startBlock(blocksStore.exesToBlock)
                 : blocksStore.stopBlock()
             }
           />

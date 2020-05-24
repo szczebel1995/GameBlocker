@@ -1,12 +1,24 @@
-import { types, flow, getEnv } from "mobx-state-tree";
+import { types, flow, getEnv, getParent } from "mobx-state-tree";
 import { isEmpty } from "lodash";
 import { IEnvStore } from "./envStore";
 import { isError } from "../utils/types";
+import { IGamesStore } from "./gamesStore";
+import { flatten } from "lodash";
 
 export const BlocksStore = types
   .model({
     blockOn: types.maybe(types.boolean),
+    blockStartTimestamp: types.maybe(types.number),
   })
+  .views((self) => ({
+    get exesToBlock() {
+      const { gamesStore } = getParent<{ gamesStore: IGamesStore }>(self);
+      return flatten([
+        ...gamesStore.games.map((game) => game.paths),
+        ...gamesStore.launchers.map((launcher) => launcher.paths),
+      ]).map((path) => path.split("\\")[path.split("\\").length - 1]);
+    },
+  }))
   .actions((self) => {
     const afterAttach = () => {
       checkIfBlockIsOn();
@@ -14,7 +26,13 @@ export const BlocksStore = types
 
     const checkIfBlockIsOn = flow(function* () {
       const { ipc } = getEnv<IEnvStore>(self);
-      const blocks = Object.values(yield ipc.invoke("getBlocks", ""))[0];
+      const blocks = Object.values(yield ipc.invoke("getBlocks", ""));
+      const timestampBlock: any = blocks.find(
+        (block: any) => block[0] === "blockStartTimestamp"
+      );
+      if (timestampBlock) {
+        self.blockStartTimestamp = +timestampBlock[1].value;
+      }
       self.blockOn = !isEmpty(blocks);
     });
 

@@ -5,6 +5,7 @@ import { zipObject } from "lodash";
 import { IEnvStore } from "./envStore";
 import { isError } from "../utils/types";
 
+export type IGamesStore = typeof GamesStore.Type;
 export const GamesStore = types
   .model({
     launchersMap: types.map(LauncherStore),

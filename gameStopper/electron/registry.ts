@@ -1,5 +1,15 @@
 import * as regedit from "regedit";
 import { types } from "util";
+import * as path from "path";
+import { app } from "electron";
+
+export const setScriptsFolder = () => {
+  const vbsDirectory = path.join(
+    path.dirname(app.getPath("exe")),
+    "./resources/my-location"
+  );
+  regedit.setExternalVBSLocation(vbsDirectory);
+};
 
 const explorerExist = async () => {
   const policies: any = await new Promise((resolve) => {
@@ -85,8 +95,10 @@ export const getBlocks = async () => {
   const realBlocks =
     blocks[
       "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN"
-    ].values;
-  return realBlocks ? Object.entries(realBlocks) : [];
+    ];
+  return realBlocks && realBlocks.values
+    ? Object.entries(realBlocks.values)
+    : [];
 };
 
 export const addBlocks = async (exes: string[]) => {
@@ -110,6 +122,7 @@ export const addBlocks = async (exes: string[]) => {
   exes.forEach(
     (exe, i) => (values[blocks.length + 1 + i] = { value: exe, type: "REG_SZ" })
   );
+  values["blockStartTimestamp"] = { value: `${Date.now()}`, type: "REG_SZ" };
 
   return await new Promise((resolve) => {
     regedit.putValue(

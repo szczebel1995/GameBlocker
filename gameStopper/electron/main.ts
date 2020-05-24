@@ -4,10 +4,11 @@ import * as isDev from "electron-is-dev";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
-import * as psList from "ps-list";
 import { initIpc } from "./ipc";
+import { setScriptsFolder } from "./registry";
 
 initIpc();
+setScriptsFolder();
 
 let win: BrowserWindow | null = null;
 
