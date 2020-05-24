@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ColorE } from "../../enums/color";
 import { styled } from "../../themes";
 
 export interface IInputRowItemProps {
   label: string;
   input: any;
   column?: boolean;
+  flex?: boolean;
 }
 
 const StyledInputRowItem = styled.div<{ column?: boolean }>`
@@ -17,16 +17,22 @@ const StyledInputRowItem = styled.div<{ column?: boolean }>`
   box-sizing: border-box;
 `;
 
-const ColumnWrapper = styled.div<{ side: "left" | "right" }>`
+const ColumnWrapper = styled.div<{ side: "left" | "right"; flex?: boolean }>`
   width: 100%;
-  justify-self: ${(props) => (props.side === "left" ? "start" : "end")};
+  display: ${(props) => (props.flex ? "flex" : undefined)};
+  justify-content: ${(props) =>
+    props.side === "left" ? "flex-start" : "flex-end"};
 `;
 
 export const InputRowItem = (props: IInputRowItemProps) => {
   return (
     <StyledInputRowItem column={props.column}>
-      <ColumnWrapper side={"left"}>{props.label}</ColumnWrapper>
-      <ColumnWrapper side={"right"}>{props.input}</ColumnWrapper>
+      <ColumnWrapper flex={props.flex} side={"left"}>
+        {props.label}
+      </ColumnWrapper>
+      <ColumnWrapper flex={props.flex} side={"right"}>
+        {props.input}
+      </ColumnWrapper>
     </StyledInputRowItem>
   );
 };

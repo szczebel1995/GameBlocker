@@ -1,6 +1,12 @@
 import * as React from "react";
 import { styled } from "../../themes";
 
+export interface IStatusProps {
+  message?: string;
+  icon?: any;
+  bottomRow?: any;
+}
+
 const StatusWrapper = styled.div`
   display: flex;
   height: 100%;
@@ -17,19 +23,11 @@ const StatusMessage = styled.div`
   text-align: center;
 `;
 
-export const Status = ({
-  icon,
-  message,
-  bottomRow,
-}: {
-  message: string;
-  icon?: any;
-  bottomRow?: any;
-}) => {
+export const Status = ({ icon, message, bottomRow }: IStatusProps) => {
   return (
     <StatusWrapper>
       {icon}
-      <StatusMessage>{message}</StatusMessage>
+      {message && <StatusMessage>{message}</StatusMessage>}
       {bottomRow}
     </StatusWrapper>
   );

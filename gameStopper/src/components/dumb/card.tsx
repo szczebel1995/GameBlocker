@@ -1,21 +1,17 @@
 import * as React from "react";
-import { styled, themes } from "../../themes";
-import { css } from "@emotion/core";
+import { styled } from "../../themes";
 
 export interface ICardProps {
-  style?: any;
+  transparent?: boolean;
   children?: any;
 }
 
-const defaultStyle = css`
+const StyledCard = styled.div<ICardProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: ${themes.dark.colors.primary.dim};
-`;
-
-const StyledCard = styled.div<ICardProps>`
-  ${(props) => (props.style ? props.style : defaultStyle)}
+  background-color: ${(props) =>
+    props.transparent ? "transparent" : props.theme.colors.primary.dim};
 `;
 
 export const Card = (props: ICardProps) => {

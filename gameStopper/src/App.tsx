@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { ThemeProvider, withTheme } from "emotion-theming";
 import { themes, Theme } from "./themes";
 import { Global, css } from "@emotion/core";

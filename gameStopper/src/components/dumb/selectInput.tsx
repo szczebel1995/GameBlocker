@@ -15,54 +15,41 @@ export const SelectInput = (props: ISelectInputProps) => {
     <Select
       isSearchable={false}
       styles={{
-        indicatorSeparator: (provided, state) => {
-          return {
-            ...provided,
-            display: "none",
-            // opacity: 0,
-          };
-        },
-        valueContainer: (provided, state) => {
-          return {
-            ...provided,
-            color: ColorE.TEXT_COLOR,
-          };
-        },
-        menu: (provided, state) => {
-          return {
-            ...provided,
-            backgroundColor: ColorE.LIST_ITEM_BGD,
-            borderRadius: 0,
-            color: ColorE.TEXT_COLOR,
-          };
-        },
-        singleValue: (provided, state) => {
-          return {
-            ...provided,
-            color: ColorE.TEXT_COLOR,
-          };
-        },
-        control: (provided, state) => {
-          return {
-            ...provided,
-            backgroundColor: ColorE.LIST_ITEM_BGD,
-            borderRadius: 0,
-            border: "none",
-            outlineWidth: 0,
-            outline: `1px solid ${ColorE.LIST_ITEM_BGD} !important`,
-            color: ColorE.TEXT_COLOR,
-          };
-        },
-        option: (provided, { isFocused, isSelected }) => {
-          return {
-            ...provided,
-            backgroundColor: isFocused
-              ? ColorE.LIST_ITEM_HOVERED_BGD
-              : isSelected
-              ? ColorE.LIST_ITEM_ACTIVE_BGD
-              : ColorE.LIST_ITEM_BGD,
-          };
-        },
+        indicatorSeparator: (provided, state) => ({
+          ...provided,
+          display: "none",
+        }),
+        valueContainer: (provided, state) => ({
+          ...provided,
+          color: ColorE.TEXT_COLOR,
+        }),
+        menu: (provided, state) => ({
+          ...provided,
+          backgroundColor: ColorE.LIST_ITEM_BGD,
+          borderRadius: 0,
+          color: ColorE.TEXT_COLOR,
+        }),
+        singleValue: (provided, state) => ({
+          ...provided,
+          color: ColorE.TEXT_COLOR,
+        }),
+        control: (provided, state) => ({
+          ...provided,
+          backgroundColor: ColorE.LIST_ITEM_BGD,
+          borderRadius: 0,
+          border: "none",
+          outlineWidth: 0,
+          outline: `1px solid ${ColorE.LIST_ITEM_BGD} !important`,
+          color: ColorE.TEXT_COLOR,
+        }),
+        option: (provided, { isFocused, isSelected }) => ({
+          ...provided,
+          backgroundColor: isFocused
+            ? ColorE.LIST_ITEM_HOVERED_BGD
+            : isSelected
+            ? ColorE.LIST_ITEM_ACTIVE_BGD
+            : ColorE.LIST_ITEM_BGD,
+        }),
       }}
       value={props.value}
       onChange={(value) => {

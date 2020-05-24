@@ -1,14 +1,11 @@
-import * as React from "react";
 import { observer } from "mobx-react";
-import Toggle from "react-toggle";
+import * as React from "react";
 import { FaCog } from "react-icons/fa";
-import { Card } from "../dumb/card";
-import { ColorE } from "../../enums/color";
+import Toggle from "react-toggle";
 import { blocksStore } from "../../stores/blocksStore";
-import { mainViewStore } from "../../views/mainView/mainViewStore";
-import { LogoWithName } from "../dumb/logoWithName";
-import { ButtonGroup } from "../dumb/buttonGroup";
 import { styled } from "../../themes";
+import { mainViewStore } from "../../views/mainView/mainViewStore";
+import { ButtonGroup } from "../dumb/buttonGroup";
 
 const StyledHeaderRight = styled.div`
   display: flex;
