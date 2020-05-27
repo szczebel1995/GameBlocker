@@ -1,9 +1,10 @@
 import * as glob from "glob";
 import * as launchersData from "./serverMocks/launchers.json";
-import { LauncherStore, ILauncherStore } from "./stores/objects/launcherStore";
-import { uniq, compact, zipObject } from "lodash";
+import { compact, zipObject } from "lodash";
 import * as battlenetGames from "./serverMocks/battlenetGames.json";
-import { GameStore } from "./stores/objects/gameStore";
+import { GameStore } from "../src/stores/objects/gameStore";
+
+// TODO: this one serves as rushed proof of concept and is hardcoded for my pc, will have to make it more universal, resiliant and clean
 
 const getLauncherFolders = (exeNames: string[]): Promise<string[] | Error> => {
   return new Promise((resolve) => {
@@ -53,11 +54,34 @@ const getLauncherGames = async (gamesFolder: string, launcher: string) => {
       }
       return gameName;
     });
+  } else if (launcher === "Riot Games") {
+    gamesUrls = await new Promise((resolve) => {
+      glob(
+        `C://Riot Games/**/*.exe`,
+        { strict: false },
+        (err: any, files: any) => resolve(err ? err : files)
+      );
+    });
+
+    gameNames = gamesUrls.map((path: string) => {
+      const splitedPath = path.split("/");
+      const gameName = splitedPath[2];
+      if (gamesUrlsMap[gameName]) {
+        gamesUrlsMap[gameName].push(path);
+      } else {
+        gamesUrlsMap[gameName] = [path];
+      }
+      return gameName;
+    });
   } else {
     gamesUrlsMap = createMapFromLauncherGamesPaths(
       gamesUrls,
       gamesFolder,
-      launcher === "Steam" ? ["Steamworks Shared"] : [],
+      launcher === "Steam"
+        ? ["Steamworks Shared"]
+        : launcher === "Riot Games"
+        ? ["Riot Client"]
+        : [],
       launcher
     );
     gameNames = Object.keys(gamesUrlsMap);

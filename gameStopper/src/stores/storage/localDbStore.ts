@@ -23,7 +23,7 @@ export const LocalDbStore = types
     const getFromDb = async (key: string) => {
       const { ipc } = getParent<IEnvStore>(self);
       const data = await ipc.invoke("getDbData", key);
-      return isError(data) ? data : Object.values(data);
+      return !data || isError(data) ? data : Object.values(data);
     };
 
     const removeFromDb = (key: string) => {
@@ -61,13 +61,14 @@ export const LocalDbStore = types
         const storeId = splitedPath[1];
         const storeWasModified = splitedPath.length >= 3;
         const mapWasModified = splitedPath.length === 2;
+        const escapedStoreId = storeId.replace(".", "_");
 
         if (mapWasModified && op === "remove") {
-          removeFromDb(`${dbKey}.${storeId}`);
+          removeFromDb(`${dbKey}.${escapedStoreId}`);
         } else {
           const store = storeWasModified ? map.get(storeId) : value;
           saveToDb(
-            `${dbKey}.${storeId}`,
+            `${dbKey}.${escapedStoreId}`,
             storeWasModified ? getSnapshot(store) : value
           );
         }

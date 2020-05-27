@@ -3,6 +3,11 @@ import { types } from "util";
 import * as path from "path";
 import { app } from "electron";
 
+// TODO: this one is messy and rushed, clean up and make a store out of it
+
+const policiesRegPath =
+  "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES";
+
 export const setScriptsFolder = () => {
   const vbsDirectory = path.join(
     path.dirname(app.getPath("exe")),
@@ -13,14 +18,11 @@ export const setScriptsFolder = () => {
 
 const explorerExist = async () => {
   const policies: any = await new Promise((resolve) => {
-    regedit.list(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES",
-      (err: any, res: any) => resolve(err ? err : res)
+    regedit.list(`${policiesRegPath}`, (err: any, res: any) =>
+      resolve(err ? err : res)
     );
   });
-  const realPolicies =
-    policies["HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES"]
-      .keys;
+  const realPolicies = policies[policiesRegPath].keys;
   return (
     !types.isNativeError(policies) &&
     realPolicies &&
@@ -30,9 +32,8 @@ const explorerExist = async () => {
 
 const blocksExist = async () => {
   const blocks = await new Promise((resolve) => {
-    regedit.list(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
-      (err, res) => resolve(err ? err : res)
+    regedit.list(`${policiesRegPath}\\EXPLORER\\DISALLOWRUN`, (err, res) =>
+      resolve(err ? err : res)
     );
   });
   return !types.isNativeError(blocks);
@@ -40,10 +41,7 @@ const blocksExist = async () => {
 
 const createBlocksBase = async () => {
   const explorerErr = await new Promise((resolve) => {
-    regedit.createKey(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\Explorer",
-      (err) => resolve(err)
-    );
+    regedit.createKey(`${policiesRegPath}\\Explorer`, (err) => resolve(err));
   });
 
   if (types.isNativeError(explorerErr)) {
@@ -58,7 +56,7 @@ const createBlocksBase = async () => {
   const disallowRunErr = await new Promise((resolve) => {
     regedit.putValue(
       {
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\Explorer": {
+        [`${policiesRegPath}\\Explorer`]: {
           DisallowRun: {
             value: 1,
             type: "REG_DWORD",
@@ -78,24 +76,19 @@ const createBlocksBase = async () => {
 
 const createBlocksKey = () => {
   return new Promise((resolve) => {
-    regedit.createKey(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun",
-      (err) => resolve(err)
+    regedit.createKey(`${policiesRegPath}\\EXPLORER\\DisallowRun`, (err) =>
+      resolve(err)
     );
   });
 };
 
 export const getBlocks = async () => {
   const blocks: any = await new Promise((resolve) => {
-    regedit.list(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
-      (err, res) => resolve(err ? err : res)
+    regedit.list(`${policiesRegPath}\\EXPLORER\\DISALLOWRUN`, (err, res) =>
+      resolve(err ? err : res)
     );
   });
-  const realBlocks =
-    blocks[
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN"
-    ];
+  const realBlocks = blocks[`${policiesRegPath}\\EXPLORER\\DISALLOWRUN`];
   return realBlocks && realBlocks.values
     ? Object.entries(realBlocks.values)
     : [];
@@ -127,7 +120,7 @@ export const addBlocks = async (exes: string[]) => {
   return await new Promise((resolve) => {
     regedit.putValue(
       {
-        "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DisallowRun": values,
+        [`${policiesRegPath}\\EXPLORER\\DisallowRun`]: values,
       },
       (err, res) => resolve(err ? err : res)
     );
@@ -136,9 +129,8 @@ export const addBlocks = async (exes: string[]) => {
 
 export const removeAllBlocks = async () => {
   return new Promise((resolve) =>
-    regedit.deleteKey(
-      "HKCU\\SOFTWARE\\MICROSOFT\\WINDOWS\\CURRENTVERSION\\POLICIES\\EXPLORER\\DISALLOWRUN",
-      (err, res) => resolve(err ? err : res)
+    regedit.deleteKey(`${policiesRegPath}\\EXPLORER\\DISALLOWRUN`, (err, res) =>
+      resolve(err ? err : res)
     )
   );
 };

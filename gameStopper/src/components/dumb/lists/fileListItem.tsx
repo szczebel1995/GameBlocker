@@ -22,7 +22,7 @@ export interface IFileListItemProps {
 }
 
 export const FileListItem = (props: IFileListItemProps) => {
-  const fileName = props.path.split("\\")[props.path.split("\\").length - 1];
+  const fileName = props.path.split("/")[props.path.split("/").length - 1];
 
   return (
     <ListItem>

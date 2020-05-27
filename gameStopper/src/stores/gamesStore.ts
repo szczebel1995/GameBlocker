@@ -64,14 +64,19 @@ export const GamesStore = types
       const launchers: ILauncherStore[] | Error = yield db.getFromDb(
         "launchers"
       );
+      console.log(games, launchers);
       if (isError(games) || isError(launchers)) {
         return isError(games) ? games : launchers;
       }
-      console.log(games, launchers);
-      launchers.forEach((launcher) =>
-        addLauncher(LauncherStore.create(launcher as any))
-      );
-      games.forEach((game) => addGame(GameStore.create(game)));
+
+      if (games) {
+        games.forEach((game) => addGame(GameStore.create(game)));
+      }
+      if (launchers) {
+        launchers.forEach((launcher) =>
+          addLauncher(LauncherStore.create(launcher as any))
+        );
+      }
     });
 
     const scanForLaunchers = flow(function* () {

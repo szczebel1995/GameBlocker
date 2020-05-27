@@ -29,6 +29,11 @@
       "name": "Battle.net",
       "exe": "Battle.net.exe",
       "gamesFolder": ""
+    },
+    {
+      "name": "Riot Games",
+      "exe": "RiotClientServices.exe",
+      "gamesFolder": ""
     }
   ]
 }

@@ -16,7 +16,7 @@ export const BlocksStore = types
       return flatten([
         ...gamesStore.games.map((game) => game.paths),
         ...gamesStore.launchers.map((launcher) => launcher.paths),
-      ]).map((path) => path.split("\\")[path.split("\\").length - 1]);
+      ]).map((path) => path.split("/")[path.split("/").length - 1]);
     },
   }))
   .actions((self) => {

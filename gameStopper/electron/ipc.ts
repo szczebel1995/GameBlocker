@@ -9,16 +9,16 @@ export const initIpc = () => {
     return { launchers };
   });
 
-  ipcMain.handle("addBlocks", async (event, arg) => {
-    return await addBlocks(arg);
+  ipcMain.handle("addBlocks", (event, arg) => {
+    return addBlocks(arg);
   });
 
-  ipcMain.handle("removeBlocks", async (event, arg) => {
-    return await removeAllBlocks();
+  ipcMain.handle("removeBlocks", (event, arg) => {
+    return removeAllBlocks();
   });
 
-  ipcMain.handle("getBlocks", async (event, arg) => {
-    return await getBlocks();
+  ipcMain.handle("getBlocks", (event, arg) => {
+    return getBlocks();
   });
 
   ipcMain.handle("getDbData", (event, key) => {

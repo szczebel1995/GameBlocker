@@ -19,6 +19,11 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    title: "GameBlocker",
+    autoHideMenuBar: true,
+    darkTheme: true,
+    backgroundColor: "#2A2A2A",
+    icon: path.join(__dirname, "../public/favicon.ico"),
   });
 
   win.webContents.on("new-window", function (e, url) {
